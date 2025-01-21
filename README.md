@@ -1,4 +1,4 @@
-# WooCommerce turboSMTP Email Validator
+# turboSMTP Email Validator for WooCommerce
 
 Validates email addresses during WooCommerce registration and checkout using the turboSMTP API.
 
