@@ -37,10 +37,9 @@ class Validated_Emails_Table extends WP_List_Table
 
 	protected function get_sortable_columns() {
 		return array(
-			'title'    => array( 'email', true ),
-			'status'   => array( 'status', true ),
-			'validated_at' => array( 'validated_at', true ),
-			'raw_data' => array( 'raw_data', false )
+			'email'    => 'email',
+			'status'   => 'status',
+			'validated_at' => array('validated_at', true)
 		);
 	}
 
@@ -64,7 +63,7 @@ class Validated_Emails_Table extends WP_List_Table
 
 		$paged = isset($_REQUEST['paged']) ? max(0, intval($_REQUEST['paged'] - 1) * $per_page) : 0;
 		$orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'validated_at';
-		$order = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? $_REQUEST['order'] : 'asc';
+		$order = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? $_REQUEST['order'] : 'desc';
 
 		$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
 
