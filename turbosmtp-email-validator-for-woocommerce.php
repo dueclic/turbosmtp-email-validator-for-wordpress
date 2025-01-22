@@ -177,7 +177,7 @@ add_action( 'admin_menu', 'email_validation_settings_menu' );
 
 function email_validation_settings_menu() {
 	add_options_page(
-		'Email Validation Settings',
+		__('Email Validation Settings', 'turbosmtp-email-validator-for-woocommerce'),
 		'Email Validation',
 		'manage_options',
 		'email-validation-settings',
@@ -189,7 +189,6 @@ function email_validation_settings_page() {
 	$subcription = get_emailvalidator_subscription(isset($_REQUEST['refresh']));
 	?>
     <div class="wrap">
-        <h1><?php _e( "Email Validation Settings", "turbosmtp-email-validator-for-woocommerce" ); ?></h1>
         <form method="post" action="options.php">
 			<?php
 			settings_fields( 'email_validation_settings_group' );

@@ -1,3 +1,6 @@
+[![turboSMTP](https://raw.githubusercontent.com/debba/turbosmtp-email-validator-for-woocommerce/master/.wordpress-org/assets/banner.png)
+](https://www.serversmtp.com)
+
 # turboSMTP Email Validator for WooCommerce
 
 Validates email addresses during WooCommerce registration and checkout using the turboSMTP API.
@@ -30,10 +33,17 @@ The WooCommerce turboSMTP Email Validator plugin ensures that email addresses pr
 ## Frequently Asked Questions
 
 Q: What happens if the email validation fails during registration or checkout?
+
 A: If the email validation fails, an error message will be displayed, and the user will be prompted to enter a valid email address.
 
 Q: How often is the email validation performed?
+
 A: The email validation is performed during user registration and checkout. If an email has been validated within the last six months, it will not be validated again.
+
+## Screenshots
+
+[![Admin Page](https://raw.githubusercontent.com/debba/turbosmtp-email-validator-for-woocommerce/master/.wordpress-org/assets/screenshot-1.png)
+](https://www.serversmtp.com)
 
 ## License
 

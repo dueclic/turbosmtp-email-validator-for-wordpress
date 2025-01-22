@@ -21,6 +21,8 @@ class Validated_Emails_Table extends WP_List_Table
 		$value = $item[$column_name];
 		if ($column_name === 'raw_data'){
 			return '<textarea style="width:100%; height:80px">'.$value.'</textarea>';
+		} else if ($column_name === 'status'){
+			return '<span style="font-weight:bold;color: '.($value === 'valid' ? 'green' : 'red').';">'.strtoupper($value).'</span>';
 		}
 		return $value;
 	}
