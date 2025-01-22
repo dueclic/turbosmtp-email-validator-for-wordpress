@@ -1,5 +1,7 @@
+<p align="center" width="100%">
 [![turboSMTP](https://raw.githubusercontent.com/debba/turbosmtp-email-validator-for-woocommerce/master/.wordpress-org/assets/banner.png)
 ](https://www.serversmtp.com)
+</p>
 
 # turboSMTP Email Validator for WooCommerce
 
@@ -43,7 +45,7 @@ A: The email validation is performed during user registration and checkout. If a
 ## Screenshots
 
 [![Admin Page](https://raw.githubusercontent.com/debba/turbosmtp-email-validator-for-woocommerce/master/.wordpress-org/assets/screenshot-1.png)
-](https://www.serversmtp.com)
+](https://raw.githubusercontent.com/debba/turbosmtp-email-validator-for-woocommerce/master/.wordpress-org/assets/screenshot-1.png)
 
 ## License
 
