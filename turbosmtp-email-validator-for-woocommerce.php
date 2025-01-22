@@ -202,7 +202,7 @@ function email_validation_settings_page() {
             <input type="hidden" name="page" value="<?php echo sanitize_text_field($_REQUEST['page']) ;?>">
             <h2><?php _e( "Current Subscription", "turbosmtp-email-validator-for-woocommerce" ); ?></h2>
             <p>
-                <strong><?php _e( "Remaining Paid Credits", "turbosmtp-email-validator-for-woocommerce" ); ?></strong>: <?php echo $subcription['paid_credits']; ?>
+                <strong><?php _e( "Remaining Paid Credits", "turbosmtp-email-validator-for-woocommerce" ); ?></strong>: <?php echo $subcription['paid_credits']; ?> <?php echo $subcription['currency']; ?>
             </p>
             <p>
                 <strong><?php _e( "Remaining Free Credits", "turbosmtp-email-validator-for-woocommerce" ); ?></strong>: <?php echo $subcription['remaining_free_credit']; ?>
