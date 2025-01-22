@@ -1,9 +1,5 @@
-<p align="center" width="100%">
-
 [![turboSMTP](https://raw.githubusercontent.com/debba/turbosmtp-email-validator-for-woocommerce/master/.wordpress-org/assets/banner.png)
 ](https://www.serversmtp.com)
-
-</p>
 
 # turboSMTP Email Validator for WooCommerce
 
