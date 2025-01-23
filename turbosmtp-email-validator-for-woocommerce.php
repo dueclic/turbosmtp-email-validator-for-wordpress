@@ -120,7 +120,7 @@ function validate_email( $email ) {
 		$six_months   = 6 * 30 * 24 * 60 * 60;
 
 		if ( ( $current_time - $validated_at ) < $six_months ) {
-			if ( ts_email_validator_status_ok($result->status) ) {
+			if ( ts_email_validator_status_ok( $result->status ) ) {
 				return true;
 			} else {
 				return new WP_Error( 'email_validation_error', __( "The email entered is not valid. Please enter a valid email.", 'turbosmtp-email-validator-for-woocommerce' ) );
@@ -158,7 +158,7 @@ function validate_email( $email ) {
 			'raw_data'     => $body,
 		) );
 
-		if ( ts_email_validator_status_ok($data['status']) ) {
+		if ( ts_email_validator_status_ok( $data['status'] ) ) {
 			return true;
 		} else {
 			return new WP_Error( 'email_validation_error', __( "The email entered is not valid. Please enter a valid email.", 'turbosmtp-email-validator-for-woocommerce' ) );
@@ -304,10 +304,17 @@ function email_validation_consumer_secret_callback() {
 
 function display_validated_emails_table() {
 	$validated_emails_table = new Validated_Emails_Table();
-	$validated_emails_table->prepare_items();
+	$validated_emails_table->views();
 	?>
     <form method="post">
+    <?php
+	$validated_emails_table->prepare_items();
+	$validated_emails_table->search_box(
+		__( 'Search', 'turbosmtp-email-validator-for-woocommerce' ),
+		'search_id'
+	);
+	?>
 		<?php $validated_emails_table->display(); ?>
     </form>
-	<?php
+    <?php
 }
