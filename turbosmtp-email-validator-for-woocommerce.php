@@ -152,7 +152,7 @@ function validate_email( $email ) {
 			'raw_data'     => $body,
 		) );
 
-		if ( $data['status'] === 'valid' ) {
+		if ( $data['status'] === 'valid' || apply_filters('ts_email_validator_status_ok', false, $data['status'])) {
 			return true;
 		} else {
 			return new WP_Error( 'email_validation_error', __( "The email entered is not valid. Please enter a valid email.", 'turbosmtp-email-validator-for-woocommerce' ) );
