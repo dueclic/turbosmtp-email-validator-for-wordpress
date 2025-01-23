@@ -94,6 +94,12 @@ function get_emailvalidator_subscription( $refresh = false ) {
 	return $subscription;
 }
 
+function ts_email_validator_status_ok(
+	$status
+) {
+	return $status === 'valid' || apply_filters( 'ts_email_validator_status_ok', false, $status );
+}
+
 function validate_email( $email ) {
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'validated_emails';
@@ -114,7 +120,7 @@ function validate_email( $email ) {
 		$six_months   = 6 * 30 * 24 * 60 * 60;
 
 		if ( ( $current_time - $validated_at ) < $six_months ) {
-			if ( $result->status === 'valid' ) {
+			if ( ts_email_validator_status_ok($result->status) ) {
 				return true;
 			} else {
 				return new WP_Error( 'email_validation_error', __( "The email entered is not valid. Please enter a valid email.", 'turbosmtp-email-validator-for-woocommerce' ) );
@@ -152,7 +158,7 @@ function validate_email( $email ) {
 			'raw_data'     => $body,
 		) );
 
-		if ( $data['status'] === 'valid' || apply_filters('ts_email_validator_status_ok', false, $data['status'])) {
+		if ( ts_email_validator_status_ok($data['status']) ) {
 			return true;
 		} else {
 			return new WP_Error( 'email_validation_error', __( "The email entered is not valid. Please enter a valid email.", 'turbosmtp-email-validator-for-woocommerce' ) );
@@ -177,7 +183,7 @@ add_action( 'admin_menu', 'email_validation_settings_menu' );
 
 function email_validation_settings_menu() {
 	add_options_page(
-		__('Email Validation Settings', 'turbosmtp-email-validator-for-woocommerce'),
+		__( 'Email Validation Settings', 'turbosmtp-email-validator-for-woocommerce' ),
 		'Email Validation',
 		'manage_options',
 		'email-validation-settings',
@@ -186,7 +192,7 @@ function email_validation_settings_menu() {
 }
 
 function email_validation_settings_page() {
-	$subcription = get_emailvalidator_subscription(isset($_REQUEST['refresh']));
+	$subcription = get_emailvalidator_subscription( isset( $_REQUEST['refresh'] ) );
 	?>
     <div class="wrap">
         <form method="post" action="options.php">
@@ -198,7 +204,7 @@ function email_validation_settings_page() {
         </form>
         <form method="get" action="">
             <input type="hidden" name="refresh" value="1">
-            <input type="hidden" name="page" value="<?php echo sanitize_text_field($_REQUEST['page']) ;?>">
+            <input type="hidden" name="page" value="<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>">
             <h2><?php _e( "Current Subscription", "turbosmtp-email-validator-for-woocommerce" ); ?></h2>
             <p>
                 <strong><?php _e( "Remaining Paid Credits", "turbosmtp-email-validator-for-woocommerce" ); ?></strong>: <?php echo $subcription['paid_credits']; ?> <?php echo $subcription['currency']; ?>
@@ -206,11 +212,11 @@ function email_validation_settings_page() {
             <p>
                 <strong><?php _e( "Remaining Free Credits", "turbosmtp-email-validator-for-woocommerce" ); ?></strong>: <?php echo $subcription['remaining_free_credit']; ?>
             </p>
-	        <?php
-	        submit_button(
-		        __( "Refresh subscription", "turbosmtp-email-validator-for-woocommerce" )
-	        );
-	        ?>
+			<?php
+			submit_button(
+				__( "Refresh subscription", "turbosmtp-email-validator-for-woocommerce" )
+			);
+			?>
         </form>
         <h2>Test Validator</h2>
         <form method="post" action="">
