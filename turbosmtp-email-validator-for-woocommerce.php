@@ -283,7 +283,7 @@ function email_validation_settings_section_callback() {
 
 function email_validation_enabled_callback() {
 	$enabled = get_option( 'email_validation_enabled', 'no' );
-	echo '<input type="checkbox" name="email_validation_enabled" value="yes"' . checked( $enabled, 'yes', false ) . '> Enable Email Validation';
+	echo '<input type="checkbox" name="email_validation_enabled" value="yes"' . checked( $enabled, 'yes', false ) . '>';
 }
 
 function email_validation_consumer_key_callback() {
