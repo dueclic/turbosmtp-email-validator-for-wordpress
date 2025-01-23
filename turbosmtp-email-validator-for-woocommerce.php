@@ -138,7 +138,7 @@ function validate_email( $email ) {
 	) );
 
 	if ( is_wp_error( $response ) ) {
-		return new WP_Error( 'email_validation_error_api_error', __( 'Errore nella validazione dell\'email. Riprova più tardi.', 'turbosmtp-email-validator-for-woocommerce' ), $response->get_error_message() );
+		return new WP_Error( 'email_validation_error_api_error', __( 'Error in email validation. Please try again later.', 'turbosmtp-email-validator-for-woocommerce' ), $response->get_error_message() );
 	}
 
 	$body = wp_remote_retrieve_body( $response );
