@@ -109,6 +109,12 @@ function validate_email( $email ) {
 		return true;
 	}
 
+	$skip_validation = apply_filters( 'ts_email_validator_skip_validation', false, $email );
+
+	if ( $skip_validation ) {
+		return true;
+	}
+
 	$consumer_key    = get_option( 'email_validation_consumer_key', '' );
 	$consumer_secret = get_option( 'email_validation_consumer_secret', '' );
 
@@ -307,14 +313,14 @@ function display_validated_emails_table() {
 	$validated_emails_table->views();
 	?>
     <form method="post">
-    <?php
-	$validated_emails_table->prepare_items();
-	$validated_emails_table->search_box(
-		__( 'Search', 'turbosmtp-email-validator-for-woocommerce' ),
-		'search_id'
-	);
-	?>
+		<?php
+		$validated_emails_table->prepare_items();
+		$validated_emails_table->search_box(
+			__( 'Search', 'turbosmtp-email-validator-for-woocommerce' ),
+			'search_id'
+		);
+		?>
 		<?php $validated_emails_table->display(); ?>
     </form>
-    <?php
+	<?php
 }
