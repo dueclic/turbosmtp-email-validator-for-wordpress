@@ -48,7 +48,7 @@ class Validated_Emails_Table extends WP_List_Table {
 
 		$statuses =
 			array_merge(
-				[ ['status' => 'All', 'total' =>  $wpdb->get_var( "SELECT COUNT(id) FROM $table_name") ]],
+				[ ['status' => 'all', 'total' =>  $wpdb->get_var( "SELECT COUNT(id) FROM $table_name") ]],
 				$wpdb->get_results( "SELECT status, COUNT(*) AS total FROM $table_name GROUP BY status", ARRAY_A )
 			);
 
