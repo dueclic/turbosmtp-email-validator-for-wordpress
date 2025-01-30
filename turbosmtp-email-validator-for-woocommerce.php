@@ -5,6 +5,9 @@ Description: Validates email address during WooCommerce registration using turbo
 Version: 1.0
 Author: debba
 Author URI: https://www.debbaweb.it
+Text Domain:       turbosmtp-email-validator-for-woocommerce
+Domain Path:       /languages
+
 */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -224,7 +227,7 @@ function email_validation_settings_page() {
 			);
 			?>
         </form>
-        <h2>Test Validator</h2>
+        <h2><?php _e("Test Validator", "turbosmtp-email-validator-for-woocommerce"); ?></h2>
         <form method="post" action="">
             <input type="email" name="test_email" value="" required>
 			<?php
@@ -244,7 +247,7 @@ function email_validation_settings_page() {
 			}
 		}
 		?>
-        <h2>Validated Emails</h2>
+        <h2><?php _e("Validated Emails", "turbosmtp-email-validator-for-woocommerce"); ?></h2>
 		<?php display_validated_emails_table(); ?>
     </div>
 	<?php
@@ -323,4 +326,14 @@ function display_validated_emails_table() {
 		<?php $validated_emails_table->display(); ?>
     </form>
 	<?php
+}
+
+add_action('init', 'ts_email_validator_load_plugin_textdomain');
+
+function ts_email_validator_load_plugin_textdomain(){
+	load_plugin_textdomain(
+		'turbosmtp-email-validator-for-woocommerce',
+		false,
+		dirname(plugin_basename(__FILE__)) . '/languages'
+	);
 }
