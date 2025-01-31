@@ -27,10 +27,10 @@ class Validated_Emails_Table extends WP_List_Table {
 
 	function get_columns() {
 		return array(
-			'email'        => __( 'Email', 'turbosmtp-email-validator-for-woocommerce' ),
-			'status'       => __( 'Status', 'turbosmtp-email-validator-for-woocommerce' ),
-			'validated_at' => __( 'Validated At', 'turbosmtp-email-validator-for-woocommerce' ),
-			'raw_data'     => __( 'Raw Data', 'turbosmtp-email-validator-for-woocommerce' ),
+			'email'        => __( 'Email', 'turbosmtp-email-validator' ),
+			'status'       => __( 'Status', 'turbosmtp-email-validator' ),
+			'validated_at' => __( 'Validated At', 'turbosmtp-email-validator' ),
+			'raw_data'     => __( 'Raw Data', 'turbosmtp-email-validator' ),
 		);
 	}
 
@@ -56,7 +56,7 @@ class Validated_Emails_Table extends WP_List_Table {
 
 		foreach ($statuses as $status) {
 			$is_status_selected = (isset($_REQUEST['status']) && $_REQUEST['status'] === $status['status']);
-			$status_links[$status['status']] = sprintf(__('<a style="'.($is_status_selected ? 'font-weight:bold': '').'" href="%s">%s (%d)</a>', 'turbosmtp-email-validator-for-woocommerce'), admin_url( 'options-general.php?page=email-validation-settings&status='.$status['status'] ), ucfirst($status['status']), $status['total']);
+			$status_links[$status['status']] = sprintf(__('<a style="'.($is_status_selected ? 'font-weight:bold': '').'" href="%s">%s (%d)</a>', 'turbosmtp-email-validator'), admin_url( 'options-general.php?page=email-validation-settings&status='.$status['status'] ), ucfirst($status['status']), $status['total']);
 		}
 
 		return $status_links;

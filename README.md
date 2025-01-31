@@ -25,7 +25,7 @@ The WooCommerce turboSMTP Email Validator plugin ensures that email addresses pr
 ## Installation
 
 - Upload the plugin files to the /wp-content/plugins/woocommerce-turbosmtp-email-validator directory, or install the plugin through the WordPress plugins screen directly.
-- Activate the plugin through the 'Plugins' screen in WordPress. 
+- Activate the plugin through the 'Plugins' screen in WordPress.
 - Go to "Settings" > "Email Validation" to configure the plugin settings.
 
 ## Usage
