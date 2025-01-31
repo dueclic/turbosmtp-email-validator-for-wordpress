@@ -86,34 +86,101 @@ class Turbosmtp_Email_Validator_Public {
 
 	}
 
-	function validate_email_on_woocommerce_registration( $username, $email, $validation_errors ) {
-		$validation_result = ts_emailvalidator_validate_email( $email );
-		if ( is_wp_error( $validation_result ) && $validation_result->get_error_code() === 'email_validation_error' ) {
-			$validation_errors->add( 'email_validation_error', $validation_result->get_error_message() );
-		}
+	function woocommerce_registration_validator( $username, $email, $validation_errors ) {
+
+		$woocommerceForm = new Turbosmtp_Email_Validator_Form_Public('woocommerceregistration', '');
+		$validationInfo = $woocommerceForm->prep_validation_info($email);
+
+		$message = $woocommerceForm->set_error_message();
+		$woocommerceForm->setup_form_validation($validationInfo, function () {
+			$args = func_get_args();
+			$message = $args[0]['message'];
+			$validation_errors = &$args[0]['validation_errors'];
+			$validation_errors->add( 'email_validation_error', $message );
+		}, ['message' => $message, 'validation_errors' => &$validation_errors]);
+
 	}
 
-	function customize_woocommerce_registration_errors( $errors, $username, $email ) {
-		if ( isset( $errors->errors['email_validation_error'] ) ) {
-			wc_add_notice( __( "The email entered is not valid. Please enter a valid email.", 'turbosmtp-email-validator' ), 'error' );
+	/**
+	 * Woocommerce Checkout Form Validator Hook - shortcode blocks
+	 * @param $fields
+	 * @param $errors
+	 * @return void
+	 */
+	public function woocommerce_validator($fields, $errors)
+	{
+		$woocommerceForm = new Turbosmtp_Email_Validator_Form_Public('woocommercecheckout', '');
+		$validationInfo = null;
+
+		if (!empty($fields['billing_email'])) {
+			$validationInfo = $woocommerceForm->prep_validation_info($fields['billing_email']);
 		}
+
+		if (!empty($fields['shipping_email'])) {
+			$validationInfo = $woocommerceForm->prep_validation_info($fields['shipping_email']);
+		}
+
+		$message = $woocommerceForm->set_error_message();
+		$woocommerceForm->setup_form_validation($validationInfo, function () {
+			$args = func_get_args();
+			$message = $args[0]['message'];
+			$errors = &$args[0]['errors'];
+			$errors->add('validation', esc_html__($message));
+		}, ['message' => $message, 'errors' => &$errors]);
+	}
+
+
+	/**
+	 * WordPress Registration Form Validator Hook
+	 * @param $errors
+	 * @param $sanitized_user_login
+	 * @param $email
+	 * @return mixed
+	 */
+	public function wordpress_registration_validator($errors, $sanitized_user_login, $email)
+	{
+		if (email_exists($email)) {
+			return $errors;
+		}
+
+		$wprForm = new Turbosmtp_Email_Validator_Form_Public('wordpressregister', '');
+		$validationInfo = $wprForm->prep_validation_info($email);
+		$message = $wprForm->set_error_message();
+		$wprForm->setup_form_validation($validationInfo, function () {
+			$args = func_get_args();
+			$message = $args[0]['message'];
+			$errors = &$args[0]['errors'];
+			$errors->add('invalid_email', esc_html__($message));
+		}, ['message' => $message, 'errors' => &$errors]);
 
 		return $errors;
 	}
 
-	function validate_email_on_woocommerce_checkout( $data, $errors ) {
-		$email = isset( $data['billing_email'] ) ? sanitize_email( $data['billing_email'] ) : '';
-		if ( empty( $email ) ) {
-			$errors->add( 'billing_email', __( 'Please provide a valid email', 'turbosmtp-email-validator' ) );
-
-			return;
+	/**
+	 * WordPress Multisite Registration Form Validator Hook
+	 * @param $result
+	 * @return mixed
+	 */
+	public function wordpress_multisite_registration_validator($result)
+	{
+		$email = $result['user_email'];
+		if (!strlen($email) || strlen($email) < 3) {
+			return $result;
 		}
 
-		$validation_result = ts_emailvalidator_validate_email( $email );
-		if ( is_wp_error( $validation_result ) && $validation_result->get_error_code() === 'email_validation_error' ) {
-			$errors->add( 'billing_email', $validation_result->get_error_message() );
-		}
+		$wprForm = new Turbosmtp_Email_Validator_Form_Public('wordpressmultisiteregister', '');
+		$validationInfo = $wprForm->prep_validation_info($email);
+		$message = $wprForm->set_error_message();
+		$wprForm->setup_form_validation($validationInfo, function () {
+			$args = func_get_args();
+			$message = $args[0]['message'];
+			$result = &$args[0]['result'];
+			$result['errors']->add('user_email', esc_html__($message));
+		}, ['message' => $message, 'result' => &$result]);
+
+		return $result;
 	}
+
 
 	/**
 	 * Register the stylesheets for the public-facing side of the site.

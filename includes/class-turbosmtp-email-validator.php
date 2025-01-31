@@ -106,7 +106,7 @@ class Turbosmtp_Email_Validator {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-turbosmtp-email-validator-loader.php';
 
 		/**
-		 * The class responsible for defining ZeroBounce API functionality of the plugin.
+		 * The class responsible for defining turboSMTP API functionality of the plugin.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-turbosmtp-email-validator-api.php';
 
@@ -229,10 +229,11 @@ class Turbosmtp_Email_Validator {
 		$enabled = get_option( 'email_validation_enabled', 'no' );
 
 		if ( $enabled === 'yes' ) {
-			$this->loader->add_action( 'woocommerce_register_post', $plugin_public, 'validate_email_on_woocommerce_registration', 10, 3 );
-			$this->loader->add_action( 'woocommerce_after_checkout_validation', $plugin_public, 'validate_email_on_woocommerce_checkout', 10, 2 );
-			$this->loader->add_filter( 'woocommerce_registration_errors', $plugin_public, 'customize_woocommerce_registration_errors', 10, 3 );
+			$this->loader->add_action( 'woocommerce_register_post', $plugin_public, 'woocommerce_registration_validator', 10, 3 );
 			$this->loader->add_filter( 'ts_email_validator_checkemail', $plugin_public, 'validate_email_on_check', 10, 2 );
+			$this->loader->add_filter('registration_errors', $plugin_public, 'wordpress_registration_validator', 10, 3);
+			$this->loader->add_filter('wpmu_validate_user_signup', $plugin_public, 'wordpress_multisite_registration_validator', 10, 1);
+			$this->loader->add_filter('woocommerce_after_checkout_validation', $plugin_public, 'woocommerce_validator', 10, 2);
 		}
 
 	}
