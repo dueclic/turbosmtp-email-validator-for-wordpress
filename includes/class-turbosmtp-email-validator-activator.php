@@ -22,14 +22,7 @@
  */
 class Turbosmtp_Email_Validator_Activator {
 
-	/**
-	 * Short Description. (use period)
-	 *
-	 * Long Description.
-	 *
-	 * @since    1.0.0
-	 */
-	public static function activate() {
+	public static function setup_db_table() {
 		global $wpdb;
 		$table_name      = $wpdb->prefix . 'validated_emails';
 		$charset_collate = $wpdb->get_charset_collate();
@@ -48,6 +41,40 @@ class Turbosmtp_Email_Validator_Activator {
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		dbDelta( $sql );
+
+	}
+
+	/**
+	 * Short Description. (use period)
+	 *
+	 * Long Description.
+	 *
+	 * @since    1.0.0
+	 */
+	public static function activate() {
+		self::setup_db_table();
+		$validation_forms = [
+			'contact_form_7',
+			'wpforms',
+			'woocommerce',
+			'wordpress_comments',
+			'wordpress_registration',
+			'mc4wp_mailchimp',
+			'gravity_forms',
+			'elementor_forms'
+		];
+
+		update_option( 'email_validation_settings_validation_forms', $validation_forms );
+
+		$validation_pass = [
+			'valid'     => 'valid',
+			'catch-all' => 'catch-all',
+			'unknown'   => 'unknown',
+		];
+
+		update_option( 'email_validation_settings_validation_pass', $validation_pass );
+
+
 	}
 
 }
