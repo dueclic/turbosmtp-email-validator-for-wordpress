@@ -23,9 +23,14 @@
 		submit_button();
 		?>
     </form>
+
+    <?php
+        if ($has_api_keys):
+    ?>
+
     <form method="get" action="">
-        <input type="hidden" name="refresh" value="1">
         <input type="hidden" name="page" value="<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>">
+        <input type="hidden" name="refresh" value="1">
         <h2><?php _e( "Current Subscription", "turbosmtp-email-validator" ); ?></h2>
         <p>
             <strong><?php _e( "Remaining Paid Credits", "turbosmtp-email-validator" ); ?></strong>: <?php echo $subscription['paid_credits']; ?> <?php echo $subscription['currency']; ?>
@@ -75,4 +80,9 @@
 		?>
 		<?php $validated_emails_table->display(); ?>
     </form>
+
+    <?php
+    endif;
+    ?>
+
 </div>

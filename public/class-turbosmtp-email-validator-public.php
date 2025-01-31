@@ -23,6 +23,15 @@
 class Turbosmtp_Email_Validator_Public {
 
 	/**
+	 * The turboSMTP API class used for validation
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      Turbosmtp_Email_Validator_API $api
+	 */
+	private $api;
+
+	/**
 	 * The ID of this plugin.
 	 *
 	 * @since    1.0.0
@@ -43,14 +52,21 @@ class Turbosmtp_Email_Validator_Public {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of the plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @param Turbosmtp_Email_Validator_API $api New instance for Turbosmtp_Email_Validator_API class
+	 * @param string $plugin_name       The name of this plugin.
+	 * @param string    $version    The version of this plugin.
+	 *
+	 *@since    1.0.0
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct( $api, $plugin_name, $version ) {
 
+		$this->api = $api;
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
+
+	}
+
+	public function validate_email($email){
 
 	}
 

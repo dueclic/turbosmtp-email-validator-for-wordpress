@@ -1,40 +1,4 @@
 <?php
-
-function ts_emailvalidator_get_subscription( $refresh = false ) {
-	// Nome del transient
-	$transient_name = 'turbosmtp_email_validator_subscription';
-
-	// Controlla se il transient esiste e non è scaduto
-	if ( ! $refresh && false !== ( $subscription = get_transient( $transient_name ) ) ) {
-		return $subscription;
-	}
-
-	$consumer_key    = get_option( 'email_validation_consumer_key', '' );
-	$consumer_secret = get_option( 'email_validation_consumer_secret', '' );
-
-	$api_url = 'https://pro.api.serversmtp.com/api/v2/emailvalidation/subscription';
-
-	$response = wp_remote_get( $api_url, array(
-		'headers' => array(
-			'accept'         => 'application/json',
-			'Content-Type'   => 'application/json',
-			'consumerKey'    => $consumer_key,
-			'consumerSecret' => $consumer_secret,
-		),
-	) );
-
-	if ( is_wp_error( $response ) ) {
-		return $response;
-	}
-
-	$body         = wp_remote_retrieve_body( $response );
-	$subscription = json_decode( $body, true );
-
-	set_transient( $transient_name, $subscription, 12 * HOUR_IN_SECONDS );
-
-	return $subscription;
-}
-
 function ts_emailvalidator_status_ok(
 	$status
 ) {

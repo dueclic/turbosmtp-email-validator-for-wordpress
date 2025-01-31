@@ -35,7 +35,7 @@ class Turbosmtp_Email_Validator {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      Turbosmtp_Email_Validator_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      Turbosmtp_Email_Validator_Loader $loader Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -44,7 +44,7 @@ class Turbosmtp_Email_Validator {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
+	 * @var      string $plugin_name The string used to uniquely identify this plugin.
 	 */
 	protected $plugin_name;
 
@@ -53,7 +53,7 @@ class Turbosmtp_Email_Validator {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $version    The current version of the plugin.
+	 * @var      string $version The current version of the plugin.
 	 */
 	protected $version;
 
@@ -106,6 +106,11 @@ class Turbosmtp_Email_Validator {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-turbosmtp-email-validator-loader.php';
 
 		/**
+		 * The class responsible for defining ZeroBounce API functionality of the plugin.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-turbosmtp-email-validator-api.php';
+
+		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
@@ -152,14 +157,54 @@ class Turbosmtp_Email_Validator {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Turbosmtp_Email_Validator_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new Turbosmtp_Email_Validator_Admin(
+			new Turbosmtp_Email_Validator_API(
+				$this->get_consumer_key(), $this->get_consumer_secret(), $this->get_api_timeout()
+			), $this->get_plugin_name(), $this->get_version()
+		);
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'settings_menu' );
-		$this->loader->add_action( 'admin_init',  $plugin_admin, 'settings_init' );
-
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'settings_init' );
 	}
+
+	/**
+	 * Retrieve the Consumer Key for turboSMTP.
+	 *
+	 * @return    string    The consumer key defined or null.
+	 * @since     1.0.0
+	 */
+	public function get_consumer_key() {
+		$consumer_key = get_option( 'email_validation_consumer_key' );
+
+		return $consumer_key ?: "";
+	}
+
+	/**
+	 * Retrieve the Consumer Secret for turboSMTP.
+	 *
+	 * @return    string    The consumer Secret defined or null.
+	 * @since     1.0.0
+	 */
+	public function get_consumer_secret() {
+		$consumer_key = get_option( 'email_validation_consumer_secret' );
+
+		return $consumer_key ?: "";
+	}
+
+	/**
+	 * Retrieve the API Timeout for turboSMTP.
+	 *
+	 * @return    int    The api timeout defined or 5 seconds by default.
+	 * @since     1.0.0
+	 */
+	public function get_api_timeout() {
+		$api_timeout = get_option( 'email_validation_api_timeout' );
+
+		return $api_timeout ?: (int) 5;
+	}
+
 
 	/**
 	 * Register all of the hooks related to the public-facing functionality
@@ -170,12 +215,17 @@ class Turbosmtp_Email_Validator {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Turbosmtp_Email_Validator_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new Turbosmtp_Email_Validator_Public(
+			new Turbosmtp_Email_Validator_API(
+				$this->get_consumer_key(), $this->get_consumer_secret(), $this->get_api_timeout()
+			),
+			$this->get_plugin_name(), $this->get_version()
+		);
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-		$this->loader->add_action( 'woocommerce_register_post', $plugin_public,'validate_email_on_woocommerce_registration', 10, 3 );
-		$this->loader->add_action( 'woocommerce_after_checkout_validation', $plugin_public,'validate_email_on_woocommerce_checkout', 10, 2 );
+		$this->loader->add_action( 'woocommerce_register_post', $plugin_public, 'validate_email_on_woocommerce_registration', 10, 3 );
+		$this->loader->add_action( 'woocommerce_after_checkout_validation', $plugin_public, 'validate_email_on_woocommerce_checkout', 10, 2 );
 		$this->loader->add_filter( 'woocommerce_registration_errors', $plugin_public, 'customize_woocommerce_registration_errors', 10, 3 );
 
 
@@ -194,8 +244,8 @@ class Turbosmtp_Email_Validator {
 	 * The name of the plugin used to uniquely identify it within the context of
 	 * WordPress and to define internationalization functionality.
 	 *
-	 * @since     1.0.0
 	 * @return    string    The name of the plugin.
+	 * @since     1.0.0
 	 */
 	public function get_plugin_name() {
 		return $this->plugin_name;
@@ -204,8 +254,8 @@ class Turbosmtp_Email_Validator {
 	/**
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
-	 * @since     1.0.0
 	 * @return    Turbosmtp_Email_Validator_Loader    Orchestrates the hooks of the plugin.
+	 * @since     1.0.0
 	 */
 	public function get_loader() {
 		return $this->loader;
@@ -214,8 +264,8 @@ class Turbosmtp_Email_Validator {
 	/**
 	 * Retrieve the version number of the plugin.
 	 *
-	 * @since     1.0.0
 	 * @return    string    The version number of the plugin.
+	 * @since     1.0.0
 	 */
 	public function get_version() {
 		return $this->version;

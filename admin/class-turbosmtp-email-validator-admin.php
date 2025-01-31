@@ -23,11 +23,21 @@
 class Turbosmtp_Email_Validator_Admin {
 
 	/**
+	 * The turboSMTP API class used for validation
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      Turbosmtp_Email_Validator_API $api
+	 */
+	private $api;
+
+
+	/**
 	 * The ID of this plugin.
 	 *
 	 * @since    1.0.0
 	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
+	 * @var      string $plugin_name The ID of this plugin.
 	 */
 	private $plugin_name;
 
@@ -36,21 +46,24 @@ class Turbosmtp_Email_Validator_Admin {
 	 *
 	 * @since    1.0.0
 	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
+	 * @var      string $version The current version of this plugin.
 	 */
 	private $version;
 
 	/**
 	 * Initialize the class and set its properties.
 	 *
+	 * @param Turbosmtp_Email_Validator_API $api New instance for Turbosmtp_Email_Validator_API class
+	 * @param string $plugin_name The name of this plugin.
+	 * @param string $version The version of this plugin.
+	 *
 	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of this plugin.
-	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct( $api, $plugin_name, $version ) {
 
+		$this->api         = $api;
 		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+		$this->version     = $version;
 
 	}
 
@@ -101,14 +114,14 @@ class Turbosmtp_Email_Validator_Admin {
 	}
 
 	public function settings_page() {
-		require_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH )."/includes/class-validated-emails-table.php";
-		$subscription = ts_emailvalidator_get_subscription( isset( $_REQUEST['refresh'] ) );
+		require_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . "/includes/class-validated-emails-table.php";
+		$has_api_keys           = $this->api->hasApiKeys();
+		$subscription           = $this->api->getSubscription( isset( $_REQUEST['refresh'] ) );
 		$validated_emails_table = new Validated_Emails_Table();
 
 		include_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . 'admin/partials/turbosmtp-email-validator-admin-display.php';
 
 	}
-
 
 
 	public function email_validation_settings_section_callback() {
@@ -125,27 +138,63 @@ class Turbosmtp_Email_Validator_Admin {
 		echo '<input type="text" name="email_validation_consumer_key" value="' . esc_attr( $consumer_key ) . '" class="regular-text">';
 	}
 
+	public function email_validation_api_timeout_callback() {
+		$api_timeout = get_option( 'email_validation_api_timeout', 5 );
+		echo '<input type="number" min="1" name="email_validation_api_timeout" placeholder="5" value="' . esc_attr( $api_timeout ) . '" class="regular-text">';
+	}
+
 	public function email_validation_consumer_secret_callback() {
 		$consumer_secret = get_option( 'email_validation_consumer_secret', '' );
 		echo '<input type="text" name="email_validation_consumer_secret" value="' . esc_attr( $consumer_secret ) . '" class="regular-text">';
 	}
 
+
+	public function validate_email_api_credentials( $input ) {
+
+		if (!isset($_POST['email_validation_enabled'])){
+			return $input;
+		}
+
+		$new_key    = isset( $_POST['email_validation_consumer_key'] ) ? sanitize_text_field( $_POST['email_validation_consumer_key'] ) : '';
+		$new_secret = isset( $_POST['email_validation_consumer_secret'] ) ? sanitize_text_field( $_POST['email_validation_consumer_secret'] ) : '';
+
+		if ( empty( $new_key ) || empty( $new_secret ) ) {
+			add_settings_error( 'email_validation_settings_group', 'email_validation_consumer_keys_error', 'Entrambi i campi sono obbligatori.', 'error' );
+			return '';
+		}
+
+		$is_valid = $this->api->isValid(
+			$_POST['email_validation_consumer_key'],
+			$_POST['email_validation_consumer_secret']
+		);
+
+		if ( ! $is_valid ) {
+			add_settings_error( 'email_validation_settings_group', 'email_validation_consumer_keys_error', 'La combinazione chiave/secret non è valida. '.json_encode($_POST), 'error' );
+			return '';
+		}
+
+		return $input;
+	}
+
 	function settings_init() {
 		register_setting( 'email_validation_settings_group', 'email_validation_enabled' );
 		register_setting( 'email_validation_settings_group', 'email_validation_consumer_key' );
-		register_setting( 'email_validation_settings_group', 'email_validation_consumer_secret' );
+		register_setting( 'email_validation_settings_group', 'email_validation_consumer_secret', [
+			'sanitize_callback' => [ $this, 'validate_email_api_credentials' ]
+		] );
+		register_setting( 'email_validation_settings_group', 'email_validation_api_timeout' );
 
 		add_settings_section(
 			'email_validation_settings_section',
 			__( 'Email Validation Settings', "turbosmtp-email-validator" ),
-			[$this, 'email_validation_settings_section_callback'],
+			[ $this, 'email_validation_settings_section_callback' ],
 			'email-validation-settings'
 		);
 
 		add_settings_field(
 			'email_validation_enabled',
 			__( 'Enable Email Validation', "turbosmtp-email-validator" ),
-			[$this, 'email_validation_enabled_callback'],
+			[ $this, 'email_validation_enabled_callback' ],
 			'email-validation-settings',
 			'email_validation_settings_section'
 		);
@@ -153,7 +202,7 @@ class Turbosmtp_Email_Validator_Admin {
 		add_settings_field(
 			'email_validation_consumer_key',
 			__( 'Consumer Key', "turbosmtp-email-validator" ),
-			[$this, 'email_validation_consumer_key_callback'],
+			[ $this, 'email_validation_consumer_key_callback' ],
 			'email-validation-settings',
 			'email_validation_settings_section'
 		);
@@ -161,20 +210,27 @@ class Turbosmtp_Email_Validator_Admin {
 		add_settings_field(
 			'email_validation_consumer_secret',
 			__( 'Consumer Secret', "turbosmtp-email-validator" ),
-			[$this, 'email_validation_consumer_secret_callback'],
+			[ $this, 'email_validation_consumer_secret_callback' ],
+			'email-validation-settings',
+			'email_validation_settings_section'
+		);
+		add_settings_field(
+			'email_validation_api_timeout',
+			__( 'API timeout', "turbosmtp-email-validator" ),
+			[ $this, 'email_validation_api_timeout_callback' ],
 			'email-validation-settings',
 			'email_validation_settings_section'
 		);
 	}
 
 
-	public function settings_menu(){
+	public function settings_menu() {
 		add_options_page(
 			__( 'Email Validation Settings', 'turbosmtp-email-validator' ),
 			'Email Validation',
 			'manage_options',
 			'email-validation-settings',
-			[$this, 'settings_page']
+			[ $this, 'settings_page' ]
 		);
 
 	}
