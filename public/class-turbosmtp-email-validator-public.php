@@ -36,7 +36,7 @@ class Turbosmtp_Email_Validator_Public {
 	 *
 	 * @since    1.0.0
 	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
+	 * @var      string $plugin_name The ID of this plugin.
 	 */
 	private $plugin_name;
 
@@ -45,7 +45,7 @@ class Turbosmtp_Email_Validator_Public {
 	 *
 	 * @since    1.0.0
 	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
+	 * @var      string $version The current version of this plugin.
 	 */
 	private $version;
 
@@ -53,20 +53,36 @@ class Turbosmtp_Email_Validator_Public {
 	 * Initialize the class and set its properties.
 	 *
 	 * @param Turbosmtp_Email_Validator_API $api New instance for Turbosmtp_Email_Validator_API class
-	 * @param string $plugin_name       The name of this plugin.
-	 * @param string    $version    The version of this plugin.
+	 * @param string $plugin_name The name of this plugin.
+	 * @param string $version The version of this plugin.
 	 *
-	 *@since    1.0.0
+	 * @since    1.0.0
 	 */
 	public function __construct( $api, $plugin_name, $version ) {
 
-		$this->api = $api;
+		$this->api         = $api;
 		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+		$this->version     = $version;
 
 	}
 
-	public function validate_email($email){
+	function validate_email_on_check( $result, $email ): ?WP_Error {
+		$checkEmailForm = new Turbosmtp_Email_Validator_Form_Public( 'testemail', '' );
+		$validationInfo = $checkEmailForm->prep_validation_info( $email );
+
+		$message = $checkEmailForm->set_error_message();
+
+		return $checkEmailForm->setup_form_validation(
+			$validationInfo,
+			function () {
+				$args = func_get_args();
+
+				return new WP_Error(
+					'email_validation_error',
+					$args[0]['message']
+				);
+			}, [ "message" => $message ]
+		);
 
 	}
 

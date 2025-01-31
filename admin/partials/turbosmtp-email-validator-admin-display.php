@@ -56,7 +56,10 @@
 	<?php
 	if ( isset( $_POST['test_email'] ) ) {
 		$test_email        = sanitize_email( $_POST['test_email'] );
-		$validation_result = ts_emailvalidator_validate_email( $test_email );
+
+        $validation_result = "";
+
+		$validation_result = apply_filters( 'ts_email_validator_checkemail', $validation_result, $test_email );
 		if ( is_wp_error( $validation_result ) ) {
 			echo '<div style="color: red;">' . esc_html( $validation_result->get_error_message() ) . '</div>';
 		} else {

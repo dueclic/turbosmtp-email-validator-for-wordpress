@@ -126,6 +126,7 @@ class Turbosmtp_Email_Validator {
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-turbosmtp-email-validator-public.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-turbosmtp-email-validator-form-public.php';
 
 		$this->loader = new Turbosmtp_Email_Validator_Loader();
 
@@ -224,10 +225,15 @@ class Turbosmtp_Email_Validator {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-		$this->loader->add_action( 'woocommerce_register_post', $plugin_public, 'validate_email_on_woocommerce_registration', 10, 3 );
-		$this->loader->add_action( 'woocommerce_after_checkout_validation', $plugin_public, 'validate_email_on_woocommerce_checkout', 10, 2 );
-		$this->loader->add_filter( 'woocommerce_registration_errors', $plugin_public, 'customize_woocommerce_registration_errors', 10, 3 );
 
+		$enabled = get_option( 'email_validation_enabled', 'no' );
+
+		if ( $enabled === 'yes' ) {
+			$this->loader->add_action( 'woocommerce_register_post', $plugin_public, 'validate_email_on_woocommerce_registration', 10, 3 );
+			$this->loader->add_action( 'woocommerce_after_checkout_validation', $plugin_public, 'validate_email_on_woocommerce_checkout', 10, 2 );
+			$this->loader->add_filter( 'woocommerce_registration_errors', $plugin_public, 'customize_woocommerce_registration_errors', 10, 3 );
+			$this->loader->add_filter( 'ts_email_validator_checkemail', $plugin_public, 'validate_email_on_check', 10, 2 );
+		}
 
 	}
 

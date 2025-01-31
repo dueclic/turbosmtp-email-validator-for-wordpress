@@ -113,10 +113,26 @@ class Turbosmtp_Email_Validator_Admin {
 
 	}
 
+	function get_emailvalidator_subscription(
+		$refresh = false
+	){
+
+		$transient_name = 'turbosmtp_email_validator_subscription';
+
+		if ( ! $refresh && false !== ( $subscription = get_transient( $transient_name ) ) ) {
+			return $subscription;
+		}
+
+		$subscription = $this->api->getSubscription();
+		set_transient( $transient_name, $subscription, 12 * HOUR_IN_SECONDS );
+		return $subscription;
+
+	}
+
 	public function settings_page() {
 		require_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . "/includes/class-validated-emails-table.php";
 		$has_api_keys           = $this->api->hasApiKeys();
-		$subscription           = $this->api->getSubscription( isset( $_REQUEST['refresh'] ) );
+		$subscription           = $this->get_emailvalidator_subscription( isset( $_REQUEST['refresh'] ) );
 		$validated_emails_table = new Validated_Emails_Table();
 
 		include_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . 'admin/partials/turbosmtp-email-validator-admin-display.php';
@@ -159,6 +175,7 @@ class Turbosmtp_Email_Validator_Admin {
 		$new_secret = isset( $_POST['email_validation_consumer_secret'] ) ? sanitize_text_field( $_POST['email_validation_consumer_secret'] ) : '';
 
 		if ( empty( $new_key ) || empty( $new_secret ) ) {
+			delete_transient('turbosmtp_email_validator_subscription');
 			add_settings_error( 'email_validation_settings_group', 'email_validation_consumer_keys_error', 'Entrambi i campi sono obbligatori.', 'error' );
 			return '';
 		}
@@ -169,6 +186,7 @@ class Turbosmtp_Email_Validator_Admin {
 		);
 
 		if ( ! $is_valid ) {
+			delete_transient('turbosmtp_email_validator_subscription');
 			add_settings_error( 'email_validation_settings_group', 'email_validation_consumer_keys_error', 'La combinazione chiave/secret non è valida. '.json_encode($_POST), 'error' );
 			return '';
 		}

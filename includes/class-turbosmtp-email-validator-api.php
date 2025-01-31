@@ -82,22 +82,46 @@ class Turbosmtp_Email_Validator_API
 		return false;
 	}
 
-	public function validateEmail(){
+	public function validateEmail(
+		$email
+	){
 
+		if (!$this->hasApiKeys()) {
+			return null;
+		}
+
+		$api_url = $this->getApiUrl();
+
+		$response = wp_remote_post( $api_url.'/emailvalidation/validateEmail', array(
+			'timeout' => $this->api_timeout,
+			'user-agent' => 'turboSMTP Email Validator (WordPress Plugin)',
+			'headers' => array(
+				'accept'         => 'application/json',
+				'Content-Type'   => 'application/json',
+				'consumerKey'    => $this->consumer_key,
+				'consumerSecret' => $this->consumer_secret,
+			),
+			'body'    => json_encode( array( 'email' => $email ) ),
+		) );
+
+		if ((!is_wp_error($response)) && (200 === wp_remote_retrieve_response_code($response))) {
+			$body = wp_remote_retrieve_body($response);
+
+			$validationResult = json_decode($body, true);
+
+			if (json_last_error() === JSON_ERROR_NONE) {
+				return $validationResult;
+			}
+		}
+		return null;
 	}
 
-    public function getSubscription($refresh = false)
+    public function getSubscription()
     {
         try {
             if (!$this->hasApiKeys()) {
                 return null;
             }
-
-	        $transient_name = 'turbosmtp_email_validator_subscription';
-
-	        if ( ! $refresh && false !== ( $subscription = get_transient( $transient_name ) ) ) {
-		        return $subscription;
-	        }
 
             $api_url = $this->getApiUrl();
 
@@ -118,7 +142,6 @@ class Turbosmtp_Email_Validator_API
 	            $subscription = json_decode($body, true);
 
                 if (json_last_error() === JSON_ERROR_NONE) {
-	                set_transient( $transient_name, $subscription, 12 * HOUR_IN_SECONDS );
 	                return $subscription;
                 }
             }
@@ -130,48 +153,7 @@ class Turbosmtp_Email_Validator_API
         return null;
     }
 
-	/*
 
-    public function validate_email($email)
-    {
-        try {
-            if (!$this->has_api_keys()) {
-                return null;
-            }
-            $api = $this->getApiUrl();
-            $response = wp_remote_get($api . '/validate?api_key=' . $this->consumer_key . '&email=' . urlencode($email), [
-                'method' => 'GET',
-                'data_format' => 'json',
-                'timeout' => $this->api_timeout,
-                'user-agent' => 'ZeroBounce Email Validator (WordPress Plugin)',
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json',
-                ]
-            ]);
-
-            if ((!is_wp_error($response)) && (200 === wp_remote_retrieve_response_code($response))) {
-                $body = wp_remote_retrieve_body($response);
-
-                $body_json = json_decode($body, true);
-
-                if (json_last_error() === JSON_ERROR_NONE) {
-
-                    if (array_key_exists("error", $body_json)) {
-                        return null;
-                    }
-
-                    return $body_json;
-                }
-            }
-        } catch (\Exception $ex) {
-            error_log($ex->getMessage());
-        }
-
-        return null;
-    }
-
-	*/
 
     public function hasApiKeys(): bool {
         if ( !strlen($this->consumer_key) || empty($this->consumer_key) ) {
