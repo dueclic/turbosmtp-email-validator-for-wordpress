@@ -176,7 +176,7 @@ class Turbosmtp_Email_Validator_Admin {
 
 		if ( empty( $new_key ) || empty( $new_secret ) ) {
 			delete_transient('turbosmtp_email_validator_subscription');
-			add_settings_error( 'ts_email_validator_settings_group', 'ts_email_validator_consumer_keys_error', 'Entrambi i campi sono obbligatori.', 'error' );
+			add_settings_error( 'ts_email_validator_settings_api_credentials', 'ts_email_validator_consumer_keys_error', 'Entrambi i campi sono obbligatori.', 'error' );
 			return '';
 		}
 
@@ -187,7 +187,7 @@ class Turbosmtp_Email_Validator_Admin {
 
 		if ( ! $is_valid ) {
 			delete_transient('turbosmtp_email_validator_subscription');
-			add_settings_error( 'ts_email_validator_settings_group', 'ts_email_validator_consumer_keys_error', 'La combinazione chiave/secret non è valida. '.json_encode($_POST), 'error' );
+			add_settings_error( 'ts_email_validator_settings_api_credentials', 'ts_email_validator_consumer_keys_error', 'La combinazione chiave/secret non è valida. '.json_encode($_POST), 'error' );
 			return '';
 		}
 
@@ -195,12 +195,13 @@ class Turbosmtp_Email_Validator_Admin {
 	}
 
 	function settings_init() {
-		register_setting( 'ts_email_validator_settings_group', 'ts_email_validator_enabled' );
-		register_setting( 'ts_email_validator_settings_group', 'ts_email_validator_consumer_key' );
-		register_setting( 'ts_email_validator_settings_group', 'ts_email_validator_consumer_secret', [
+
+		register_setting( 'ts_email_validator_settings_api_credentials', 'ts_email_validator_enabled' );
+		register_setting( 'ts_email_validator_settings_api_credentials', 'ts_email_validator_consumer_key' );
+		register_setting( 'ts_email_validator_settings_api_credentials', 'ts_email_validator_consumer_secret', [
 			'sanitize_callback' => [ $this, 'validate_email_api_credentials' ]
 		] );
-		register_setting( 'ts_email_validator_settings_group', 'ts_email_validator_api_timeout' );
+		register_setting( 'ts_email_validator_settings_api_credentials', 'ts_email_validator_api_timeout' );
 
 		add_settings_section(
 			'ts_email_validator_settings_section',
