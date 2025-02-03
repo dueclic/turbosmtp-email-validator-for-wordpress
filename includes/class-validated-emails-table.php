@@ -20,6 +20,30 @@ class Validated_Emails_Table extends WP_List_Table {
 			return '<textarea style="width:100%; height:80px">' . $value . '</textarea>';
 		} else if ( $column_name === 'status' ) {
 			return '<span style="font-weight:bold;color: ' . ( $value === 'valid' ? 'green' : 'red' ) . ';">' . strtoupper( $value ) . '</span>';
+		} else if ($column_name === 'source'){
+			switch ($value){
+				case "wordpressisemail":
+					$value = __("WordPress Comments", "turbosmtp-email-validator");
+					break;
+				case "testemail":
+					$value = __("Test Email", "turbosmtp-email-validator");
+					break;
+				case "woocommerceregistration":
+					$value = __("WooCommerce Registration", "turbosmtp-email-validator");
+					break;
+				case "woocommercecheckout":
+					$value = __("WooCommerce Checkout", "turbosmtp-email-validator");
+					break;
+				case "wordpressregister":
+					$value = __("WordPress Registration", "turbosmtp-email-validator");
+					break;
+				case "wordpressmultisiteregister":
+					$value = __("WordPress Multi Site Registration", "turbosmtp-email-validator");
+					break;
+				default:
+					$value = __("Unknown", "turbosmtp-email-validator");
+					break;
+			}
 		}
 
 		return $value;
@@ -28,6 +52,7 @@ class Validated_Emails_Table extends WP_List_Table {
 	function get_columns() {
 		return array(
 			'email'        => __( 'Email', 'turbosmtp-email-validator' ),
+			'source'       => __( 'Source', 'turbosmtp-email-validator' ),
 			'status'       => __( 'Status', 'turbosmtp-email-validator' ),
 			'validated_at' => __( 'Validated At', 'turbosmtp-email-validator' ),
 			'raw_data'     => __( 'Raw Data', 'turbosmtp-email-validator' ),

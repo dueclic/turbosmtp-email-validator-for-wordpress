@@ -53,18 +53,8 @@ class Turbosmtp_Email_Validator_Activator {
 	 */
 	public static function activate() {
 		self::setup_db_table();
-		$validation_forms = [
-			'contact_form_7',
-			'wpforms',
-			'woocommerce',
-			'wordpress_comments',
-			'wordpress_registration',
-			'mc4wp_mailchimp',
-			'gravity_forms',
-			'elementor_forms'
-		];
 
-		update_option( 'ts_email_validator_settings_validation_forms', $validation_forms );
+		update_option( 'ts_email_validator_validation_forms', get_validation_forms(true) );
 
 		$validation_pass = [
 			'valid'     => 'valid',
@@ -72,7 +62,7 @@ class Turbosmtp_Email_Validator_Activator {
 			'unknown'   => 'unknown',
 		];
 
-		update_option( 'ts_email_validator_settings_validation_pass', $validation_pass );
+		update_option( 'ts_email_validator_validation_pass', $validation_pass );
 
 
 	}

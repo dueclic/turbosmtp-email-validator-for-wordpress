@@ -227,13 +227,32 @@ class Turbosmtp_Email_Validator {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		$enabled = get_option( 'ts_email_validator_enabled', 'no' );
+		$validation_forms = get_option('ts_email_validator_validation_forms');
 
 		if ( $enabled === 'yes' ) {
-			$this->loader->add_action( 'woocommerce_register_post', $plugin_public, 'woocommerce_registration_validator', 10, 3 );
+
 			$this->loader->add_filter( 'ts_email_validator_checkemail', $plugin_public, 'validate_email_on_check', 10, 2 );
-			$this->loader->add_filter('registration_errors', $plugin_public, 'wordpress_registration_validator', 10, 3);
-			$this->loader->add_filter('wpmu_validate_user_signup', $plugin_public, 'wordpress_multisite_registration_validator', 10, 1);
-			$this->loader->add_filter('woocommerce_after_checkout_validation', $plugin_public, 'woocommerce_validator', 10, 2);
+
+			// WordPress Registrations
+
+			if (is_array($validation_forms)  && in_array('wordpress_registration', $validation_forms) ){
+				$this->loader->add_filter('registration_errors', $plugin_public, 'wordpress_registration_validator', 10, 3);
+				$this->loader->add_filter('wpmu_validate_user_signup', $plugin_public, 'wordpress_multisite_registration_validator', 10, 1);
+			}
+
+			// WooCommerce
+
+			if (is_array($validation_forms)  && in_array('woocommerce', $validation_forms) ) {
+				$this->loader->add_action( 'woocommerce_register_post', $plugin_public, 'woocommerce_registration_validator', 10, 3 );
+				$this->loader->add_filter( 'woocommerce_after_checkout_validation', $plugin_public, 'woocommerce_validator', 10, 2 );
+			}
+
+			// WordPress Comments
+
+			if (is_array($validation_forms) && in_array('wordpress_comments', $validation_forms)) {
+				$this->loader->add_action('pre_comment_on_post', $plugin_public, 'apply_is_email_validator');
+				$this->loader->add_action('comment_post', $plugin_public, 'remove_is_email_validator');
+			}
 		}
 
 	}

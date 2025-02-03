@@ -18,7 +18,7 @@
 <div class="wrap">
     <form method="post" action="options.php">
 		<?php
-		settings_fields( 'ts_email_validator_settings_api_credentials' );
+		settings_fields( 'ts_email_validator_general_settings' );
 		do_settings_sections( 'email-validation-settings' );
 
 

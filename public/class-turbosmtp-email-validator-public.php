@@ -66,6 +66,46 @@ class Turbosmtp_Email_Validator_Public {
 
 	}
 
+	/**
+	 * WordPress Comment Filter - add hook
+	 * @return void
+	 */
+	public function apply_is_email_validator()
+	{
+		add_filter('is_email', [$this, 'wordpress_is_email_validator'], 10, 3);
+	}
+
+	/**
+	 * WordPress Comment Filter - remove hook
+	 * @return void
+	 */
+	public function remove_is_email_validator()
+	{
+		remove_filter('is_email', [$this, 'wordpress_is_email_validator'], 10, 3);
+	}
+
+	/**
+	 * WordPress Comments Form Validator Hook
+	 * @param $is_email
+	 * @param $email
+	 * @param $context
+	 * @return false|mixed
+	 */
+	public function wordpress_is_email_validator($is_email, $email, $context)
+	{
+		if (!strlen($email) || strlen($email) < 3) {
+			return false;
+		}
+
+		$wpForm = new Turbosmtp_Email_Validator_Form_Public('wordpressisemail', get_the_ID());
+		$validationInfo = $wpForm->prep_validation_info($email);
+		return $wpForm->setup_form_validation($validationInfo, function () {
+			return false;
+		}, ['is_email' => &$is_email]);
+
+	}
+
+
 	function validate_email_on_check( $result, $email ): ?WP_Error {
 		$checkEmailForm = new Turbosmtp_Email_Validator_Form_Public( 'testemail', '' );
 		$validationInfo = $checkEmailForm->prep_validation_info( $email );
