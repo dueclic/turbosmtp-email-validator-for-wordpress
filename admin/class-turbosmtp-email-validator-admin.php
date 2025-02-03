@@ -164,6 +164,12 @@ class Turbosmtp_Email_Validator_Admin {
 		echo '<input type="text" name="ts_email_validator_consumer_secret" value="' . esc_attr( $consumer_secret ) . '" class="regular-text">';
 	}
 
+	public function ts_email_validator_error_message_callback(
+		$arguments
+	){
+		echo '<input type="text" name="ts_email_validator_error_message" value="' . esc_attr( $arguments['value'] ) . '" class="regular-text">';
+	}
+
 	public function ts_email_validator_forms_callback(
 		$arguments
 	){
@@ -269,6 +275,7 @@ class Turbosmtp_Email_Validator_Admin {
 
 		register_setting( 'ts_email_validator_general_settings', 'ts_email_validator_validation_forms' );
 		register_setting( 'ts_email_validator_general_settings', 'ts_email_validator_validation_pass' );
+		register_setting( 'ts_email_validator_general_settings', 'ts_email_validator_error_message' );
 
 		add_settings_field(
 			'ts_email_validator_validation_forms',
@@ -283,6 +290,8 @@ class Turbosmtp_Email_Validator_Admin {
 			]
 		);
 
+		// Validation pass settings
+
 		add_settings_field(
 			'ts_email_validator_validation_pass',
 			__('Validation pass', 'turbosmtp-email-validator'),
@@ -293,6 +302,20 @@ class Turbosmtp_Email_Validator_Admin {
 				'id' => 'ts_email_validator_validation_pass',
 				'options' => get_validation_statuses(),
 				'value' => get_option('ts_email_validator_validation_pass')
+			]
+		);
+
+		// Error message settings
+
+		add_settings_field(
+			'ts_email_validator_error_message',
+			__('Custom error message', 'turbosmtp-email-validator'),
+			[ $this, 'ts_email_validator_error_message_callback' ],
+			'email-validation-settings',
+			'ts_email_validator_settings_section',
+			[
+				'id' => 'ts_email_validator_error_message',
+				'value' => get_option('ts_email_validator_error_message')
 			]
 		);
 

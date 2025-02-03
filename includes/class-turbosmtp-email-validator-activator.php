@@ -64,6 +64,8 @@ class Turbosmtp_Email_Validator_Activator {
 
 		update_option( 'ts_email_validator_validation_pass', $validation_pass );
 
+		update_option( 'ts_email_validator_error_message', __( 'We cannot accept this email address.', 'turbosmtp-email-validator' ) );
+
 
 	}
 
