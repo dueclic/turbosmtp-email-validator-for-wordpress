@@ -6,7 +6,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/turbosmtp-email-"
 "validator\n"
 "POT-Creation-Date: 2025-01-31T09:11:06+00:00\n"
-"PO-Revision-Date: 2025-01-31 10:14+0100\n"
+"PO-Revision-Date: 2025-02-03 09:04+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: it_IT\n"
@@ -46,7 +46,7 @@ msgstr "https://www.dueclic.com/"
 #: admin/class-turbosmtp-email-validator-admin.php:140
 #: admin/class-turbosmtp-email-validator-admin.php:173
 msgid "Email Validation Settings"
-msgstr "\"Impostazioni Email Validation"
+msgstr "Impostazioni Email Validation"
 
 #: admin/class-turbosmtp-email-validator-admin.php:147
 msgid "Enable Email Validation"
