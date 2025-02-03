@@ -70,38 +70,38 @@ class Turbosmtp_Email_Validator_Public {
 	 * WordPress Comment Filter - add hook
 	 * @return void
 	 */
-	public function apply_is_email_validator()
-	{
-		add_filter('is_email', [$this, 'wordpress_is_email_validator'], 10, 3);
+	public function apply_is_email_validator() {
+		add_filter( 'is_email', [ $this, 'wordpress_is_email_validator' ], 10, 3 );
 	}
 
 	/**
 	 * WordPress Comment Filter - remove hook
 	 * @return void
 	 */
-	public function remove_is_email_validator()
-	{
-		remove_filter('is_email', [$this, 'wordpress_is_email_validator'], 10, 3);
+	public function remove_is_email_validator() {
+		remove_filter( 'is_email', [ $this, 'wordpress_is_email_validator' ], 10, 3 );
 	}
 
 	/**
 	 * WordPress Comments Form Validator Hook
+	 *
 	 * @param $is_email
 	 * @param $email
 	 * @param $context
+	 *
 	 * @return false|mixed
 	 */
-	public function wordpress_is_email_validator($is_email, $email, $context)
-	{
-		if (!strlen($email) || strlen($email) < 3) {
+	public function wordpress_is_email_validator( $is_email, $email, $context ) {
+		if ( ! strlen( $email ) || strlen( $email ) < 3 ) {
 			return false;
 		}
 
-		$wpForm = new Turbosmtp_Email_Validator_Form_Public('wordpressisemail', get_the_ID());
-		$validationInfo = $wpForm->prep_validation_info($email);
-		return $wpForm->setup_form_validation($validationInfo, function () {
+		$wpForm         = new Turbosmtp_Email_Validator_Form_Public( 'wordpressisemail', get_the_ID() );
+		$validationInfo = $wpForm->prep_validation_info( $email );
+
+		return $wpForm->setup_form_validation( $validationInfo, function () {
 			return false;
-		}, ['is_email' => &$is_email]);
+		}, [ 'is_email' => &$is_email ] );
 
 	}
 
@@ -128,199 +128,245 @@ class Turbosmtp_Email_Validator_Public {
 
 	function woocommerce_registration_validator( $username, $email, $validation_errors ) {
 
-		$woocommerceForm = new Turbosmtp_Email_Validator_Form_Public('woocommerceregistration', '');
-		$validationInfo = $woocommerceForm->prep_validation_info($email);
+		$woocommerceForm = new Turbosmtp_Email_Validator_Form_Public( 'woocommerceregistration', '' );
+		$validationInfo  = $woocommerceForm->prep_validation_info( $email );
 
 		$message = $woocommerceForm->set_error_message();
-		$woocommerceForm->setup_form_validation($validationInfo, function () {
-			$args = func_get_args();
-			$message = $args[0]['message'];
+		$woocommerceForm->setup_form_validation( $validationInfo, function () {
+			$args              = func_get_args();
+			$message           = $args[0]['message'];
 			$validation_errors = &$args[0]['validation_errors'];
 			$validation_errors->add( 'ts_email_validator_error', $message );
-		}, ['message' => $message, 'validation_errors' => &$validation_errors]);
+		}, [ 'message' => $message, 'validation_errors' => &$validation_errors ] );
 
 	}
 
 	/**
 	 * Woocommerce Checkout Form Validator Hook - shortcode blocks
+	 *
 	 * @param $fields
 	 * @param $errors
+	 *
 	 * @return void
 	 */
-	public function woocommerce_validator($fields, $errors)
-	{
-		$woocommerceForm = new Turbosmtp_Email_Validator_Form_Public('woocommercecheckout', '');
-		$validationInfo = null;
+	public function woocommerce_validator( $fields, $errors ) {
+		$woocommerceForm = new Turbosmtp_Email_Validator_Form_Public( 'woocommercecheckout', '' );
+		$validationInfo  = null;
 
-		if (!empty($fields['billing_email'])) {
-			$validationInfo = $woocommerceForm->prep_validation_info($fields['billing_email']);
+		if ( ! empty( $fields['billing_email'] ) ) {
+			$validationInfo = $woocommerceForm->prep_validation_info( $fields['billing_email'] );
 		}
 
-		if (!empty($fields['shipping_email'])) {
-			$validationInfo = $woocommerceForm->prep_validation_info($fields['shipping_email']);
+		if ( ! empty( $fields['shipping_email'] ) ) {
+			$validationInfo = $woocommerceForm->prep_validation_info( $fields['shipping_email'] );
 		}
 
 		$message = $woocommerceForm->set_error_message();
-		$woocommerceForm->setup_form_validation($validationInfo, function () {
-			$args = func_get_args();
+		$woocommerceForm->setup_form_validation( $validationInfo, function () {
+			$args    = func_get_args();
 			$message = $args[0]['message'];
-			$errors = &$args[0]['errors'];
-			$errors->add('validation', esc_html__($message));
-		}, ['message' => $message, 'errors' => &$errors]);
+			$errors  = &$args[0]['errors'];
+			$errors->add( 'validation', esc_html__( $message ) );
+		}, [ 'message' => $message, 'errors' => &$errors ] );
 	}
 
 
 	/**
 	 * WordPress Registration Form Validator Hook
+	 *
 	 * @param $errors
 	 * @param $sanitized_user_login
 	 * @param $email
+	 *
 	 * @return mixed
 	 */
-	public function wordpress_registration_validator($errors, $sanitized_user_login, $email)
-	{
-		if (email_exists($email)) {
+	public function wordpress_registration_validator( $errors, $sanitized_user_login, $email ) {
+		if ( email_exists( $email ) ) {
 			return $errors;
 		}
 
-		$wprForm = new Turbosmtp_Email_Validator_Form_Public('wordpressregister', '');
-		$validationInfo = $wprForm->prep_validation_info($email);
-		$message = $wprForm->set_error_message();
-		$wprForm->setup_form_validation($validationInfo, function () {
-			$args = func_get_args();
+		$wprForm        = new Turbosmtp_Email_Validator_Form_Public( 'wordpressregister', '' );
+		$validationInfo = $wprForm->prep_validation_info( $email );
+		$message        = $wprForm->set_error_message();
+		$wprForm->setup_form_validation( $validationInfo, function () {
+			$args    = func_get_args();
 			$message = $args[0]['message'];
-			$errors = &$args[0]['errors'];
-			$errors->add('invalid_email', esc_html__($message));
-		}, ['message' => $message, 'errors' => &$errors]);
+			$errors  = &$args[0]['errors'];
+			$errors->add( 'invalid_email', esc_html__( $message ) );
+		}, [ 'message' => $message, 'errors' => &$errors ] );
 
 		return $errors;
 	}
 
 	/**
 	 * WordPress Multisite Registration Form Validator Hook
+	 *
 	 * @param $result
+	 *
 	 * @return mixed
 	 */
-	public function wordpress_multisite_registration_validator($result)
-	{
+	public function wordpress_multisite_registration_validator( $result ) {
 		$email = $result['user_email'];
-		if (!strlen($email) || strlen($email) < 3) {
+		if ( ! strlen( $email ) || strlen( $email ) < 3 ) {
 			return $result;
 		}
 
-		$wprForm = new Turbosmtp_Email_Validator_Form_Public('wordpressmultisiteregister', '');
-		$validationInfo = $wprForm->prep_validation_info($email);
-		$message = $wprForm->set_error_message();
-		$wprForm->setup_form_validation($validationInfo, function () {
-			$args = func_get_args();
+		$wprForm        = new Turbosmtp_Email_Validator_Form_Public( 'wordpressmultisiteregister', '' );
+		$validationInfo = $wprForm->prep_validation_info( $email );
+		$message        = $wprForm->set_error_message();
+		$wprForm->setup_form_validation( $validationInfo, function () {
+			$args    = func_get_args();
 			$message = $args[0]['message'];
-			$result = &$args[0]['result'];
-			$result['errors']->add('user_email', esc_html__($message));
-		}, ['message' => $message, 'result' => &$result]);
+			$result  = &$args[0]['result'];
+			$result['errors']->add( 'user_email', esc_html__( $message ) );
+		}, [ 'message' => $message, 'result' => &$result ] );
 
 		return $result;
 	}
 
 	/**
 	 * Mailchimp Form Validator Hook
+	 *
 	 * @param $errors
 	 * @param MC4WP_Form $form
+	 *
 	 * @return mixed
 	 */
-	public function mc4wp_mailchimp_validator($errors, $form)
-	{
-		$data = $form->get_data();
-		$email = strtolower($data['EMAIL']);
+	public function mc4wp_mailchimp_validator( $errors, $form ) {
+		$data  = $form->get_data();
+		$email = strtolower( $data['EMAIL'] );
 
-		$mc4Form = new Turbosmtp_Email_Validator_Form_Public('mc4wp_mailchimp', $form->ID);
-		$validationInfo = $mc4Form->prep_validation_info($email);
-		$mc4Form->setup_form_validation($validationInfo, function () {
-			$args = func_get_args();
-			$errors = &$args[0]['errors'];
+		$mc4Form        = new Turbosmtp_Email_Validator_Form_Public( 'mc4wp_mailchimp', $form->ID );
+		$validationInfo = $mc4Form->prep_validation_info( $email );
+		$mc4Form->setup_form_validation( $validationInfo, function () {
+			$args     = func_get_args();
+			$errors   = &$args[0]['errors'];
 			$errors[] = 'invalid_email';
-		}, ['errors' => &$errors]);
+		}, [ 'errors' => &$errors ] );
+
 		return $errors;
 	}
 
 	/**
 	 * Contact Forms 7 Validator Hook
+	 *
 	 * @param $result
 	 * @param $tag
+	 *
 	 * @return mixed
 	 */
-	public function contact_form_7_validator($result, $tag)
-	{
-		$tag = new WPCF7_FormTag($tag);
-		if ('email' == $tag->type || 'email*' == $tag->type) {
-			$wpcf7Form = new Turbosmtp_Email_Validator_Form_Public('cf7forms', '');
-			$validationInfo = $wpcf7Form->prep_validation_info($_POST[$tag->name]);
-			$message = $wpcf7Form->set_error_message();
-			$wpcf7Form->setup_form_validation($validationInfo, function () {
+	public function contact_form_7_validator( $result, $tag ) {
+		$tag = new WPCF7_FormTag( $tag );
+		if ( 'email' == $tag->type || 'email*' == $tag->type ) {
+			$wpcf7Form      = new Turbosmtp_Email_Validator_Form_Public( 'cf7forms', '' );
+			$validationInfo = $wpcf7Form->prep_validation_info( $_POST[ $tag->name ] );
+			$message        = $wpcf7Form->set_error_message();
+			$wpcf7Form->setup_form_validation( $validationInfo, function () {
 				$args = func_get_args();
-				extract($args[0]);
-				$result->invalidate($tag, esc_html__($message));
-			}, ['message' => $message, 'tag' => $tag, 'result' => &$result]);
+				extract( $args[0] );
+				$result->invalidate( $tag, esc_html__( $message ) );
+			}, [ 'message' => $message, 'tag' => $tag, 'result' => &$result ] );
 		}
+
 		return $result;
 	}
 
 	/**
-	 * WordPress Form Validator Hook
+	 * WpForms Form Validator Hook
+	 *
 	 * @param $fields
 	 * @param $entry
 	 * @param $form_data
+	 *
 	 * @return mixed
 	 */
-	public function wpforms_validator($fields, $entry, $form_data)
-	{
-		foreach ($fields as $field_id => $field) {
-			if (isset($field['type']) && $field['type'] === 'email' && !empty($field['value'])) {
-				$wpForm = new Turbosmtp_Email_Validator_Form_Public('wpforms', '');
-				$validationInfo = $wpForm->prep_validation_info($field['value']);
-				$message = $wpForm->set_error_message($validationInfo['did_you_mean']);
-				$wpForm->setup_form_validation($validationInfo, function () {
-					$args = func_get_args();
-					$form_data = $args[0]['form_data'];
-					$message = $args[0]['message'];
-					$field_id = $args[0]['field_id'];
-					wpforms()->process->errors[$form_data['id']][$field_id] = esc_html__($message);
-				}, ['form_data' => $form_data, 'field_id' => $field_id, 'message' => $message]);
+	public function wpforms_validator( $fields, $entry, $form_data ) {
+		foreach ( $fields as $field_id => $field ) {
+			if ( isset( $field['type'] ) && $field['type'] === 'email' && ! empty( $field['value'] ) ) {
+				$wpForm         = new Turbosmtp_Email_Validator_Form_Public( 'wpforms', '' );
+				$validationInfo = $wpForm->prep_validation_info( $field['value'] );
+				$message        = $wpForm->set_error_message( $validationInfo['did_you_mean'] );
+				$wpForm->setup_form_validation( $validationInfo, function () {
+					$args                                                       = func_get_args();
+					$form_data                                                  = $args[0]['form_data'];
+					$message                                                    = $args[0]['message'];
+					$field_id                                                   = $args[0]['field_id'];
+					wpforms()->process->errors[ $form_data['id'] ][ $field_id ] = esc_html__( $message );
+				}, [ 'form_data' => $form_data, 'field_id' => $field_id, 'message' => $message ] );
 			}
 		}
+
 		return $fields;
 	}
 
-	private function gravity_form_validation($id, $email, &$result)
-	{
-		$gravityForm = new Turbosmtp_Email_Validator_Form_Public('gravity_forms', $id);
-		$validationInfo = $gravityForm->prep_validation_info($email);
-		$message = $gravityForm->set_error_message();
-		$gravityForm->setup_form_validation($validationInfo, function () {
-			$args = func_get_args();
-			$message = $args[0]['message'];
-			$result = &$args[0]['result'];
+	/**
+	 * Elementor Form Validator Hook
+	 *
+	 * @param $field
+	 * @param $record
+	 * @param $ajax_handler
+	 *
+	 * @return void
+	 */
+	public function elementor_validator( $field, $record, $ajax_handler ) {
+		if ( empty( $field ) ) {
+			return;
+		}
+
+		$settings = $record->get( 'form_settings' );
+
+		if ( empty( $settings ) ) {
+			return;
+		}
+
+		$elementorForm = new Turbosmtp_Email_Validator_Form_Public( 'elementor_forms', get_the_ID() );
+
+		$email = sanitize_email( $field['value'] );
+
+		$validationInfo = $elementorForm->prep_validation_info( $email );
+		$message        = $elementorForm->set_error_message();
+
+		$elementorForm->setup_form_validation( $validationInfo, function () {
+			$args         = func_get_args();
+			$message      = esc_html__( $args[0]['message'] );
+			$field_id     = $args[0]['field_id'];
+			$ajax_handler = $args[0]['ajax_handler'];
+			$ajax_handler->add_error( $field_id, $message );
+		}, [ 'message' => $message, 'field_id' => $field['id'], 'ajax_handler' => &$ajax_handler ] );
+
+	}
+
+	private function gravity_form_validation( $id, $email, &$result ) {
+		$gravityForm    = new Turbosmtp_Email_Validator_Form_Public( 'gravity_forms', $id );
+		$validationInfo = $gravityForm->prep_validation_info( $email );
+		$message        = $gravityForm->set_error_message();
+		$gravityForm->setup_form_validation( $validationInfo, function () {
+			$args               = func_get_args();
+			$message            = $args[0]['message'];
+			$result             = &$args[0]['result'];
 			$result['is_valid'] = false;
-			$result['message'] = esc_html__($message);
-		}, ['message' => $message, 'result' => &$result]);
+			$result['message']  = esc_html__( $message );
+		}, [ 'message' => $message, 'result' => &$result ] );
 	}
 
 	/**
 	 * Gravity Forms Validator Hook
+	 *
 	 * @param $result
 	 * @param $value
 	 * @param $form
 	 * @param $field
+	 *
 	 * @return mixed
 	 */
-	public function gravity_forms_validator($result, $value, $form, $field)
-	{
-		if ($field->type == 'email' && $field->isRequired == 1) {
-			if (is_array($value) && count($value) !== 0) {
-				foreach ($value as $k => $v) {
-					$this->gravity_form_validation($form['id'], $v, $result);
+	public function gravity_forms_validator( $result, $value, $form, $field ) {
+		if ( $field->type == 'email' && $field->isRequired == 1 ) {
+			if ( is_array( $value ) && count( $value ) !== 0 ) {
+				foreach ( $value as $k => $v ) {
+					$this->gravity_form_validation( $form['id'], $v, $result );
 				}
 			} else {
-				$this->gravity_form_validation($form['id'], $value, $result);
+				$this->gravity_form_validation( $form['id'], $value, $result );
 			}
 		}
 
@@ -329,13 +375,15 @@ class Turbosmtp_Email_Validator_Public {
 
 	/**
 	 * Mailchimp add custom message to email validation - hook
+	 *
 	 * @param $messages
+	 *
 	 * @return mixed
 	 */
-	public function mc4wp_mailchimp_error_message($messages)
-	{
-		$mc4Form = new Turbosmtp_Email_Validator_Form_Public('mc4wp_mailchimp', '');
+	public function mc4wp_mailchimp_error_message( $messages ) {
+		$mc4Form                   = new Turbosmtp_Email_Validator_Form_Public( 'mc4wp_mailchimp', '' );
 		$messages['invalid_email'] = $mc4Form->set_error_message();
+
 		return $messages;
 	}
 

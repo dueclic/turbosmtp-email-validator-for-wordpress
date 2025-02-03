@@ -279,6 +279,10 @@ class Turbosmtp_Email_Validator {
 				$this->loader->add_filter('wpforms_process_after_filter', $plugin_public, 'wpforms_validator', 10, 3);
 			}
 
+			if (is_array($validation_forms) && in_array('elementor_forms', $validation_forms)) {
+				$this->loader->add_filter('elementor_pro/forms/validation/email', $plugin_public, 'elementor_validator', 10, 3);
+			}
+
 
 		}
 
