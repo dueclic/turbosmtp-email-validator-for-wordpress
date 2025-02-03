@@ -166,7 +166,7 @@ class Turbosmtp_Email_Validator_Public {
 			$args    = func_get_args();
 			$message = $args[0]['message'];
 			$errors  = &$args[0]['errors'];
-			$errors->add( 'validation', esc_html__( $message ) );
+			$errors->add( 'validation', $message );
 		}, [ 'message' => $message, 'errors' => &$errors ] );
 	}
 
@@ -192,7 +192,7 @@ class Turbosmtp_Email_Validator_Public {
 			$args    = func_get_args();
 			$message = $args[0]['message'];
 			$errors  = &$args[0]['errors'];
-			$errors->add( 'invalid_email', esc_html__( $message ) );
+			$errors->add( 'invalid_email', $message  );
 		}, [ 'message' => $message, 'errors' => &$errors ] );
 
 		return $errors;
@@ -218,7 +218,7 @@ class Turbosmtp_Email_Validator_Public {
 			$args    = func_get_args();
 			$message = $args[0]['message'];
 			$result  = &$args[0]['result'];
-			$result['errors']->add( 'user_email', esc_html__( $message ) );
+			$result['errors']->add( 'user_email', $message ) ;
 		}, [ 'message' => $message, 'result' => &$result ] );
 
 		return $result;
@@ -264,7 +264,7 @@ class Turbosmtp_Email_Validator_Public {
 			$wpcf7Form->setup_form_validation( $validationInfo, function () {
 				$args = func_get_args();
 				extract( $args[0] );
-				$result->invalidate( $tag, esc_html__( $message ) );
+				$result->invalidate( $tag, $message );
 			}, [ 'message' => $message, 'tag' => $tag, 'result' => &$result ] );
 		}
 
@@ -291,7 +291,7 @@ class Turbosmtp_Email_Validator_Public {
 					$form_data                                                  = $args[0]['form_data'];
 					$message                                                    = $args[0]['message'];
 					$field_id                                                   = $args[0]['field_id'];
-					wpforms()->process->errors[ $form_data['id'] ][ $field_id ] = esc_html__( $message );
+					wpforms()->process->errors[ $form_data['id'] ][ $field_id ] = $message;
 				}, [ 'form_data' => $form_data, 'field_id' => $field_id, 'message' => $message ] );
 			}
 		}
@@ -328,7 +328,7 @@ class Turbosmtp_Email_Validator_Public {
 
 		$elementorForm->setup_form_validation( $validationInfo, function () {
 			$args         = func_get_args();
-			$message      = esc_html__( $args[0]['message'] );
+			$message      = $args[0]['message'];
 			$field_id     = $args[0]['field_id'];
 			$ajax_handler = $args[0]['ajax_handler'];
 			$ajax_handler->add_error( $field_id, $message );
@@ -345,7 +345,7 @@ class Turbosmtp_Email_Validator_Public {
 			$message            = $args[0]['message'];
 			$result             = &$args[0]['result'];
 			$result['is_valid'] = false;
-			$result['message']  = esc_html__( $message );
+			$result['message']  = $message;
 		}, [ 'message' => $message, 'result' => &$result ] );
 	}
 

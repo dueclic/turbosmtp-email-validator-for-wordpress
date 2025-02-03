@@ -20,9 +20,6 @@
 		<?php
 		settings_fields( 'ts_email_validator_general_settings' );
 		do_settings_sections( 'email-validation-settings' );
-
-
-
 		submit_button();
 		?>
     </form>
@@ -32,14 +29,14 @@
     ?>
 
     <form method="get" action="">
-        <input type="hidden" name="page" value="<?php echo sanitize_text_field( $_REQUEST['page'] ); ?>">
+        <input type="hidden" name="page" value="<?php echo esc_attr(sanitize_text_field( $_REQUEST['page'] )); ?>">
         <input type="hidden" name="refresh" value="1">
-        <h2><?php _e( "Current Subscription", "turbosmtp-email-validator" ); ?></h2>
+        <h2><?php esc_html_e( "Current Subscription", "turbosmtp-email-validator" ); ?></h2>
         <p>
-            <strong><?php _e( "Remaining Paid Credits", "turbosmtp-email-validator" ); ?></strong>: <?php echo $subscription['paid_credits']; ?> <?php echo $subscription['currency']; ?>
+            <strong><?php esc_html_e( "Remaining Paid Credits", "turbosmtp-email-validator" ); ?></strong>: <?php echo esc_html($subscription['paid_credits']); ?> <?php echo esc_html($subscription['currency']); ?>
         </p>
         <p>
-            <strong><?php _e( "Remaining Free Credits", "turbosmtp-email-validator" ); ?></strong>: <?php echo $subscription['remaining_free_credit']; ?>
+            <strong><?php esc_html_e( "Remaining Free Credits", "turbosmtp-email-validator" ); ?></strong>: <?php echo esc_html($subscription['remaining_free_credit']); ?>
         </p>
 		<?php
 		submit_button(
@@ -47,7 +44,7 @@
 		);
 		?>
     </form>
-    <h2><?php _e("Test Validator", "turbosmtp-email-validator"); ?></h2>
+    <h2><?php esc_html_e("Test Validator", "turbosmtp-email-validator"); ?></h2>
     <form method="post" action="">
         <input type="email" name="test_email" value="" required>
 		<?php
@@ -66,11 +63,11 @@
 		if ( is_wp_error( $validation_result ) ) {
 			echo '<div style="color: red;">' . esc_html( $validation_result->get_error_message() ) . '</div>';
 		} else {
-			echo '<div style="color: green;">'.__('Email is valid', 'turbosmtp-email-validator').'</div>';
+			echo '<div style="color: green;">'.esc_html__('Email is valid', 'turbosmtp-email-validator').'</div>';
 		}
 	}
 	?>
-    <h2><?php _e("Validated Emails", "turbosmtp-email-validator"); ?></h2>
+    <h2><?php esc_html_e("Validated Emails", "turbosmtp-email-validator"); ?></h2>
 	<?php
 
 	$validated_emails_table = new Validated_Emails_Table();
