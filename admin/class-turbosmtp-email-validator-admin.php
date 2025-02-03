@@ -164,13 +164,12 @@ class Turbosmtp_Email_Validator_Admin {
 		echo '<input type="text" name="ts_email_validator_consumer_secret" value="' . esc_attr( $consumer_secret ) . '" class="regular-text">';
 	}
 
-	public function ts_email_validator_validation_forms_callback(
+	public function ts_email_validator_forms_callback(
 		$arguments
 	){
 
-		$validation_forms = get_option('ts_email_validator_validation_forms');
-		if (empty($validation_forms)) {
-			$validation_forms = [];
+		if (empty($arguments['value'])) {
+			$arguments['value'] = [];
 		}
 		$options_markup = '';
 		$iterator = 0;
@@ -181,7 +180,7 @@ class Turbosmtp_Email_Validator_Admin {
 				$arguments['id'],
 				'checkbox',
 				$key,
-				checked($validation_forms[@array_search($key, $validation_forms, true)] ?? false, $key, false),
+				checked($arguments['value'][@array_search($key, $arguments['value'], true)] ?? false, $key, false),
 				$label,
 				$iterator
 			);
@@ -269,15 +268,31 @@ class Turbosmtp_Email_Validator_Admin {
 		// Validation forms settings
 
 		register_setting( 'ts_email_validator_general_settings', 'ts_email_validator_validation_forms' );
+		register_setting( 'ts_email_validator_general_settings', 'ts_email_validator_validation_pass' );
+
 		add_settings_field(
 			'ts_email_validator_validation_forms',
 			__('Validated forms', 'turbosmtp-email-validator'),
-			[ $this, 'ts_email_validator_validation_forms_callback' ],
+			[ $this, 'ts_email_validator_forms_callback' ],
 			'email-validation-settings',
 			'ts_email_validator_settings_section',
 			[
 				'id' => 'ts_email_validator_validation_forms',
-				'options' => get_validation_forms()
+				'options' => get_validation_forms(),
+				'value' => get_option('ts_email_validator_validation_forms')
+			]
+		);
+
+		add_settings_field(
+			'ts_email_validator_validation_pass',
+			__('Validation pass', 'turbosmtp-email-validator'),
+			[ $this, 'ts_email_validator_forms_callback' ],
+			'email-validation-settings',
+			'ts_email_validator_settings_section',
+			[
+				'id' => 'ts_email_validator_validation_pass',
+				'options' => get_validation_statuses(),
+				'value' => get_option('ts_email_validator_validation_pass')
 			]
 		);
 

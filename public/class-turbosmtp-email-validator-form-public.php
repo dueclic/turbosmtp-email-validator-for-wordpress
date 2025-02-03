@@ -41,7 +41,7 @@ class Turbosmtp_Email_Validator_Form_Public {
 	public function __construct( $source, $formId ) {
 		$this->source         = $source;
 		$this->formId         = $formId;
-		//$this->validationPass = get_option( 'ts_email_validator_settings_validation_pass' );
+		$this->validationPass = get_option( 'ts_email_validator_validation_pass' );
 		$this->api            = new Turbosmtp_Email_Validator_API(
 			get_option( 'ts_email_validator_consumer_key' ),
 			get_option( 'ts_email_validator_consumer_secret' ),
@@ -132,7 +132,7 @@ class Turbosmtp_Email_Validator_Form_Public {
 	 */
 	public function setup_form_validation( ?array $validationInfo, callable $callback, $args ) {
 		if ( ! is_null( $validationInfo ) ) {
-			if ( !ts_emailvalidator_status_ok( $validationInfo['status'] ) ) {
+			if ( !ts_emailvalidator_status_ok( $validationInfo['status'], $this->validationPass ) ) {
 				return call_user_func( $callback, $args );
 			}
 		}
