@@ -5,18 +5,24 @@
 
 </div>
 
-# turboSMTP Email Validator for WooCommerce
+# turboSMTP Email Validator for WordPress
 
-Validates email addresses during WooCommerce registration and checkout using the turboSMTP API.
+Validates email addresses using the turboSMTP API in:
+- WooCommerce registration and checkout 
+- Contact Form 7
+- WpForms
+- WordPress comments and registration
+- MC4WP
+- Gravity Forms
+- Elementor Forms
 
 ## Description
 
-The WooCommerce turboSMTP Email Validator plugin ensures that email addresses provided during user registration and checkout are valid. It uses the turboSMTP API to perform the validation, enhancing the quality of email addresses collected and reducing the number of invalid emails in your database.
+The turboSMTP Email Validator for WordPress plugin ensures that email addresses provided during user registration and checkout are valid. It uses the turboSMTP API to perform the validation, enhancing the quality of email addresses collected and reducing the number of invalid emails in your database.
 
 ## Features
 
-- Validates email addresses during WooCommerce user registration.
-- Validates email addresses during WooCommerce checkout.
+- Validates email addresses in different forms (WooCommerce, CF7, WpForms, WordPress comments and registration, MC4WP, Gravity Forms, Elementor Forms)
 - Uses the turboSMTP API for email validation.
 - Stores validated email addresses in a custom database table.
 - Provides an admin settings page to configure API keys and enable/disable the service.
