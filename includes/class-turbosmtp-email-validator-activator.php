@@ -64,7 +64,7 @@ class Turbosmtp_Email_Validator_Activator {
 			'elementor_forms'
 		];
 
-		update_option( 'email_validation_settings_validation_forms', $validation_forms );
+		update_option( 'ts_email_validator_settings_validation_forms', $validation_forms );
 
 		$validation_pass = [
 			'valid'     => 'valid',
@@ -72,7 +72,7 @@ class Turbosmtp_Email_Validator_Activator {
 			'unknown'   => 'unknown',
 		];
 
-		update_option( 'email_validation_settings_validation_pass', $validation_pass );
+		update_option( 'ts_email_validator_settings_validation_pass', $validation_pass );
 
 
 	}

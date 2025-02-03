@@ -177,7 +177,7 @@ class Turbosmtp_Email_Validator {
 	 * @since     1.0.0
 	 */
 	public function get_consumer_key() {
-		$consumer_key = get_option( 'email_validation_consumer_key' );
+		$consumer_key = get_option( 'ts_email_validator_consumer_key' );
 
 		return $consumer_key ?: "";
 	}
@@ -189,7 +189,7 @@ class Turbosmtp_Email_Validator {
 	 * @since     1.0.0
 	 */
 	public function get_consumer_secret() {
-		$consumer_key = get_option( 'email_validation_consumer_secret' );
+		$consumer_key = get_option( 'ts_email_validator_consumer_secret' );
 
 		return $consumer_key ?: "";
 	}
@@ -201,7 +201,7 @@ class Turbosmtp_Email_Validator {
 	 * @since     1.0.0
 	 */
 	public function get_api_timeout() {
-		$api_timeout = get_option( 'email_validation_api_timeout' );
+		$api_timeout = get_option( 'ts_email_validator_api_timeout' );
 
 		return $api_timeout ?: (int) 5;
 	}
@@ -226,7 +226,7 @@ class Turbosmtp_Email_Validator {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
-		$enabled = get_option( 'email_validation_enabled', 'no' );
+		$enabled = get_option( 'ts_email_validator_enabled', 'no' );
 
 		if ( $enabled === 'yes' ) {
 			$this->loader->add_action( 'woocommerce_register_post', $plugin_public, 'woocommerce_registration_validator', 10, 3 );

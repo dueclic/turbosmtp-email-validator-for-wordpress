@@ -78,7 +78,7 @@ class Turbosmtp_Email_Validator_Public {
 				$args = func_get_args();
 
 				return new WP_Error(
-					'email_validation_error',
+					'ts_email_validator_error',
 					$args[0]['message']
 				);
 			}, [ "message" => $message ]
@@ -96,7 +96,7 @@ class Turbosmtp_Email_Validator_Public {
 			$args = func_get_args();
 			$message = $args[0]['message'];
 			$validation_errors = &$args[0]['validation_errors'];
-			$validation_errors->add( 'email_validation_error', $message );
+			$validation_errors->add( 'ts_email_validator_error', $message );
 		}, ['message' => $message, 'validation_errors' => &$validation_errors]);
 
 	}

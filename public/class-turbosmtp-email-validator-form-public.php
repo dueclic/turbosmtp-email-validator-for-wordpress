@@ -41,11 +41,11 @@ class Turbosmtp_Email_Validator_Form_Public {
 	public function __construct( $source, $formId ) {
 		$this->source         = $source;
 		$this->formId         = $formId;
-		//$this->validationPass = get_option( 'email_validation_settings_validation_pass' );
+		//$this->validationPass = get_option( 'ts_email_validator_settings_validation_pass' );
 		$this->api            = new Turbosmtp_Email_Validator_API(
-			get_option( 'email_validation_consumer_key' ),
-			get_option( 'email_validation_consumer_secret' ),
-			get_option( 'email_validation_api_timeout' )
+			get_option( 'ts_email_validator_consumer_key' ),
+			get_option( 'ts_email_validator_consumer_secret' ),
+			get_option( 'ts_email_validator_api_timeout' )
 		);
 	}
 
