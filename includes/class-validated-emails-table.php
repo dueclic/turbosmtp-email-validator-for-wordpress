@@ -37,8 +37,23 @@ class Validated_Emails_Table extends WP_List_Table {
 				case "wordpressregister":
 					$value = __("WordPress Registration", "turbosmtp-email-validator");
 					break;
+				case "wpforms":
+					$value = __("WPForms", "turbosmtp-email-validator");
+					break;
+				case "cf7forms":
+					$value = __("Contact Form 7", "turbosmtp-email-validator");
+					break;
 				case "wordpressmultisiteregister":
 					$value = __("WordPress Multi Site Registration", "turbosmtp-email-validator");
+					break;
+				case "mc4wp_mailchimp":
+					$value = __("MC4WP: Mailchimp for WordPress", "turbosmtp-email-validator");
+					break;
+				case "gravity_forms":
+					$value = __("Gravity Forms", "turbosmtp-email-validator");
+					break;
+				case "elementor_forms":
+					$value = __("Elementor Forms", "turbosmtp-email-validator");
 					break;
 				default:
 					$value = __("Unknown", "turbosmtp-email-validator");

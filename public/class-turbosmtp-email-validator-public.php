@@ -221,6 +221,124 @@ class Turbosmtp_Email_Validator_Public {
 		return $result;
 	}
 
+	/**
+	 * Mailchimp Form Validator Hook
+	 * @param $errors
+	 * @param MC4WP_Form $form
+	 * @return mixed
+	 */
+	public function mc4wp_mailchimp_validator($errors, $form)
+	{
+		$data = $form->get_data();
+		$email = strtolower($data['EMAIL']);
+
+		$mc4Form = new Turbosmtp_Email_Validator_Form_Public('mc4wp_mailchimp', $form->ID);
+		$validationInfo = $mc4Form->prep_validation_info($email);
+		$mc4Form->setup_form_validation($validationInfo, function () {
+			$args = func_get_args();
+			$errors = &$args[0]['errors'];
+			$errors[] = 'invalid_email';
+		}, ['errors' => &$errors]);
+		return $errors;
+	}
+
+	/**
+	 * Contact Forms 7 Validator Hook
+	 * @param $result
+	 * @param $tag
+	 * @return mixed
+	 */
+	public function contact_form_7_validator($result, $tag)
+	{
+		$tag = new WPCF7_FormTag($tag);
+		if ('email' == $tag->type || 'email*' == $tag->type) {
+			$wpcf7Form = new Turbosmtp_Email_Validator_Form_Public('cf7forms', '');
+			$validationInfo = $wpcf7Form->prep_validation_info($_POST[$tag->name]);
+			$message = $wpcf7Form->set_error_message();
+			$wpcf7Form->setup_form_validation($validationInfo, function () {
+				$args = func_get_args();
+				extract($args[0]);
+				$result->invalidate($tag, esc_html__($message));
+			}, ['message' => $message, 'tag' => $tag, 'result' => &$result]);
+		}
+		return $result;
+	}
+
+	/**
+	 * WordPress Form Validator Hook
+	 * @param $fields
+	 * @param $entry
+	 * @param $form_data
+	 * @return mixed
+	 */
+	public function wpforms_validator($fields, $entry, $form_data)
+	{
+		foreach ($fields as $field_id => $field) {
+			if (isset($field['type']) && $field['type'] === 'email' && !empty($field['value'])) {
+				$wpForm = new Turbosmtp_Email_Validator_Form_Public('wpforms', '');
+				$validationInfo = $wpForm->prep_validation_info($field['value']);
+				$message = $wpForm->set_error_message($validationInfo['did_you_mean']);
+				$wpForm->setup_form_validation($validationInfo, function () {
+					$args = func_get_args();
+					$form_data = $args[0]['form_data'];
+					$message = $args[0]['message'];
+					$field_id = $args[0]['field_id'];
+					wpforms()->process->errors[$form_data['id']][$field_id] = esc_html__($message);
+				}, ['form_data' => $form_data, 'field_id' => $field_id, 'message' => $message]);
+			}
+		}
+		return $fields;
+	}
+
+	private function gravity_form_validation($id, $email, &$result)
+	{
+		$gravityForm = new Turbosmtp_Email_Validator_Form_Public('gravity_forms', $id);
+		$validationInfo = $gravityForm->prep_validation_info($email);
+		$message = $gravityForm->set_error_message();
+		$gravityForm->setup_form_validation($validationInfo, function () {
+			$args = func_get_args();
+			$message = $args[0]['message'];
+			$result = &$args[0]['result'];
+			$result['is_valid'] = false;
+			$result['message'] = esc_html__($message);
+		}, ['message' => $message, 'result' => &$result]);
+	}
+
+	/**
+	 * Gravity Forms Validator Hook
+	 * @param $result
+	 * @param $value
+	 * @param $form
+	 * @param $field
+	 * @return mixed
+	 */
+	public function gravity_forms_validator($result, $value, $form, $field)
+	{
+		if ($field->type == 'email' && $field->isRequired == 1) {
+			if (is_array($value) && count($value) !== 0) {
+				foreach ($value as $k => $v) {
+					$this->gravity_form_validation($form['id'], $v, $result);
+				}
+			} else {
+				$this->gravity_form_validation($form['id'], $value, $result);
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Mailchimp add custom message to email validation - hook
+	 * @param $messages
+	 * @return mixed
+	 */
+	public function mc4wp_mailchimp_error_message($messages)
+	{
+		$mc4Form = new Turbosmtp_Email_Validator_Form_Public('mc4wp_mailchimp', '');
+		$messages['invalid_email'] = $mc4Form->set_error_message();
+		return $messages;
+	}
+
 
 	/**
 	 * Register the stylesheets for the public-facing side of the site.

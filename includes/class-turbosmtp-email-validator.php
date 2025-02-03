@@ -253,6 +253,33 @@ class Turbosmtp_Email_Validator {
 				$this->loader->add_action('pre_comment_on_post', $plugin_public, 'apply_is_email_validator');
 				$this->loader->add_action('comment_post', $plugin_public, 'remove_is_email_validator');
 			}
+
+			// MailChimp Forms
+
+			if (is_array($validation_forms) && in_array('mc4wp_mailchimp', $validation_forms)) {
+				$this->loader->add_filter('mc4wp_form_messages', $plugin_public, 'mc4wp_mailchimp_error_message');
+				$this->loader->add_filter('mc4wp_form_errors', $plugin_public, 'mc4wp_mailchimp_validator', 10, 2);
+			}
+
+			// Gravity Forms
+
+			if (is_array($validation_forms) && in_array('gravity_forms', $validation_forms)) {
+				$this->loader->add_filter('gform_field_validation', $plugin_public, 'gravity_forms_validator', 10, 4);
+			}
+
+			// Contact Form 7
+
+			if (is_array($validation_forms) && in_array('contact_form_7', $validation_forms)) {
+				$this->loader->add_filter('wpcf7_validate_email', $plugin_public, 'contact_form_7_validator', 10, 2);
+				$this->loader->add_filter('wpcf7_validate_email*', $plugin_public, 'contact_form_7_validator', 10, 2);
+			}
+
+			// WPForms
+			if (is_array($validation_forms) && in_array('wpforms', $validation_forms)) {
+				$this->loader->add_filter('wpforms_process_after_filter', $plugin_public, 'wpforms_validator', 10, 3);
+			}
+
+
 		}
 
 	}
