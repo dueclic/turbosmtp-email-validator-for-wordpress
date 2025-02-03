@@ -15,7 +15,7 @@ function get_validation_forms(
 		'contact_form_7' => __('Contact Form 7', 'turbosmtp-email-validator'),
 		'wpforms' => __('WPForms', 'turbosmtp-email-validator'),
 		'woocommerce' => __('WooCommerce', 'turbosmtp-email-validator'),
-		'wordpress_comments' => __('WordPress Post Comments', 'turbosmtp-email-validator'),
+		'wordpress_comments' => __('WordPress Comments', 'turbosmtp-email-validator'),
 		'wordpress_registration' => __('WordPress Registration', 'turbosmtp-email-validator'),
 		'mc4wp_mailchimp' => __('MC4WP: Mailchimp for WordPress', 'turbosmtp-email-validator'),
 		'gravity_forms' => __('Gravity Forms', 'turbosmtp-email-validator'),

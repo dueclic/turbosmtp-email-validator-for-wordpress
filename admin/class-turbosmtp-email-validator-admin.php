@@ -279,7 +279,7 @@ class Turbosmtp_Email_Validator_Admin {
 
 		add_settings_field(
 			'ts_email_validator_validation_forms',
-			__('Validated forms', 'turbosmtp-email-validator'),
+			__('Forms to be validated', 'turbosmtp-email-validator'),
 			[ $this, 'ts_email_validator_forms_callback' ],
 			'email-validation-settings',
 			'ts_email_validator_settings_section',

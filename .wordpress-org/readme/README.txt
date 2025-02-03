@@ -6,8 +6,8 @@ Requires at least: 6.0
 Requires PHP: 7.0
 Tested up to: 6.7
 Stable tag: 1.0
-License: GPLv3
-License URI: http://www.gnu.org/licenses/gpl-3.0.html
+License: GPLv2
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Email validation tool in WordPress forms registrations using turboSMTP API
 

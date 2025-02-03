@@ -81,7 +81,7 @@ class Turbosmtp_Email_Validator_Form_Public {
 	public function set_error_message( ) {
 		$custom_error = get_option( 'ts_email_validator_error_message' );
 
-		$error_message = __( 'Sorry, upon checking we cannot accept this email address.', 'turbosmtp-email-validator' );
+		$error_message = __( 'We cannot accept this email address.', 'turbosmtp-email-validator' );
 		if ( isset( $custom_error ) && $custom_error ) {
 			$error_message = $custom_error;
 		}

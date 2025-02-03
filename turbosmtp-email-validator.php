@@ -13,7 +13,7 @@
  * @package           Turbosmtp_Email_Validator
  *
  * @wordpress-plugin
- * Plugin Name:       turboSTMP Email Validator
+ * Plugin Name:       turboSMTP Email Validator
  * Plugin URI:        https://www.serversmtp.com
  * Description:       Email validation tool in WordPress forms registrations using turboSMTP API
  * Version:           1.0.0
