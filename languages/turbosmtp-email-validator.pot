@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-02-03T12:08:39+00:00\n"
+"POT-Creation-Date: 2025-02-10T08:20:43+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: turbosmtp-email-validator\n"
@@ -39,72 +39,80 @@ msgstr ""
 msgid "https://www.dueclic.com/"
 msgstr ""
 
-#: admin/class-turbosmtp-email-validator-admin.php:240
-#: admin/class-turbosmtp-email-validator-admin.php:327
+#: admin/class-turbosmtp-email-validator-admin.php:229
+msgid "Both consumer key and consumer secret are mandatory."
+msgstr ""
+
+#: admin/class-turbosmtp-email-validator-admin.php:241
+msgid "Consumer key and consumer secret combination is wrong."
+msgstr ""
+
+#: admin/class-turbosmtp-email-validator-admin.php:271
+#: admin/class-turbosmtp-email-validator-admin.php:367
 msgid "Email Validation Settings"
 msgstr ""
 
-#: admin/class-turbosmtp-email-validator-admin.php:247
+#: admin/class-turbosmtp-email-validator-admin.php:278
 msgid "Enable Email Validation"
 msgstr ""
 
-#: admin/class-turbosmtp-email-validator-admin.php:254
+#: admin/class-turbosmtp-email-validator-admin.php:285
 msgid "Consumer Key"
 msgstr ""
 
-#: admin/class-turbosmtp-email-validator-admin.php:261
+#: admin/class-turbosmtp-email-validator-admin.php:292
 msgid "Consumer Secret"
 msgstr ""
 
-#: admin/class-turbosmtp-email-validator-admin.php:268
+#: admin/class-turbosmtp-email-validator-admin.php:299
 msgid "API timeout"
 msgstr ""
 
-#: admin/class-turbosmtp-email-validator-admin.php:282
+#: admin/class-turbosmtp-email-validator-admin.php:322
 msgid "Forms to be validated"
 msgstr ""
 
-#: admin/class-turbosmtp-email-validator-admin.php:297
+#: admin/class-turbosmtp-email-validator-admin.php:337
 msgid "Validation pass"
 msgstr ""
 
-#: admin/class-turbosmtp-email-validator-admin.php:312
+#: admin/class-turbosmtp-email-validator-admin.php:352
 msgid "Custom error message"
 msgstr ""
 
-#: admin/partials/turbosmtp-email-validator-admin-display.php:34
+#: admin/partials/turbosmtp-email-validator-admin-display.php:37
 msgid "Current Subscription"
 msgstr ""
 
-#: admin/partials/turbosmtp-email-validator-admin-display.php:36
+#: admin/partials/turbosmtp-email-validator-admin-display.php:39
 msgid "Remaining Paid Credits"
 msgstr ""
 
-#: admin/partials/turbosmtp-email-validator-admin-display.php:39
+#: admin/partials/turbosmtp-email-validator-admin-display.php:42
 msgid "Remaining Free Credits"
 msgstr ""
 
-#: admin/partials/turbosmtp-email-validator-admin-display.php:43
+#: admin/partials/turbosmtp-email-validator-admin-display.php:46
 msgid "Refresh subscription"
 msgstr ""
 
-#: admin/partials/turbosmtp-email-validator-admin-display.php:47
+#: admin/partials/turbosmtp-email-validator-admin-display.php:50
 msgid "Test Validator"
 msgstr ""
 
-#: admin/partials/turbosmtp-email-validator-admin-display.php:52
+#: admin/partials/turbosmtp-email-validator-admin-display.php:55
 msgid "Verify now"
 msgstr ""
 
-#: admin/partials/turbosmtp-email-validator-admin-display.php:66
+#: admin/partials/turbosmtp-email-validator-admin-display.php:69
 msgid "Email is valid"
 msgstr ""
 
-#: admin/partials/turbosmtp-email-validator-admin-display.php:70
+#: admin/partials/turbosmtp-email-validator-admin-display.php:73
 msgid "Validated Emails"
 msgstr ""
 
-#: admin/partials/turbosmtp-email-validator-admin-display.php:80
+#: admin/partials/turbosmtp-email-validator-admin-display.php:83
 msgid "Search"
 msgstr ""
 
@@ -123,7 +131,8 @@ msgid "WooCommerce"
 msgstr ""
 
 #: common-api.php:18
-msgid "WordPress Post Comments"
+#: includes/class-validated-emails-table.php:26
+msgid "WordPress Comments"
 msgstr ""
 
 #: common-api.php:19
@@ -178,10 +187,6 @@ msgstr ""
 #: includes/class-turbosmtp-email-validator-activator.php:67
 #: public/class-turbosmtp-email-validator-form-public.php:84
 msgid "We cannot accept this email address."
-msgstr ""
-
-#: includes/class-validated-emails-table.php:26
-msgid "WordPress Comments"
 msgstr ""
 
 #: includes/class-validated-emails-table.php:29

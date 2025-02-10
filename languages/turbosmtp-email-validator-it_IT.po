@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: turboSTMP Email Validator 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/turbosmtp-email-"
 "validator\n"
-"POT-Creation-Date: 2025-02-03T12:08:39+00:00\n"
-"PO-Revision-Date: 2025-02-03 13:10+0100\n"
+"POT-Creation-Date: 2025-02-10T08:20:43+00:00\n"
+"PO-Revision-Date: 2025-02-10 09:21+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: it_IT\n"
@@ -44,72 +44,80 @@ msgstr "dueclic"
 msgid "https://www.dueclic.com/"
 msgstr "https://www.dueclic.com/"
 
-#: admin/class-turbosmtp-email-validator-admin.php:240
-#: admin/class-turbosmtp-email-validator-admin.php:327
+#: admin/class-turbosmtp-email-validator-admin.php:229
+msgid "Both consumer key and consumer secret are mandatory."
+msgstr "Consumer key e consumer secret sono obbligatori."
+
+#: admin/class-turbosmtp-email-validator-admin.php:241
+msgid "Consumer key and consumer secret combination is wrong."
+msgstr "La combinazione di consumer key e consumer secret è errata."
+
+#: admin/class-turbosmtp-email-validator-admin.php:271
+#: admin/class-turbosmtp-email-validator-admin.php:367
 msgid "Email Validation Settings"
 msgstr "Impostazioni Email Validation"
 
-#: admin/class-turbosmtp-email-validator-admin.php:247
+#: admin/class-turbosmtp-email-validator-admin.php:278
 msgid "Enable Email Validation"
 msgstr "Abilita Email Validation"
 
-#: admin/class-turbosmtp-email-validator-admin.php:254
+#: admin/class-turbosmtp-email-validator-admin.php:285
 msgid "Consumer Key"
 msgstr "Consumer Key"
 
-#: admin/class-turbosmtp-email-validator-admin.php:261
+#: admin/class-turbosmtp-email-validator-admin.php:292
 msgid "Consumer Secret"
 msgstr "Consumer Secret"
 
-#: admin/class-turbosmtp-email-validator-admin.php:268
+#: admin/class-turbosmtp-email-validator-admin.php:299
 msgid "API timeout"
 msgstr "Timeout API"
 
-#: admin/class-turbosmtp-email-validator-admin.php:282
+#: admin/class-turbosmtp-email-validator-admin.php:322
 msgid "Forms to be validated"
 msgstr "Forms da validare"
 
-#: admin/class-turbosmtp-email-validator-admin.php:297
+#: admin/class-turbosmtp-email-validator-admin.php:337
 msgid "Validation pass"
 msgstr "Validazione riuscita"
 
-#: admin/class-turbosmtp-email-validator-admin.php:312
+#: admin/class-turbosmtp-email-validator-admin.php:352
 msgid "Custom error message"
 msgstr "Messaggio di errore personalizzato"
 
-#: admin/partials/turbosmtp-email-validator-admin-display.php:34
+#: admin/partials/turbosmtp-email-validator-admin-display.php:37
 msgid "Current Subscription"
 msgstr "Abbonamento attuale"
 
-#: admin/partials/turbosmtp-email-validator-admin-display.php:36
+#: admin/partials/turbosmtp-email-validator-admin-display.php:39
 msgid "Remaining Paid Credits"
 msgstr "Crediti a pagamento rimasti"
 
-#: admin/partials/turbosmtp-email-validator-admin-display.php:39
+#: admin/partials/turbosmtp-email-validator-admin-display.php:42
 msgid "Remaining Free Credits"
 msgstr "Crediti gratuiti rimasti"
 
-#: admin/partials/turbosmtp-email-validator-admin-display.php:43
+#: admin/partials/turbosmtp-email-validator-admin-display.php:46
 msgid "Refresh subscription"
 msgstr "Ricarica abbonamento"
 
-#: admin/partials/turbosmtp-email-validator-admin-display.php:47
+#: admin/partials/turbosmtp-email-validator-admin-display.php:50
 msgid "Test Validator"
 msgstr "Test Validatore"
 
-#: admin/partials/turbosmtp-email-validator-admin-display.php:52
+#: admin/partials/turbosmtp-email-validator-admin-display.php:55
 msgid "Verify now"
 msgstr "Verifica ora"
 
-#: admin/partials/turbosmtp-email-validator-admin-display.php:66
+#: admin/partials/turbosmtp-email-validator-admin-display.php:69
 msgid "Email is valid"
 msgstr "L'email è valida"
 
-#: admin/partials/turbosmtp-email-validator-admin-display.php:70
+#: admin/partials/turbosmtp-email-validator-admin-display.php:73
 msgid "Validated Emails"
 msgstr "Email Validate"
 
-#: admin/partials/turbosmtp-email-validator-admin-display.php:80
+#: admin/partials/turbosmtp-email-validator-admin-display.php:83
 msgid "Search"
 msgstr "Cerca"
 
@@ -125,9 +133,9 @@ msgstr "WPForms"
 msgid "WooCommerce"
 msgstr "WooCommerce"
 
-#: common-api.php:18
-msgid "WordPress Post Comments"
-msgstr "Commenti nei Post WordPress"
+#: common-api.php:18 includes/class-validated-emails-table.php:26
+msgid "WordPress Comments"
+msgstr "Commenti WordPress"
 
 #: common-api.php:19 includes/class-validated-emails-table.php:38
 msgid "WordPress Registration"
@@ -178,10 +186,6 @@ msgstr "Do Not Mail"
 msgid "We cannot accept this email address."
 msgstr "Non possiamo accettare questo indirizzo email."
 
-#: includes/class-validated-emails-table.php:26
-msgid "WordPress Comments"
-msgstr "Commenti WordPress"
-
 #: includes/class-validated-emails-table.php:29
 msgid "Test Email"
 msgstr "Test Email"
@@ -217,6 +221,9 @@ msgstr "Validato il"
 #: includes/class-validated-emails-table.php:73
 msgid "Raw Data"
 msgstr ""
+
+#~ msgid "WordPress Post Comments"
+#~ msgstr "Commenti nei Post WordPress"
 
 #~ msgid "Validated forms"
 #~ msgstr "Forms Validati"
