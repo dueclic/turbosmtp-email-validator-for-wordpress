@@ -96,7 +96,7 @@ class Validated_Emails_Table extends WP_List_Table {
 
 		foreach ($statuses as $status) {
 			$is_status_selected = (isset($_REQUEST['status']) && $_REQUEST['status'] === $status['status']);
-			$status_links[$status['status']] = sprintf(__('<a style="'.($is_status_selected ? 'font-weight:bold': '').'" href="%s">%s (%d)</a>', 'turbosmtp-email-validator'), admin_url( 'options-general.php?page=email-validation-settings&status='.$status['status'] ), ucfirst($status['status']), $status['total']);
+			$status_links[$status['status']] = sprintf('<a style="'.($is_status_selected ? 'font-weight:bold': '').'" href="%s">%s (%d)</a>', admin_url( 'options-general.php?page=email-validation-settings&status='.$status['status'] ), ucfirst($status['status']), $status['total']);
 		}
 
 		return $status_links;
@@ -120,16 +120,18 @@ class Validated_Emails_Table extends WP_List_Table {
 		// will be used in pagination settings
 
 		$paged   = isset( $_REQUEST['paged'] ) ? max( 0, intval( $_REQUEST['paged'] - 1 ) * $per_page ) : 0;
-		$orderby = ( isset( $_REQUEST['orderby'] ) && in_array( $_REQUEST['orderby'], array_keys( $this->get_sortable_columns() ) ) ) ? $_REQUEST['orderby'] : 'validated_at';
+		$orderby = ( isset( $_REQUEST['orderby'] ) && in_array( $_REQUEST['orderby'], array_keys( $this->get_sortable_columns() ) ) ) ? sanitize_key($_REQUEST['orderby']) : 'validated_at';
 		$order   = ( isset( $_REQUEST['order'] ) && in_array( $_REQUEST['order'], array(
 				'asc',
 				'desc'
-			) ) ) ? $_REQUEST['order'] : 'desc';
-		$search  = ( isset( $_REQUEST['s'] ) ? $_REQUEST['s'] : '' );
+			) ) ) ? sanitize_key($_REQUEST['order']) : 'desc';
+		$search  = ( isset( $_REQUEST['s'] ) ? sanitize_text_field($_REQUEST['s']) : '' );
+
+		$status = isset($_GET['status']) && in_array($_GET['status'], get_validation_statuses(true), true) ? sanitize_key($_GET['status']) : 'all'; // Sanitize e valida
 
 		$whereStatus = "";
-		if (isset($_GET['status']) && $_GET['status'] != 'all') {
-			$whereStatus = "AND status LIKE '" . $wpdb->esc_like( $_REQUEST['status'] ) . "%'";
+		if ($status!= 'all') {
+			$whereStatus =  $wpdb->prepare("AND status = %s", $status);
 		}
 
 		$total_items = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(id) FROM $table_name WHERE email LIKE %s".$whereStatus, '%' . $search . '%' ) );

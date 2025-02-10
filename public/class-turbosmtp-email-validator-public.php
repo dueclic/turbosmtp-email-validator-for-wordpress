@@ -259,7 +259,9 @@ class Turbosmtp_Email_Validator_Public {
 		$tag = new WPCF7_FormTag( $tag );
 		if ( 'email' == $tag->type || 'email*' == $tag->type ) {
 			$wpcf7Form      = new Turbosmtp_Email_Validator_Form_Public( 'cf7forms', '' );
-			$validationInfo = $wpcf7Form->prep_validation_info( $_POST[ $tag->name ] );
+			$validationInfo = $wpcf7Form->prep_validation_info(
+				sanitize_email( $_POST[ $tag->name ] )
+			);
 			$message        = $wpcf7Form->set_error_message();
 			$wpcf7Form->setup_form_validation( $validationInfo, function () {
 				$args = func_get_args();

@@ -11,6 +11,9 @@
  * @package    Turbosmtp_Email_Validator
  * @subpackage Turbosmtp_Email_Validator/admin/partials
  */
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->

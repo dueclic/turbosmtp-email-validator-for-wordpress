@@ -184,7 +184,7 @@ class Turbosmtp_Email_Validator_Admin {
 			$iterator ++;
 			$options_markup .= sprintf(
 				'<label for="%1$s_%6$s"><input id="%1$s_%6$s" name="%1$s[]" type="%2$s" value="%3$s" %4$s /> %5$s</label><br/>',
-				$arguments['id'],
+				esc_html($arguments['id']),
 				'checkbox',
 				$key,
 				checked( $arguments['value'][ @array_search( $key, $arguments['value'], true ) ] ?? false, $key, false ),
@@ -226,19 +226,19 @@ class Turbosmtp_Email_Validator_Admin {
 
 		if ( empty( $new_key ) || empty( $new_secret ) ) {
 			delete_transient( 'turbosmtp_email_validator_subscription' );
-			add_settings_error( 'ts_email_validator_general_settings', 'ts_email_validator_consumer_keys_error', 'Entrambi i campi sono obbligatori.', 'error' );
+			add_settings_error( 'ts_email_validator_general_settings', 'ts_email_validator_consumer_keys_error', __('Both consumer key and consumer secret are mandatory.', 'turbosmtp-email-validator'), 'error' );
 
 			return '';
 		}
 
 		$is_valid = $this->api->isValid(
-			$_POST['ts_email_validator_consumer_key'],
-			$_POST['ts_email_validator_consumer_secret']
+			$new_key,
+			$new_secret
 		);
 
 		if ( ! $is_valid ) {
 			delete_transient( 'turbosmtp_email_validator_subscription' );
-			add_settings_error( 'ts_email_validator_general_settings', 'ts_email_validator_consumer_keys_error', 'La combinazione chiave/secret non è valida. ' . json_encode( $_POST ), 'error' );
+			add_settings_error( 'ts_email_validator_general_settings', 'ts_email_validator_consumer_keys_error', __('Consumer key and consumer secret combination is wrong.', 'turbosmtp-email-validator'), 'error' );
 
 			return '';
 		}
