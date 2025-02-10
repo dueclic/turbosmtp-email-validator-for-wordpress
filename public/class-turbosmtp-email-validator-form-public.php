@@ -41,11 +41,11 @@ class Turbosmtp_Email_Validator_Form_Public {
 	public function __construct( $source, $formId ) {
 		$this->source         = $source;
 		$this->formId         = $formId;
-		$this->validationPass = get_option( 'ts_email_validator_validation_pass' );
+		$this->validationPass = get_option( 'turbosmtp_email_validator_validation_pass' );
 		$this->api            = new Turbosmtp_Email_Validator_API(
-			get_option( 'ts_email_validator_consumer_key' ),
-			get_option( 'ts_email_validator_consumer_secret' ),
-			get_option( 'ts_email_validator_api_timeout' )
+			get_option( 'turbosmtp_email_validator_consumer_key' ),
+			get_option( 'turbosmtp_email_validator_consumer_secret' ),
+			get_option( 'turbosmtp_email_validator_api_timeout' )
 		);
 	}
 
@@ -64,7 +64,7 @@ class Turbosmtp_Email_Validator_Form_Public {
 			$current_time    = time();
 			$expire_interval = 6 * 30 * 24 * 60 * 60;
 
-			if ( ( $current_time - $validated_at ) < apply_filters( 'ts_email_validator_expire_interval', $expire_interval ) ) {
+			if ( ( $current_time - $validated_at ) < apply_filters( 'turbosmtp_email_validator_expire_interval', $expire_interval ) ) {
 				return $result;
 			} else {
 				$wpdb->delete( $table_name, array( 'email' => $email ) );
@@ -79,7 +79,7 @@ class Turbosmtp_Email_Validator_Form_Public {
 	 * @return string
 	 */
 	public function set_error_message( ) {
-		$custom_error = get_option( 'ts_email_validator_error_message' );
+		$custom_error = get_option( 'turbosmtp_email_validator_error_message' );
 
 		$error_message = __( 'We cannot accept this email address.', 'turbosmtp-email-validator' );
 		if ( isset( $custom_error ) && $custom_error ) {
@@ -97,7 +97,7 @@ class Turbosmtp_Email_Validator_Form_Public {
 	public function prep_validation_info( $email ): ?array {
 		global $wpdb;
 
-		$skip_validation = apply_filters( 'ts_email_validator_skip_validation', false, $email );
+		$skip_validation = apply_filters( 'turbosmtp_email_validator_skip_validation', false, $email );
 
 		if ( $skip_validation ) {
 			return null;
@@ -132,7 +132,7 @@ class Turbosmtp_Email_Validator_Form_Public {
 	 */
 	public function setup_form_validation( ?array $validationInfo, callable $callback, $args ) {
 		if ( ! is_null( $validationInfo ) ) {
-			if ( !ts_emailvalidator_status_ok( $validationInfo['status'], $this->validationPass ) ) {
+			if ( !turbosmtp_email_validator_status_ok( $validationInfo['status'], $this->validationPass ) ) {
 				return call_user_func( $callback, $args );
 			}
 		}

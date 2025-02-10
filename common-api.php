@@ -1,17 +1,17 @@
 <?php
-function ts_emailvalidator_status_ok($status, $validationPass) {
+function turbosmtp_email_validator_status_ok($status, $validationPass) {
 	if (in_array($status, $validationPass)) {
 		return true;
 	}
 
-	return apply_filters('ts_email_validator_status_ok', false, $status);
+	return apply_filters('turbosmtp_email_validator_status_ok', false, $status);
 }
 
-function get_validation_forms(
+function turbosmtp_email_validator_validation_forms(
 	$compact = false
 ){
 
-	$validation_forms = apply_filters('ts_email_validator_validation_forms', [
+	$validation_forms = apply_filters('turbosmtp_email_validator_validation_forms', [
 		'contact_form_7' => __('Contact Form 7', 'turbosmtp-email-validator'),
 		'wpforms' => __('WPForms', 'turbosmtp-email-validator'),
 		'woocommerce' => __('WooCommerce', 'turbosmtp-email-validator'),
@@ -27,10 +27,10 @@ function get_validation_forms(
 	}
 	return $validation_forms;
 }
-function get_validation_statuses(
+function turbosmtp_email_validator_validation_statuses(
 	$compact = false
 ){
-	$validation_statuses = apply_filters('ts_email_validator_validation_statuses', [
+	$validation_statuses = apply_filters('turbosmtp_email_validator_validation_statuses', [
 		'valid' => __('Valid', 'turbosmtp-email-validator'),
 		'invalid' => __('Invalid', 'turbosmtp-email-validator'),
 		'catch-all' => __('Catch-All', 'turbosmtp-email-validator'),
@@ -53,7 +53,7 @@ function get_validation_statuses(
  * @return array
  */
 
-function ts_sanitize_array( $values, $array_data ){
+function turbosmtp_email_validator_sanitize_array( $values, $array_data ){
 
 	if ( ! is_array( $values ) ) {
 		return [];

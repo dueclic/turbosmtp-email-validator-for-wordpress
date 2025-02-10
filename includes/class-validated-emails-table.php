@@ -127,7 +127,7 @@ class Validated_Emails_Table extends WP_List_Table {
 			) ) ) ? sanitize_key($_REQUEST['order']) : 'desc';
 		$search  = ( isset( $_REQUEST['s'] ) ? sanitize_text_field($_REQUEST['s']) : '' );
 
-		$status = isset($_GET['status']) && in_array($_GET['status'], get_validation_statuses(true), true) ? sanitize_key($_GET['status']) : 'all'; // Sanitize e valida
+		$status = isset($_GET['status']) && in_array($_GET['status'], turbosmtp_email_validator_validation_statuses(true), true) ? sanitize_key($_GET['status']) : 'all'; // Sanitize e valida
 
 		$whereStatus = "";
 		if ($status!= 'all') {

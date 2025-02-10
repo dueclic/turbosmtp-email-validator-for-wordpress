@@ -54,7 +54,7 @@ class Turbosmtp_Email_Validator_Activator {
 	public static function activate() {
 		self::setup_db_table();
 
-		update_option( 'ts_email_validator_validation_forms', get_validation_forms(true) );
+		update_option( 'turbosmtp_email_validator_validation_forms', turbosmtp_email_validator_validation_forms(true) );
 
 		$validation_pass = [
 			'valid'     => 'valid',
@@ -62,9 +62,9 @@ class Turbosmtp_Email_Validator_Activator {
 			'unknown'   => 'unknown',
 		];
 
-		update_option( 'ts_email_validator_validation_pass', $validation_pass );
+		update_option( 'turbosmtp_email_validator_validation_pass', $validation_pass );
 
-		update_option( 'ts_email_validator_error_message', __( 'We cannot accept this email address.', 'turbosmtp-email-validator' ) );
+		update_option( 'turbosmtp_email_validator_error_message', __( 'We cannot accept this email address.', 'turbosmtp-email-validator' ) );
 
 
 	}

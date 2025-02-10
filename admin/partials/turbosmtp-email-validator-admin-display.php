@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 <div class="wrap">
     <form method="post" action="options.php">
 		<?php
-		settings_fields( 'ts_email_validator_general_settings' );
+		settings_fields( 'turbosmtp_email_validator_general_settings' );
 		do_settings_sections( 'email-validation-settings' );
 		submit_button();
 		?>
@@ -62,7 +62,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
         $validation_result = "";
 
-		$validation_result = apply_filters( 'ts_email_validator_checkemail', $validation_result, $test_email );
+		$validation_result = apply_filters( 'turbosmtp_email_validator_checkemail', $validation_result, $test_email );
 		if ( is_wp_error( $validation_result ) ) {
 			echo '<div style="color: red;">' . esc_html( $validation_result->get_error_message() ) . '</div>';
 		} else {
