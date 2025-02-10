@@ -46,3 +46,26 @@ function get_validation_statuses(
 	return $validation_statuses;
 
 }
+/**
+ * @param mixed $values
+ * @param array $array_data
+ *
+ * @return array
+ */
+
+function ts_sanitize_array( $values, $array_data ){
+
+	if ( ! is_array( $values ) ) {
+		return [];
+	}
+
+
+	$sanitized_input = [];
+	foreach ( $values as $value ) {
+		if ( in_array( $value, $array_data, true ) ) { // Strict comparison
+			$sanitized_input[] = $value;
+		}
+	}
+
+	return $sanitized_input;
+}

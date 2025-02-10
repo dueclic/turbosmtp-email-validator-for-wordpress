@@ -115,7 +115,7 @@ class Turbosmtp_Email_Validator_Admin {
 
 	function get_emailvalidator_subscription(
 		$refresh = false
-	){
+	) {
 
 		$transient_name = 'turbosmtp_email_validator_subscription';
 
@@ -125,13 +125,14 @@ class Turbosmtp_Email_Validator_Admin {
 
 		$subscription = $this->api->getSubscription();
 		set_transient( $transient_name, $subscription, 12 * HOUR_IN_SECONDS );
+
 		return $subscription;
 
 	}
 
 	public function settings_page() {
 		require_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . "/includes/class-validated-emails-table.php";
-		$has_api_keys           = $this->api->hasApiKeys() && get_option( 'ts_email_validator_enabled') === 'yes';
+		$has_api_keys           = $this->api->hasApiKeys() && get_option( 'ts_email_validator_enabled' ) === 'yes';
 		$subscription           = $this->get_emailvalidator_subscription( isset( $_REQUEST['refresh'] ) );
 		$validated_emails_table = new Validated_Emails_Table();
 
@@ -166,38 +167,57 @@ class Turbosmtp_Email_Validator_Admin {
 
 	public function ts_email_validator_error_message_callback(
 		$arguments
-	){
+	) {
 		echo '<input type="text" name="ts_email_validator_error_message" value="' . esc_attr( $arguments['value'] ) . '" class="regular-text">';
 	}
 
 	public function ts_email_validator_forms_callback(
 		$arguments
-	){
+	) {
 
-		if (empty($arguments['value'])) {
+		if ( empty( $arguments['value'] ) ) {
 			$arguments['value'] = [];
 		}
 		$options_markup = '';
-		$iterator = 0;
-		foreach ($arguments['options'] as $key => $label) {
-			$iterator++;
+		$iterator       = 0;
+		foreach ( $arguments['options'] as $key => $label ) {
+			$iterator ++;
 			$options_markup .= sprintf(
 				'<label for="%1$s_%6$s"><input id="%1$s_%6$s" name="%1$s[]" type="%2$s" value="%3$s" %4$s /> %5$s</label><br/>',
 				$arguments['id'],
 				'checkbox',
 				$key,
-				checked($arguments['value'][@array_search($key, $arguments['value'], true)] ?? false, $key, false),
+				checked( $arguments['value'][ @array_search( $key, $arguments['value'], true ) ] ?? false, $key, false ),
 				$label,
 				$iterator
 			);
 		}
-		printf('<fieldset>%s</fieldset>', $options_markup);
+		printf( '<fieldset>%s</fieldset>', $options_markup );
 	}
 
 
+	public function sanitize_api_timeout( $input ) {
+		$int_value = intval( $input );
+		if ( $int_value < 1 || $int_value > 60 ) {
+			$int_value = 5;
+		}
+		return $int_value;
+	}
+
+
+	function sanitize_validation_forms($input){
+		$allowed_validation_forms = get_validation_forms(true) ;
+		return ts_sanitize_array($input, $allowed_validation_forms);
+	}
+
+	function sanitize_validation_pass( $input ) {
+		$allowed_statuses = get_validation_statuses(true) ;
+		return ts_sanitize_array($input, $allowed_statuses);
+	}
+
 	public function validate_email_api_credentials( $input ) {
 
-		if (!isset($_POST['ts_email_validator_enabled'])){
+		if ( ! isset( $_POST['ts_email_validator_enabled'] ) ) {
 			return $input;
 		}
 
@@ -205,8 +225,9 @@ class Turbosmtp_Email_Validator_Admin {
 		$new_secret = isset( $_POST['ts_email_validator_consumer_secret'] ) ? sanitize_text_field( $_POST['ts_email_validator_consumer_secret'] ) : '';
 
 		if ( empty( $new_key ) || empty( $new_secret ) ) {
-			delete_transient('turbosmtp_email_validator_subscription');
+			delete_transient( 'turbosmtp_email_validator_subscription' );
 			add_settings_error( 'ts_email_validator_general_settings', 'ts_email_validator_consumer_keys_error', 'Entrambi i campi sono obbligatori.', 'error' );
+
 			return '';
 		}
 
@@ -216,8 +237,9 @@ class Turbosmtp_Email_Validator_Admin {
 		);
 
 		if ( ! $is_valid ) {
-			delete_transient('turbosmtp_email_validator_subscription');
-			add_settings_error( 'ts_email_validator_general_settings', 'ts_email_validator_consumer_keys_error', 'La combinazione chiave/secret non è valida. '.json_encode($_POST), 'error' );
+			delete_transient( 'turbosmtp_email_validator_subscription' );
+			add_settings_error( 'ts_email_validator_general_settings', 'ts_email_validator_consumer_keys_error', 'La combinazione chiave/secret non è valida. ' . json_encode( $_POST ), 'error' );
+
 			return '';
 		}
 
@@ -228,12 +250,21 @@ class Turbosmtp_Email_Validator_Admin {
 
 		// API credentials settings
 
-		register_setting( 'ts_email_validator_general_settings', 'ts_email_validator_enabled' );
-		register_setting( 'ts_email_validator_general_settings', 'ts_email_validator_consumer_key' );
+		register_setting( 'ts_email_validator_general_settings', 'ts_email_validator_enabled', [
+			'type'              => 'boolean',
+			'sanitize_callback' => 'sanitize_text_field',
+		] );
+		register_setting( 'ts_email_validator_general_settings', 'ts_email_validator_consumer_key', [
+			'type'              => 'string',
+			'sanitize_callback' => 'sanitize_text_field',
+		] );
 		register_setting( 'ts_email_validator_general_settings', 'ts_email_validator_consumer_secret', [
 			'sanitize_callback' => [ $this, 'validate_email_api_credentials' ]
 		] );
-		register_setting( 'ts_email_validator_general_settings', 'ts_email_validator_api_timeout' );
+		register_setting( 'ts_email_validator_general_settings', 'ts_email_validator_api_timeout', [
+			'type' => 'integer',
+			'sanitize_callback' => [$this, 'sanitize_api_timeout']
+		] );
 
 		add_settings_section(
 			'ts_email_validator_settings_section',
@@ -273,20 +304,29 @@ class Turbosmtp_Email_Validator_Admin {
 
 		// Validation forms settings
 
-		register_setting( 'ts_email_validator_general_settings', 'ts_email_validator_validation_forms' );
-		register_setting( 'ts_email_validator_general_settings', 'ts_email_validator_validation_pass' );
-		register_setting( 'ts_email_validator_general_settings', 'ts_email_validator_error_message' );
+		register_setting( 'ts_email_validator_general_settings', 'ts_email_validator_validation_forms', [
+			'type'              => 'array',
+			'sanitize_callback' => [$this, 'sanitize_validation_forms'],
+		] );
+		register_setting( 'ts_email_validator_general_settings', 'ts_email_validator_validation_pass', [
+			'type'              => 'array',
+			'sanitize_callback' => [$this, 'sanitize_validation_pass'],
+		]  );
+		register_setting( 'ts_email_validator_general_settings', 'ts_email_validator_error_message', [
+			'type'              => 'string',
+			'sanitize_callback' => 'sanitize_text_field',
+		] );
 
 		add_settings_field(
 			'ts_email_validator_validation_forms',
-			__('Forms to be validated', 'turbosmtp-email-validator'),
+			__( 'Forms to be validated', 'turbosmtp-email-validator' ),
 			[ $this, 'ts_email_validator_forms_callback' ],
 			'email-validation-settings',
 			'ts_email_validator_settings_section',
 			[
-				'id' => 'ts_email_validator_validation_forms',
+				'id'      => 'ts_email_validator_validation_forms',
 				'options' => get_validation_forms(),
-				'value' => get_option('ts_email_validator_validation_forms')
+				'value'   => get_option( 'ts_email_validator_validation_forms' )
 			]
 		);
 
@@ -294,14 +334,14 @@ class Turbosmtp_Email_Validator_Admin {
 
 		add_settings_field(
 			'ts_email_validator_validation_pass',
-			__('Validation pass', 'turbosmtp-email-validator'),
+			__( 'Validation pass', 'turbosmtp-email-validator' ),
 			[ $this, 'ts_email_validator_forms_callback' ],
 			'email-validation-settings',
 			'ts_email_validator_settings_section',
 			[
-				'id' => 'ts_email_validator_validation_pass',
+				'id'      => 'ts_email_validator_validation_pass',
 				'options' => get_validation_statuses(),
-				'value' => get_option('ts_email_validator_validation_pass')
+				'value'   => get_option( 'ts_email_validator_validation_pass' )
 			]
 		);
 
@@ -309,13 +349,13 @@ class Turbosmtp_Email_Validator_Admin {
 
 		add_settings_field(
 			'ts_email_validator_error_message',
-			__('Custom error message', 'turbosmtp-email-validator'),
+			__( 'Custom error message', 'turbosmtp-email-validator' ),
 			[ $this, 'ts_email_validator_error_message_callback' ],
 			'email-validation-settings',
 			'ts_email_validator_settings_section',
 			[
-				'id' => 'ts_email_validator_error_message',
-				'value' => get_option('ts_email_validator_error_message')
+				'id'    => 'ts_email_validator_error_message',
+				'value' => get_option( 'ts_email_validator_error_message' )
 			]
 		);
 
