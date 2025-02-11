@@ -188,7 +188,7 @@ class Turbosmtp_Email_Validator_Admin {
 				'checkbox',
 				esc_html($key),
 				checked( $arguments['value'][ @array_search( $key, $arguments['value'], true ) ] ?? false, $key, false ),
-				$label,
+				esc_html($label),
 				$iterator
 			);
 		}
