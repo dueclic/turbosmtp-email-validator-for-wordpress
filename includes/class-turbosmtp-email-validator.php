@@ -75,7 +75,6 @@ class Turbosmtp_Email_Validator {
 		$this->plugin_name = 'turbosmtp-email-validator';
 
 		$this->load_dependencies();
-		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 
@@ -87,7 +86,6 @@ class Turbosmtp_Email_Validator {
 	 * Include the following files that make up the plugin:
 	 *
 	 * - Turbosmtp_Email_Validator_Loader. Orchestrates the hooks of the plugin.
-	 * - Turbosmtp_Email_Validator_i18n. Defines internationalization functionality.
 	 * - Turbosmtp_Email_Validator_Admin. Defines all hooks for the admin area.
 	 * - Turbosmtp_Email_Validator_Public. Defines all hooks for the public side of the site.
 	 *
@@ -111,12 +109,6 @@ class Turbosmtp_Email_Validator {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-turbosmtp-email-validator-api.php';
 
 		/**
-		 * The class responsible for defining internationalization functionality
-		 * of the plugin.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-turbosmtp-email-validator-i18n.php';
-
-		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-turbosmtp-email-validator-admin.php';
@@ -129,23 +121,6 @@ class Turbosmtp_Email_Validator {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-turbosmtp-email-validator-form-public.php';
 
 		$this->loader = new Turbosmtp_Email_Validator_Loader();
-
-	}
-
-	/**
-	 * Define the locale for this plugin for internationalization.
-	 *
-	 * Uses the Turbosmtp_Email_Validator_i18n class in order to set the domain and to register the hook
-	 * with WordPress.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	private function set_locale() {
-
-		$plugin_i18n = new Turbosmtp_Email_Validator_i18n();
-
-		$this->loader->add_action( 'init', $plugin_i18n, 'load_plugin_textdomain' );
 
 	}
 

@@ -131,10 +131,10 @@ class Turbosmtp_Email_Validator_Admin {
 	}
 
 	public function settings_page() {
-		require_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . "/includes/class-validated-emails-table.php";
+		require_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . "/includes/class-turbosmtp-validated-emails-table.php";
 		$has_api_keys           = $this->api->hasApiKeys() && get_option( 'turbosmtp_email_validator_enabled' ) === 'yes';
 		$subscription           = $this->get_emailvalidator_subscription( isset( $_REQUEST['refresh'] ) );
-		$validated_emails_table = new Validated_Emails_Table();
+		$validated_emails_table = new Turbosmtp_Validated_Emails_Table();
 
 		include_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . 'admin/partials/turbosmtp-email-validator-admin-display.php';
 
@@ -186,7 +186,7 @@ class Turbosmtp_Email_Validator_Admin {
 				'<label for="%1$s_%6$s"><input id="%1$s_%6$s" name="%1$s[]" type="%2$s" value="%3$s" %4$s /> %5$s</label><br/>',
 				esc_html($arguments['id']),
 				'checkbox',
-				$key,
+				esc_html($key),
 				checked( $arguments['value'][ @array_search( $key, $arguments['value'], true ) ] ?? false, $key, false ),
 				$label,
 				$iterator

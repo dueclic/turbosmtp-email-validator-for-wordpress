@@ -73,7 +73,6 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
     <h2><?php esc_html_e("Validated Emails", "turbosmtp-email-validator"); ?></h2>
 	<?php
 
-	$validated_emails_table = new Validated_Emails_Table();
 	$validated_emails_table->views();
 	?>
     <form method="post">

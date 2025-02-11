@@ -5,7 +5,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
 
-class Validated_Emails_Table extends WP_List_Table {
+class Turbosmtp_Validated_Emails_Table extends WP_List_Table {
 	function __construct() {
 		parent::__construct( array(
 			'singular' => 'validated_email',
