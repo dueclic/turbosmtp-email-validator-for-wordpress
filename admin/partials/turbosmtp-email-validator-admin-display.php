@@ -36,10 +36,10 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
         <input type="hidden" name="refresh" value="1">
         <h2><?php esc_html_e( "Current Subscription", "turbosmtp-email-validator" ); ?></h2>
         <p>
-            <strong><?php esc_html_e( "Remaining Paid Credits", "turbosmtp-email-validator" ); ?></strong>: <?php echo esc_html($subscription['paid_credits']); ?> <?php echo esc_html($subscription['currency']); ?>
+            <strong><?php esc_html_e( "Remaining Paid Credits", "turbosmtp-email-validator" ); ?></strong>: <?php echo esc_html( $subscription['paid_credits'] ?? 0 ); ?> <?php echo esc_html($subscription['currency'] ?? ""); ?>
         </p>
         <p>
-            <strong><?php esc_html_e( "Remaining Free Credits", "turbosmtp-email-validator" ); ?></strong>: <?php echo esc_html($subscription['remaining_free_credit']); ?>
+            <strong><?php esc_html_e( "Remaining Free Credits", "turbosmtp-email-validator" ); ?></strong>: <?php echo esc_html($subscription['remaining_free_credit'] ?? 0 ); ?>
         </p>
 		<?php
 		submit_button(
