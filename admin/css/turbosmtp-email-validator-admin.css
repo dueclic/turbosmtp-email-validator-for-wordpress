@@ -109,7 +109,7 @@
     margin-top: 1rem;
     align-items: start;
 }
-.tsev-forms-logo svg{
+.tsev-forms-logo img{
     width: 100px;
 }
 .tsev-account-status{
@@ -155,3 +155,58 @@
     margin-top: 1em;
     display: none;
 }
+.tsev-hr-separator{
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+.tsev-hr-separator-half{
+    margin-top: .75rem;
+    margin-bottom: .75rem;
+}
+.tsev-credits-row{
+    margin: .5rem 0;
+    padding: .5rem .2rem .2rem;
+    border-bottom: 1px solid #dcdcde;
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+}
+.tsev-form {
+    max-width: 100% !important;
+    margin-right: 1.5em;
+}
+
+/*
+.emailchef-form {
+    max-width: 100% !important;
+    margin-right: 1.5em;
+}
+.emailchef-form .map-reload {
+    display: none;
+}
+
+.emailchef-form .form-table td.nopadding {
+    padding: 0;
+    max-width:170px !important;
+}
+.emailchef-form .form-table input[type=text],
+.emailchef-form .form-table input[type=password],
+.emailchef-form .form-table textarea,
+.emailchef-form .form-table select
+{
+    background-color: #fff;
+    width: 200px;
+}
+.emailchef-form select {
+    max-width:100% !important;
+}
+
+.emailchef-form .save {
+    margin: 0 0 0 10px !important;
+}
+
+.emailchef-check-login-result {
+    margin-top: 1em;
+    display: none;
+}
+ */
