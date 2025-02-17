@@ -19,6 +19,9 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
 <div class="wrap">
+
+    <!-- User NOT connected START -->
+
     <form action="" method="post" class="tsev-login-form" id="tsev-login-form">
         <div class="tsev-text-center">
             <img src="<?php echo plugins_url('/admin/img/ts-logo.svg', TURBOSMTP_EMAIL_VALIDATOR_PATH); ?>" class="tsev-login-logo" alt="">
@@ -56,75 +59,106 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
         <div class="tsev-check-login-result notice notice-alt"></div>
     </form>
 
-    <form method="post" action="options.php">
-		<?php
-		settings_fields( 'turbosmtp_email_validator_general_settings' );
-		do_settings_sections( 'email-validation-settings' );
-		submit_button();
-		?>
-    </form>
+    <hr>
+
+    <!-- User NOT connected END -->
+    <!-- User connected START -->
 
     <?php
-        if ($has_api_keys):
-    ?>
+    if ($has_api_keys):
+        ?>
 
-    <form method="get" action="">
-        <input type="hidden" name="page" value="<?php echo esc_attr(sanitize_text_field( $_REQUEST['page'] )); ?>">
-        <input type="hidden" name="refresh" value="1">
-        <h2><?php esc_html_e( "Current Subscription", "turbosmtp-email-validator" ); ?></h2>
-        <p>
-            <strong><?php esc_html_e( "Remaining Paid Credits", "turbosmtp-email-validator" ); ?></strong>: <?php echo esc_html( $subscription['paid_credits'] ?? 0 ); ?> <?php echo esc_html($subscription['currency'] ?? ""); ?>
-        </p>
-        <p>
-            <strong><?php esc_html_e( "Remaining Free Credits", "turbosmtp-email-validator" ); ?></strong>: <?php echo esc_html($subscription['remaining_free_credit'] ?? 0 ); ?>
-        </p>
-		<?php
-		submit_button(
-			__( "Refresh subscription", "turbosmtp-email-validator" )
-		);
-		?>
-    </form>
-    <h2><?php esc_html_e("Test Validator", "turbosmtp-email-validator"); ?></h2>
-    <form method="post" action="">
-        <input type="email" name="test_email" value="" required>
-		<?php
-		submit_button(
-			__( "Verify now", "turbosmtp-email-validator" )
-		);
-		?>
-    </form>
-	<?php
-	if ( isset( $_POST['test_email'] ) ) {
-		$test_email        = sanitize_email( $_POST['test_email'] );
+        <nav class="nav-tab-wrapper">
+           <a href="#tsev-settings" class="nav-tab">Settings</a>
+           <a href="#tsev-subscription" class="nav-tab">Subscription</a>
+           <a href="#tsev-validator" class="nav-tab">Validator</a>
+           <a href="#tsev-log" class="nav-tab">Log</a>
+        </nav>
 
-        $validation_result = "";
 
-		$validation_result = apply_filters( 'turbosmtp_email_validator_checkemail', $validation_result, $test_email );
-		if ( is_wp_error( $validation_result ) ) {
-			echo '<div style="color: red;">' . esc_html( $validation_result->get_error_message() ) . '</div>';
-		} else {
-			echo '<div style="color: green;">'.esc_html__('Email is valid', 'turbosmtp-email-validator').'</div>';
-		}
-	}
-	?>
-    <h2><?php esc_html_e("Validated Emails", "turbosmtp-email-validator"); ?></h2>
-	<?php
+        <div id="tsev-tabs">
+            <div id="tsev-settings">
+                <form method="post" action="options.php">
+                    <?php
+                    settings_fields( 'turbosmtp_email_validator_general_settings' );
+                    do_settings_sections( 'email-validation-settings' );
+                    submit_button();
+                    ?>
+                </form>
+            </div>
+            <div id="tsev-subscription">
+                <form method="get" action="">
+                    <input type="hidden" name="page" value="<?php echo esc_attr(sanitize_text_field( $_REQUEST['page'] )); ?>">
+                    <input type="hidden" name="refresh" value="1">
+                    <h2><?php esc_html_e( "Current Subscription", "turbosmtp-email-validator" ); ?></h2>
+                    <p>
+                        <strong><?php esc_html_e( "Remaining Paid Credits", "turbosmtp-email-validator" ); ?></strong>: <?php echo esc_html( $subscription['paid_credits'] ?? 0 ); ?> <?php echo esc_html($subscription['currency'] ?? ""); ?>
+                    </p>
+                    <p>
+                        <strong><?php esc_html_e( "Remaining Free Credits", "turbosmtp-email-validator" ); ?></strong>: <?php echo esc_html($subscription['remaining_free_credit'] ?? 0 ); ?>
+                    </p>
+                    <?php
+                    submit_button(
+                        __( "Refresh subscription", "turbosmtp-email-validator" )
+                    );
+                    ?>
+                </form>
+            </div>
+            <div id="tsev-validator">
+                <h2><?php esc_html_e("Test Validator", "turbosmtp-email-validator"); ?></h2>
+                <form method="post" action="">
+                    <input type="email" name="test_email" value="" required>
+                    <?php
+                    submit_button(
+                        __( "Verify now", "turbosmtp-email-validator" )
+                    );
+                    ?>
+                </form>
+                <?php
+                if ( isset( $_POST['test_email'] ) ) {
+                    $test_email        = sanitize_email( $_POST['test_email'] );
 
-	$validated_emails_table->views();
-	?>
-    <form method="post">
-		<?php
-		$validated_emails_table->prepare_items();
-		$validated_emails_table->search_box(
-			__( 'Search', 'turbosmtp-email-validator' ),
-			'search_id'
-		);
-		?>
-		<?php $validated_emails_table->display(); ?>
-    </form>
+                    $validation_result = "";
+
+                    $validation_result = apply_filters( 'turbosmtp_email_validator_checkemail', $validation_result, $test_email );
+                    if ( is_wp_error( $validation_result ) ) {
+                        echo '<div style="color: red;">' . esc_html( $validation_result->get_error_message() ) . '</div>';
+                    } else {
+                        echo '<div style="color: green;">'.esc_html__('Email is valid', 'turbosmtp-email-validator').'</div>';
+                    }
+                }
+                ?>
+            </div>
+            <div id="tsev-log">
+                <h2><?php esc_html_e("Validated Emails", "turbosmtp-email-validator"); ?></h2>
+                <?php
+
+                $validated_emails_table->views();
+                ?>
+                <form method="post">
+                    <?php
+                    $validated_emails_table->prepare_items();
+                    $validated_emails_table->search_box(
+                        __( 'Search', 'turbosmtp-email-validator' ),
+                        'search_id'
+                    );
+                    ?>
+                    <?php $validated_emails_table->display(); ?>
+                </form>
+            </div>
+        </div>
+
 
     <?php
     endif;
     ?>
 
 </div>
+<script>
+    $ = jQuery;
+    (function($) {
+        $(function(){
+            $('#tabs').tabs();
+        });
+    })();
+</script>
