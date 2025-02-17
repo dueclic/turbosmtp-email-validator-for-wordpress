@@ -2,3 +2,156 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+.tsev{
+
+}
+.update-nag{
+    display:none;
+}
+:root{
+    --tsev-error-color: #D73638;
+    --tsev-success-color: #01A32A;
+}
+
+/***/
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.tsev-login-form{
+    display: block;
+    margin-top: 1em;
+    width: 280px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.tsev-login-form-signup{
+    margin-bottom: 2.5em;
+}
+.tsev-login-form label{
+    display: block;
+    margin-bottom: .5em;
+    font-size: 1.2em;
+}
+.tsev-login-form input[ type="text" ],
+.tsev-login-form input[ type="password"]{
+    display: block;
+    width: 100%;
+}
+.tsev-login-form-control-group{
+    margin-bottom: 1.5em;
+}
+.tsev-login-form label.tsev-login-form-get-api{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.tsev-login-form label.tsev-login-form-get-api a{
+    font-size: .8em;
+}
+.tsev-text-center,
+.tsev-text-center p{
+    text-align: center;
+}
+.tsev-login-form-password-field{
+    position: relative;
+}
+.tsev-login-form-password-field input{
+    padding-right: 36px;
+}
+.tsev-login-form-password-field a {
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    height: 32px;
+    width: 36px;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    opacity: .5;
+}
+.tsev-login-form-password-field a:hover {
+    opacity: 1;
+}
+.tsev-login-form-password-field a svg {
+    width: 18px;
+}
+.tsev-login-logo{
+    width: 160px;
+    margin: 10em auto 0;
+}
+
+.tsev-main-container{
+    display: flex;
+    margin-top: 1em ;
+    margin-bottom: 1em ;
+}
+.tsev-main-container > div:first-child{
+    border-right: 1px solid #dddddd;
+    padding-right: 1em;
+}
+.tsev-main-container > div:last-child{
+    padding-left: 1em;
+}
+.tsev-main-account{
+    flex-grow: 0;
+    min-width: 260px;
+}
+.tsev-main-forms{
+    flex-grow: 1;
+}
+.tsev-forms-logo{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    align-items: start;
+}
+.tsev-forms-logo svg{
+    width: 100px;
+}
+.tsev-account-status{
+    display: flex;
+    align-items: center;
+    gap: .5em;
+    font-size: .9em;
+    margin-bottom: 2rem;
+}
+.tsev-account-connected{
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--tsev-success-color);
+}
+.tsev-account-info {
+    margin-top: .5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: .3rem;
+}
+.tsev-account-disconnect {
+    display: inline-flex;
+    border-radius: 3px;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+.tsev-account-disconnect:hover {
+    background-color: #d5d5d5;
+}
+.tsev-account-disconnect svg {
+    fill: #616161;
+    height: 14px;
+    width: 14px;
+}
+
+.tsev-check-login-result {
+    margin-top: 1em;
+    display: none;
+}
