@@ -135,7 +135,9 @@ class Turbosmtp_Email_Validator {
 
 		$plugin_admin = new Turbosmtp_Email_Validator_Admin(
 			new Turbosmtp_Email_Validator_API(
-				$this->get_consumer_key(), $this->get_consumer_secret(), $this->get_api_timeout()
+				$this->get_consumer_key(),
+				$this->get_consumer_secret(),
+				$this->get_api_timeout()
 			), $this->get_plugin_name(), $this->get_version()
 		);
 
@@ -143,6 +145,7 @@ class Turbosmtp_Email_Validator {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'settings_menu' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'settings_init' );
+		$this->loader->add_action('admin_post_turbosmtp-email-validator-login', $plugin_admin, 'login_handler');
 	}
 
 	/**

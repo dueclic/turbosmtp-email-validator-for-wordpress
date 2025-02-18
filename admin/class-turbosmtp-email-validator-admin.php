@@ -131,12 +131,20 @@ class Turbosmtp_Email_Validator_Admin {
 	}
 
 	public function settings_page() {
-		require_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . "/includes/class-turbosmtp-validated-emails-table.php";
-		$has_api_keys           = $this->api->hasApiKeys() && get_option( 'turbosmtp_email_validator_enabled' ) === 'yes';
-		$subscription           = $this->get_emailvalidator_subscription( isset( $_REQUEST['refresh'] ) );
-		$validated_emails_table = new Turbosmtp_Validated_Emails_Table();
 
-		include_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . 'admin/partials/turbosmtp-email-validator-admin-display.php';
+		if (!$this->api->hasApiKeys() || !$this->api->isValid()){
+			include_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . 'admin/partials/logged-out.php';
+		} else {
+
+			$user_info = $this->api->getUserInfo();
+
+			//require_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . "/includes/class-turbosmtp-validated-emails-table.php";
+			$has_api_keys           = $this->api->hasApiKeys() && get_option( 'turbosmtp_email_validator_enabled' ) === 'yes';
+			$subscription           = $this->get_emailvalidator_subscription( isset( $_REQUEST['refresh'] ) );
+			//$validated_emails_table = new Turbosmtp_Validated_Emails_Table();
+
+			include_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . 'admin/partials/settings.php';
+		}
 
 	}
 
@@ -150,25 +158,38 @@ class Turbosmtp_Email_Validator_Admin {
 		echo '<input type="checkbox" name="turbosmtp_email_validator_enabled" value="yes"' . checked( $enabled, 'yes', false ) . '>';
 	}
 
-	public function turbosmtp_email_validator_consumer_key_callback() {
-		$consumer_key = get_option( 'turbosmtp_email_validator_consumer_key', '' );
-		echo '<input type="text" name="turbosmtp_email_validator_consumer_key" value="' . esc_attr( $consumer_key ) . '" class="regular-text">';
-	}
-
 	public function turbosmtp_email_validator_api_timeout_callback() {
 		$api_timeout = get_option( 'turbosmtp_email_validator_api_timeout', 5 );
 		echo '<input type="number" min="1" name="turbosmtp_email_validator_api_timeout" placeholder="5" value="' . esc_attr( $api_timeout ) . '" class="regular-text">';
-	}
-
-	public function turbosmtp_email_validator_consumer_secret_callback() {
-		$consumer_secret = get_option( 'turbosmtp_email_validator_consumer_secret', '' );
-		echo '<input type="text" name="turbosmtp_email_validator_consumer_secret" value="' . esc_attr( $consumer_secret ) . '" class="regular-text">';
 	}
 
 	public function turbosmtp_email_validator_error_message_callback(
 		$arguments
 	) {
 		echo '<input type="text" name="turbosmtp_email_validator_error_message" value="' . esc_attr( $arguments['value'] ) . '" class="regular-text">';
+	}
+
+	public function login_handler(){
+
+		$consumer_key = sanitize_text_field( $_POST['consumer_key'] );
+		$consumer_secret = sanitize_text_field( $_POST['consumer_secret'] );
+
+		if (!isset($_POST['_tsnonce']) || !wp_verify_nonce($_POST['_tsnonce'], 'turbosmtp-email-validator-login')) {
+			wp_redirect(add_query_arg('login_error', 'invalid_nonce', wp_get_referer()));
+			exit;
+		}
+
+		if (!$this->api->isValid($consumer_key, $consumer_secret)) {
+			wp_redirect(add_query_arg('login_error', 'invalid_credentials', wp_get_referer()));
+			exit;
+		}
+
+		update_option('turbosmtp_email_validator_consumer_key', $consumer_key);
+		update_option('turbosmtp_email_validator_consumer_secret', $consumer_secret);
+
+		wp_redirect( remove_query_arg('login_error', wp_get_referer()));
+		exit;
+
 	}
 
 	public function turbosmtp_email_validator_forms_callback(
@@ -215,37 +236,6 @@ class Turbosmtp_Email_Validator_Admin {
 		return turbosmtp_email_validator_sanitize_array($input, $allowed_statuses);
 	}
 
-	public function validate_email_api_credentials( $input ) {
-
-		if ( ! isset( $_POST['turbosmtp_email_validator_enabled'] ) ) {
-			return $input;
-		}
-
-		$new_key    = isset( $_POST['turbosmtp_email_validator_consumer_key'] ) ? sanitize_text_field( $_POST['turbosmtp_email_validator_consumer_key'] ) : '';
-		$new_secret = isset( $_POST['turbosmtp_email_validator_consumer_secret'] ) ? sanitize_text_field( $_POST['turbosmtp_email_validator_consumer_secret'] ) : '';
-
-		if ( empty( $new_key ) || empty( $new_secret ) ) {
-			delete_transient( 'turbosmtp_email_validator_subscription' );
-			add_settings_error( 'turbosmtp_email_validator_general_settings', 'turbosmtp_email_validator_consumer_keys_error', __('Both consumer key and consumer secret are mandatory.', 'turbosmtp-email-validator'), 'error' );
-
-			return '';
-		}
-
-		$is_valid = $this->api->isValid(
-			$new_key,
-			$new_secret
-		);
-
-		if ( ! $is_valid ) {
-			delete_transient( 'turbosmtp_email_validator_subscription' );
-			add_settings_error( 'turbosmtp_email_validator_general_settings', 'turbosmtp_email_validator_consumer_keys_error', __('Consumer key and consumer secret combination is wrong.', 'turbosmtp-email-validator'), 'error' );
-
-			return '';
-		}
-
-		return $input;
-	}
-
 	function settings_init() {
 
 		// API credentials settings
@@ -253,13 +243,6 @@ class Turbosmtp_Email_Validator_Admin {
 		register_setting( 'turbosmtp_email_validator_general_settings', 'turbosmtp_email_validator_enabled', [
 			'type'              => 'boolean',
 			'sanitize_callback' => 'sanitize_text_field',
-		] );
-		register_setting( 'turbosmtp_email_validator_general_settings', 'turbosmtp_email_validator_consumer_key', [
-			'type'              => 'string',
-			'sanitize_callback' => 'sanitize_text_field',
-		] );
-		register_setting( 'turbosmtp_email_validator_general_settings', 'turbosmtp_email_validator_consumer_secret', [
-			'sanitize_callback' => [ $this, 'validate_email_api_credentials' ]
 		] );
 		register_setting( 'turbosmtp_email_validator_general_settings', 'turbosmtp_email_validator_api_timeout', [
 			'type' => 'integer',
@@ -277,20 +260,6 @@ class Turbosmtp_Email_Validator_Admin {
 			'turbosmtp_email_validator_enabled',
 			__( 'Enable Email Validation', "turbosmtp-email-validator" ),
 			[ $this, 'turbosmtp_email_validator_enabled_callback' ],
-			'email-validation-settings',
-			'turbosmtp_email_validator_settings_section'
-		);
-		add_settings_field(
-			'turbosmtp_email_validator_consumer_key',
-			__( 'Consumer Key', "turbosmtp-email-validator" ),
-			[ $this, 'turbosmtp_email_validator_consumer_key_callback' ],
-			'email-validation-settings',
-			'turbosmtp_email_validator_settings_section'
-		);
-		add_settings_field(
-			'turbosmtp_email_validator_consumer_secret',
-			__( 'Consumer Secret', "turbosmtp-email-validator" ),
-			[ $this, 'turbosmtp_email_validator_consumer_secret_callback' ],
 			'email-validation-settings',
 			'turbosmtp_email_validator_settings_section'
 		);
@@ -363,6 +332,7 @@ class Turbosmtp_Email_Validator_Admin {
 
 
 	public function settings_menu() {
+
 		add_options_page(
 			__( 'Email Validation Settings', 'turbosmtp-email-validator' ),
 			'Email Validation',

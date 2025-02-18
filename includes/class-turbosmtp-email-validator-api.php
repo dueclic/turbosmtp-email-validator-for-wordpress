@@ -57,29 +57,8 @@ class Turbosmtp_Email_Validator_API
 	public function isValid(
 		$consumer_key = null,
 		$consumer_secret = null
-	){
-		try {
-			$api_url = $this->getApiUrl();
-
-			$response = wp_remote_get( $api_url.'/user/config', array(
-				'timeout' => $this->api_timeout,
-				'user-agent' => 'turboSMTP Email Validator (WordPress Plugin)',
-				'headers' => array(
-					'accept'         => 'application/json',
-					'Content-Type'   => 'application/json',
-					'consumerKey'    => !is_null($consumer_key) ? $consumer_key : $this->consumer_key,
-					'consumerSecret' => !is_null($consumer_secret) ? $consumer_secret : $this->consumer_secret,
-				),
-			) );
-
-			if ((!is_wp_error($response)) && (200 === wp_remote_retrieve_response_code($response))) {
-				return true;
-			}
-		} catch (\Exception $ex) {
-			error_log($ex->getMessage());
-		}
-
-		return false;
+	): bool {
+		return !is_null($this->getUserInfo($consumer_key, $consumer_secret));
 	}
 
 	public function validateEmail(
@@ -113,6 +92,42 @@ class Turbosmtp_Email_Validator_API
 				return $validationResult;
 			}
 		}
+		return null;
+	}
+
+	public function getUserInfo(
+		$consumer_key = null,
+		$consumer_secret = null
+	){
+		try {
+			if ( ! $this->hasApiKeys() ) {
+				return null;
+			}
+			$api_url = $this->getApiUrl();
+
+			$response = wp_remote_get( $api_url . '/user/config', array(
+				'timeout'    => $this->api_timeout,
+				'user-agent' => 'turboSMTP Email Validator (WordPress Plugin)',
+				'headers'    => array(
+					'accept'         => 'application/json',
+					'Content-Type'   => 'application/json',
+					'consumerKey'    => ! is_null( $consumer_key ) ? $consumer_key : $this->consumer_key,
+					'consumerSecret' => ! is_null( $consumer_secret ) ? $consumer_secret : $this->consumer_secret,
+				),
+			) );
+			if ((!is_wp_error($response)) && (200 === wp_remote_retrieve_response_code($response))) {
+				$body = wp_remote_retrieve_body($response);
+
+				$user_info = json_decode($body, true);
+
+				if (json_last_error() === JSON_ERROR_NONE) {
+					return $user_info;
+				}
+			}
+		} catch (\Exception $ex) {
+			error_log($ex->getMessage());
+		}
+
 		return null;
 	}
 
