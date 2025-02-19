@@ -141,6 +141,10 @@ class Turbosmtp_Email_Validator {
 			), $this->get_plugin_name(), $this->get_version()
 		);
 
+
+		$prefix = is_network_admin() ? 'network_admin_' : '';
+		$this->loader->add_filter("{$prefix}plugin_action_links_" . TURBOSMTP_EMAIL_VALIDATOR_BASENAME, $plugin_admin, 'settings_link', 10, 2);
+
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'settings_menu' );

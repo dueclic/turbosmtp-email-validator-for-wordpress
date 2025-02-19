@@ -31,13 +31,13 @@ if ( ! defined( 'ABSPATH' ) ) {
         </div>
         <div class="tsev-main-forms">
             <nav class="nav-tab-wrapper">
-                <a href="<?php echo admin_url( 'options-general.php?page=email-validation-settings&subpage=settings' ); ?>"
+                <a href="<?php echo admin_url( 'options-general.php?page=turbosmtp-email-validator&subpage=settings' ); ?>"
                    class="nav-tab <?php echo( $subpage !== 'validator' && $subpage !== 'history' ? 'nav-tab-active' : '' ); ?>">
 					<?php esc_html_e( "Settings", "turbosmtp-email-validator" ); ?>
                 </a>
-                <a href="<?php echo admin_url( 'options-general.php?page=email-validation-settings&subpage=validator' ); ?>"
+                <a href="<?php echo admin_url( 'options-general.php?page=turbosmtp-email-validator&subpage=validator' ); ?>"
                    class="nav-tab <?php echo( $subpage === 'validator' ? 'nav-tab-active' : '' ); ?>">Validator</a>
-                <a href="<?php echo admin_url( 'options-general.php?page=email-validation-settings&subpage=history' ); ?>"
+                <a href="<?php echo admin_url( 'options-general.php?page=turbosmtp-email-validator&subpage=history' ); ?>"
                    class="nav-tab <?php echo( $subpage === 'history' ? 'nav-tab-active' : '' ); ?>">History</a>
             </nav>
 

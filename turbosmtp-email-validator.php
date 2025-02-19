@@ -35,6 +35,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
+define( 'TURBOSMTP_EMAIL_VALIDATOR_BASENAME', plugin_basename(__FILE__));
 define( 'TURBOSMTP_EMAIL_VALIDATOR_VERSION', '1.0.0' );
 define( 'TURBOSMTP_EMAIL_VALIDATOR_PATH', __FILE__);
 

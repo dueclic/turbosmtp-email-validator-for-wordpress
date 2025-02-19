@@ -217,6 +217,28 @@ class Turbosmtp_Email_Validator_Admin {
 		echo '<input type="text" name="turbosmtp_email_validator_error_message" value="' . esc_attr( $arguments['value'] ) . '" class="regular-text">';
 	}
 
+	/**
+	 * Register the shortcut for the settings area.
+	 *
+	 * @since    1.0.0
+	 */
+	public function settings_link($links, $file)
+	{
+		if (is_network_admin()) {
+			$settings_url = network_admin_url('admin.php?page=turbosmtp-email-validator');
+		} else {
+			$settings_url = admin_url('admin.php?page=turbosmtp-email-validator');
+		}
+
+		$settings_link = '<a href="' . esc_url($settings_url) . '">' . __('Settings', 'turbosmtp-email-validator') . '</a>';
+		array_unshift($links, $settings_link);
+
+		$credits_link = '<a style="font-weight: bold;" href="https://serversmtp.com/email-validation-tool/" target="_blank">' . __('Buy Credits', 'turbosmtp-email-validator') . '</a>';
+		array_unshift($links, $credits_link);
+
+		return $links;
+	}
+
 	public function login_handler() {
 
 		$consumer_key    = sanitize_text_field( $_POST['consumer_key'] );
@@ -403,7 +425,7 @@ class Turbosmtp_Email_Validator_Admin {
 			__( 'Email Validation Settings', 'turbosmtp-email-validator' ),
 			'Email Validation',
 			'manage_options',
-			'email-validation-settings',
+			'turbosmtp-email-validator',
 			[ $this, 'settings_page' ]
 		);
 
