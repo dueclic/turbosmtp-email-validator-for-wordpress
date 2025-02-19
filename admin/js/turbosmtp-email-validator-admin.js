@@ -45,4 +45,16 @@
 
 	});
 
+	$(document).on("click", ".tsev-login-form-password-field #showPassword", function(){
+		$(".tsev-login-form-password-field #showPassword").hide();
+		$(".tsev-login-form-password-field #hidePassword").show();
+		$(".tsev-login-form-password-field #consumer_secret").prop('type', 'text');
+	});
+
+	$(document).on("click", ".tsev-login-form-password-field #hidePassword", function(){
+		$(".tsev-login-form-password-field #showPassword").show();
+		$(".tsev-login-form-password-field #hidePassword").hide();
+		$(".tsev-login-form-password-field #consumer_secret").prop('type', 'password');
+	});
+
 })( jQuery );
