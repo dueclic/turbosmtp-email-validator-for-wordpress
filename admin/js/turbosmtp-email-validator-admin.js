@@ -29,4 +29,20 @@
 	 * practising this, we should strive to set a better example in our own work.
 	 */
 
+	$(document).on("click", "#turbosmtp-disconnect", function(evt){
+
+		evt.preventDefault();
+		if (confirm(turbosmtpEmailValidator.disconnect_account_confirm_message)){
+			$.post(turbosmtpEmailValidator.ajax_disconnect_url, {}, function (response) {
+
+				if (response.success) {
+					window.location.reload();
+				} else {
+					alert(response.data.message);
+				}
+			});
+		}
+
+	});
+
 })( jQuery );

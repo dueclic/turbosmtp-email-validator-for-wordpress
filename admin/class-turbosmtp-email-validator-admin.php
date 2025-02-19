@@ -90,6 +90,22 @@ class Turbosmtp_Email_Validator_Admin {
 
 	}
 
+	public function ajax_disconnect() {
+
+		if ( ! wp_verify_nonce( sanitize_text_field( $_GET['_wpnonce'] ), 'turbosmtp-email-validator-disconnect' ) ) {
+			wp_send_json_error( [
+				'message' => __( 'Invalid request', 'turbosmtp-email-validator' )
+			] );
+		}
+
+		deactivate_turbosmtp_email_validator();
+
+		wp_send_json_success( [
+			'message' => __( 'Emailchef account successfully disconnected' )
+		] );
+
+	}
+
 	/**
 	 * Register the JavaScript for the admin area.
 	 *
@@ -110,6 +126,17 @@ class Turbosmtp_Email_Validator_Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/turbosmtp-email-validator-admin.js', array( 'jquery' ), $this->version, false );
+		wp_localize_script($this->plugin_name, 'turbosmtpEmailValidator', [
+			'disconnect_account_confirm_message' => esc_html__("Are you sure you want to disconnect account?", "turbosmtp-email-validator"),
+            'ajax_disconnect_url' => wp_nonce_url(
+	            add_query_arg( [
+		            'action' => 'turbosmtp-email-validator-disconnect'
+	            ],
+		            admin_url( 'admin-ajax.php' )
+	            ),
+	            'turbosmtp-email-validator-disconnect'
+            )
+		]);
 
 	}
 

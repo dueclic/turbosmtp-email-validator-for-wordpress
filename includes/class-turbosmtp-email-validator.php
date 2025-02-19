@@ -145,7 +145,8 @@ class Turbosmtp_Email_Validator {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'settings_menu' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'settings_init' );
-		$this->loader->add_action('admin_post_turbosmtp-email-validator-login', $plugin_admin, 'login_handler');
+		$this->loader->add_action( 'admin_post_turbosmtp-email-validator-login', $plugin_admin, 'login_handler' );
+		$this->loader->add_action( 'wp_ajax_turbosmtp-email-validator-disconnect', $plugin_admin, 'ajax_disconnect' );
 	}
 
 	/**
@@ -204,8 +205,8 @@ class Turbosmtp_Email_Validator {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
-		$enabled = get_option( 'turbosmtp_email_validator_enabled', 'no' );
-		$validation_forms = get_option('turbosmtp_email_validator_validation_forms');
+		$enabled          = get_option( 'turbosmtp_email_validator_enabled', 'no' );
+		$validation_forms = get_option( 'turbosmtp_email_validator_validation_forms' );
 
 		if ( $enabled === 'yes' ) {
 
@@ -213,52 +214,52 @@ class Turbosmtp_Email_Validator {
 
 			// WordPress Registrations
 
-			if (is_array($validation_forms)  && in_array('wordpress_registration', $validation_forms) ){
-				$this->loader->add_filter('registration_errors', $plugin_public, 'wordpress_registration_validator', 10, 3);
-				$this->loader->add_filter('wpmu_validate_user_signup', $plugin_public, 'wordpress_multisite_registration_validator', 10, 1);
+			if ( is_array( $validation_forms ) && in_array( 'wordpress_registration', $validation_forms ) ) {
+				$this->loader->add_filter( 'registration_errors', $plugin_public, 'wordpress_registration_validator', 10, 3 );
+				$this->loader->add_filter( 'wpmu_validate_user_signup', $plugin_public, 'wordpress_multisite_registration_validator', 10, 1 );
 			}
 
 			// WooCommerce
 
-			if (is_array($validation_forms)  && in_array('woocommerce', $validation_forms) ) {
+			if ( is_array( $validation_forms ) && in_array( 'woocommerce', $validation_forms ) ) {
 				$this->loader->add_action( 'woocommerce_register_post', $plugin_public, 'woocommerce_registration_validator', 10, 3 );
 				$this->loader->add_filter( 'woocommerce_after_checkout_validation', $plugin_public, 'woocommerce_validator', 10, 2 );
 			}
 
 			// WordPress Comments
 
-			if (is_array($validation_forms) && in_array('wordpress_comments', $validation_forms)) {
-				$this->loader->add_action('pre_comment_on_post', $plugin_public, 'apply_is_email_validator');
-				$this->loader->add_action('comment_post', $plugin_public, 'remove_is_email_validator');
+			if ( is_array( $validation_forms ) && in_array( 'wordpress_comments', $validation_forms ) ) {
+				$this->loader->add_action( 'pre_comment_on_post', $plugin_public, 'apply_is_email_validator' );
+				$this->loader->add_action( 'comment_post', $plugin_public, 'remove_is_email_validator' );
 			}
 
 			// MailChimp Forms
 
-			if (is_array($validation_forms) && in_array('mc4wp_mailchimp', $validation_forms)) {
-				$this->loader->add_filter('mc4wp_form_messages', $plugin_public, 'mc4wp_mailchimp_error_message');
-				$this->loader->add_filter('mc4wp_form_errors', $plugin_public, 'mc4wp_mailchimp_validator', 10, 2);
+			if ( is_array( $validation_forms ) && in_array( 'mc4wp_mailchimp', $validation_forms ) ) {
+				$this->loader->add_filter( 'mc4wp_form_messages', $plugin_public, 'mc4wp_mailchimp_error_message' );
+				$this->loader->add_filter( 'mc4wp_form_errors', $plugin_public, 'mc4wp_mailchimp_validator', 10, 2 );
 			}
 
 			// Gravity Forms
 
-			if (is_array($validation_forms) && in_array('gravity_forms', $validation_forms)) {
-				$this->loader->add_filter('gform_field_validation', $plugin_public, 'gravity_forms_validator', 10, 4);
+			if ( is_array( $validation_forms ) && in_array( 'gravity_forms', $validation_forms ) ) {
+				$this->loader->add_filter( 'gform_field_validation', $plugin_public, 'gravity_forms_validator', 10, 4 );
 			}
 
 			// Contact Form 7
 
-			if (is_array($validation_forms) && in_array('contact_form_7', $validation_forms)) {
-				$this->loader->add_filter('wpcf7_validate_email', $plugin_public, 'contact_form_7_validator', 10, 2);
-				$this->loader->add_filter('wpcf7_validate_email*', $plugin_public, 'contact_form_7_validator', 10, 2);
+			if ( is_array( $validation_forms ) && in_array( 'contact_form_7', $validation_forms ) ) {
+				$this->loader->add_filter( 'wpcf7_validate_email', $plugin_public, 'contact_form_7_validator', 10, 2 );
+				$this->loader->add_filter( 'wpcf7_validate_email*', $plugin_public, 'contact_form_7_validator', 10, 2 );
 			}
 
 			// WPForms
-			if (is_array($validation_forms) && in_array('wpforms', $validation_forms)) {
-				$this->loader->add_filter('wpforms_process_after_filter', $plugin_public, 'wpforms_validator', 10, 3);
+			if ( is_array( $validation_forms ) && in_array( 'wpforms', $validation_forms ) ) {
+				$this->loader->add_filter( 'wpforms_process_after_filter', $plugin_public, 'wpforms_validator', 10, 3 );
 			}
 
-			if (is_array($validation_forms) && in_array('elementor_forms', $validation_forms)) {
-				$this->loader->add_filter('elementor_pro/forms/validation/email', $plugin_public, 'elementor_validator', 10, 3);
+			if ( is_array( $validation_forms ) && in_array( 'elementor_forms', $validation_forms ) ) {
+				$this->loader->add_filter( 'elementor_pro/forms/validation/email', $plugin_public, 'elementor_validator', 10, 3 );
 			}
 
 

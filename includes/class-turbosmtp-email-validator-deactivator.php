@@ -31,6 +31,17 @@ class Turbosmtp_Email_Validator_Deactivator {
 	 */
 	public static function deactivate() {
 		global $wpdb;
+
+
+		delete_option("turbosmtp_email_validator_enabled");
+		delete_option("turbosmtp_email_validator_consumer_key");
+		delete_option("turbosmtp_email_validator_consumer_secret");
+		delete_option("turbosmtp_email_validator_api_timeout");
+		delete_option("turbosmtp_email_validator_validation_forms");
+		delete_option("turbosmtp_email_validator_validation_pass");
+		delete_option("turbosmtp_email_validator_general_settings");
+		delete_option("turbosmtp_email_validator_error_message");
+
 		$table_name      = $wpdb->prefix . 'validated_emails';
 
 		$wpdb->query("DROP TABLE IF EXISTS $table_name");
