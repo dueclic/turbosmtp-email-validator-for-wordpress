@@ -176,9 +176,13 @@ class Turbosmtp_Email_Validator_Admin {
 	}
 
 
-	public function turbosmtp_email_validator_settings_section_callback() {
-		echo 'Configure the settings for email validation.';
+	public function turbosmtp_email_validator_general_settings_section_callback() {
+		esc_html_e('General Settings info', 'turbosmtp-email-validator');
 	}
+
+    public function turbosmtp_email_validator_validation_settings_section_callback(){
+        esc_html_e("Define on which forms would you like to apply email validation, and email statuses that should pass validation.");
+    }
 
 	public function turbosmtp_email_validator_enabled_callback() {
 		$enabled = get_option( 'turbosmtp_email_validator_enabled', 'no' );
@@ -229,10 +233,22 @@ class Turbosmtp_Email_Validator_Admin {
 
 		update_option( 'turbosmtp_email_validator_consumer_key', $consumer_key );
 		update_option( 'turbosmtp_email_validator_consumer_secret', $consumer_secret );
+		update_option( 'turbosmtp_email_validator_cenabled', 1 );
 
-        $this->get_emailvalidator_subscription(true);
+		update_option( 'turbosmtp_email_validator_validation_forms', turbosmtp_email_validator_validation_forms(true) );
 
-		wp_redirect( remove_query_arg( 'login_error', wp_get_referer() ) );
+		$validation_pass = [
+			'valid'     => 'valid',
+			'catch-all' => 'catch-all',
+			'unknown'   => 'unknown',
+		];
+
+		update_option( 'turbosmtp_email_validator_validation_pass', $validation_pass );
+
+		update_option( 'turbosmtp_email_validator_error_message', __( 'We cannot accept this email address.', 'turbosmtp-email-validator' ) );
+
+		wp_redirect( add_query_arg('refresh', 1, remove_query_arg( 'login_error', wp_get_referer() ) ));
+        
 		exit;
 
 	}
@@ -302,23 +318,23 @@ class Turbosmtp_Email_Validator_Admin {
 
 		add_settings_section(
 			'turbosmtp_email_validator_settings_section',
-			__( 'Email Validation Settings', "turbosmtp-email-validator" ),
-			[ $this, 'turbosmtp_email_validator_settings_section_callback' ],
-			'email-validation-settings'
+			__( 'General Settings', "turbosmtp-email-validator" ),
+			[ $this, 'turbosmtp_email_validator_general_settings_section_callback' ],
+			'email-general-settings'
 		);
 
 		add_settings_field(
 			'turbosmtp_email_validator_enabled',
 			__( 'Enable Email Validation', "turbosmtp-email-validator" ),
 			[ $this, 'turbosmtp_email_validator_enabled_callback' ],
-			'email-validation-settings',
+			'email-general-settings',
 			'turbosmtp_email_validator_settings_section'
 		);
 		add_settings_field(
 			'turbosmtp_email_validator_api_timeout',
 			__( 'API timeout', "turbosmtp-email-validator" ),
 			[ $this, 'turbosmtp_email_validator_api_timeout_callback' ],
-			'email-validation-settings',
+			'email-general-settings',
 			'turbosmtp_email_validator_settings_section'
 		);
 
@@ -337,12 +353,19 @@ class Turbosmtp_Email_Validator_Admin {
 			'sanitize_callback' => 'sanitize_text_field',
 		] );
 
+		add_settings_section(
+			'turbosmtp_email_validator_validation_settings_section',
+			__( 'Email Validation Settings', "turbosmtp-email-validator" ),
+			[ $this, 'turbosmtp_email_validator_validation_settings_section_callback' ],
+			'email-validation-settings'
+		);
+
 		add_settings_field(
 			'turbosmtp_email_validator_validation_forms',
 			__( 'Forms to be validated', 'turbosmtp-email-validator' ),
 			[ $this, 'turbosmtp_email_validator_forms_callback' ],
 			'email-validation-settings',
-			'turbosmtp_email_validator_settings_section',
+			'turbosmtp_email_validator_validation_settings_section',
 			[
 				'id'      => 'turbosmtp_email_validator_validation_forms',
 				'options' => turbosmtp_email_validator_validation_forms(),
@@ -355,7 +378,7 @@ class Turbosmtp_Email_Validator_Admin {
 			__( 'Validation pass', 'turbosmtp-email-validator' ),
 			[ $this, 'turbosmtp_email_validator_forms_callback' ],
 			'email-validation-settings',
-			'turbosmtp_email_validator_settings_section',
+			'turbosmtp_email_validator_validation_settings_section',
 			[
 				'id'      => 'turbosmtp_email_validator_validation_pass',
 				'options' => turbosmtp_email_validator_validation_statuses(),
@@ -373,7 +396,7 @@ class Turbosmtp_Email_Validator_Admin {
 			__( 'Custom error message', 'turbosmtp-email-validator' ),
 			[ $this, 'turbosmtp_email_validator_error_message_callback' ],
 			'email-validation-settings',
-			'turbosmtp_email_validator_settings_section',
+			'turbosmtp_email_validator_validation_settings_section',
 			[
 				'id'    => 'turbosmtp_email_validator_error_message',
 				'value' => get_option( 'turbosmtp_email_validator_error_message' )
@@ -389,7 +412,7 @@ class Turbosmtp_Email_Validator_Admin {
 			__( 'Email Validation Settings', 'turbosmtp-email-validator' ),
 			'Email Validation',
 			'manage_options',
-			'email-validation-settings',
+			'email-general-settings',
 			[ $this, 'settings_page' ]
 		);
 
