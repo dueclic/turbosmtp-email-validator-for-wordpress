@@ -248,7 +248,7 @@ class Turbosmtp_Email_Validator_Admin {
 		update_option( 'turbosmtp_email_validator_error_message', __( 'We cannot accept this email address.', 'turbosmtp-email-validator' ) );
 
 		wp_redirect( add_query_arg('refresh', 1, remove_query_arg( 'login_error', wp_get_referer() ) ));
-        
+
 		exit;
 
 	}
