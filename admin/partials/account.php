@@ -30,7 +30,7 @@
         <strong><?php esc_html_e( "Remaining Free Credits", "turbosmtp-email-validator" ); ?></strong> <span><?php echo esc_html($subscription['remaining_free_credit'] ?? 0 ); ?></span>
     </div>
     <div class="tsev-text-center submit">
-        <button type="submit" name="submit" id="submit" class="button button-small button-secondary">
+        <button type="submit"  id="submit" class="button button-small button-secondary">
 			<?php _e( "Refresh subscription", "turbosmtp-email-validator" ); ?>
         </button>
     </div>
