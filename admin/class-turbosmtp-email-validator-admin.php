@@ -234,19 +234,9 @@ class Turbosmtp_Email_Validator_Admin {
 
 		update_option( 'turbosmtp_email_validator_consumer_key', $consumer_key );
 		update_option( 'turbosmtp_email_validator_consumer_secret', $consumer_secret );
-		update_option( 'turbosmtp_email_validator_cenabled', 1 );
+		update_option( 'turbosmtp_email_validator_enabled', 'yes' );
 
-		update_option( 'turbosmtp_email_validator_validation_forms', turbosmtp_email_validator_validation_forms(true) );
-
-		$validation_pass = [
-			'valid'     => 'valid',
-			'catch-all' => 'catch-all',
-			'unknown'   => 'unknown',
-		];
-
-		update_option( 'turbosmtp_email_validator_validation_pass', $validation_pass );
-
-		update_option( 'turbosmtp_email_validator_error_message', __( 'We cannot accept this email address.', 'turbosmtp-email-validator' ) );
+		activate_turbosmtp_email_validator();
 
 		wp_redirect( add_query_arg('refresh', 1, remove_query_arg( 'login_error', wp_get_referer() ) ));
 
