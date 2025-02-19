@@ -12,7 +12,9 @@
  * @subpackage Turbosmtp_Email_Validator/admin/partials
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+} // Exit if accessed directly
 
 ?>
 
@@ -23,9 +25,9 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
     <div class="tsev-main-container">
         <div class="tsev-main-account">
-            <?php
-            include_once (plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . 'admin/partials/account.php');
-            ?>
+			<?php
+			include_once( plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . 'admin/partials/account.php' );
+			?>
         </div>
         <div class="tsev-main-forms">
             <nav class="nav-tab-wrapper">
@@ -35,18 +37,21 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
             </nav>
 
             <div id="tsev-tabs">
-
+                <div id="tsev-settings">
+                    <form method="post" action="options.php">
+		                <?php
+		                settings_fields( 'turbosmtp_email_validator_general_settings' );
+		                do_settings_sections( 'email-validation-settings' );
+		                submit_button();
+		                ?>
+                    </form>
+                </div>
             </div>
+
         </div>
 
 
-
-
-
-
-
     </div>
-
 
 
 </div>
