@@ -101,7 +101,7 @@ class Turbosmtp_Email_Validator_Admin {
 		deactivate_turbosmtp_email_validator();
 
 		wp_send_json_success( [
-			'message' => __( 'Emailchef account successfully disconnected' )
+			'message' => __( 'turboSMTP account successfully disconnected', 'turbosmtp-email-validator' )
 		] );
 
 	}
