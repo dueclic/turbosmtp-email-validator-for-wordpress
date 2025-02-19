@@ -170,6 +170,7 @@ class Turbosmtp_Email_Validator_Admin {
 
             $subpage = sanitize_text_field( $_GET['subpage'] );
 
+
 			include_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . 'admin/partials/turbosmtp-email-validator-admin-display.php';
 		}
 
@@ -412,7 +413,7 @@ class Turbosmtp_Email_Validator_Admin {
 			__( 'Email Validation Settings', 'turbosmtp-email-validator' ),
 			'Email Validation',
 			'manage_options',
-			'email-general-settings',
+			'email-validation-settings',
 			[ $this, 'settings_page' ]
 		);
 
