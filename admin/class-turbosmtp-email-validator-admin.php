@@ -138,12 +138,12 @@ class Turbosmtp_Email_Validator_Admin {
 
 			$user_info = $this->api->getUserInfo();
 
-			//require_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . "/includes/class-turbosmtp-validated-emails-table.php";
 			$has_api_keys = $this->api->hasApiKeys() && get_option( 'turbosmtp_email_validator_enabled' ) === 'yes';
 			$subscription = $this->get_emailvalidator_subscription( isset( $_REQUEST['refresh'] ) );
-			//$validated_emails_table = new Turbosmtp_Validated_Emails_Table();
 
-			include_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . 'admin/partials/settings.php';
+            $subpage = sanitize_text_field( $_GET['subpage'] );
+
+			include_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . 'admin/partials/turbosmtp-email-validator-admin-display.php';
 		}
 
 	}

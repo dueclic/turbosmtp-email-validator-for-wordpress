@@ -18,3 +18,27 @@
                 </span>
 </div>
 <hr class="tsev-hr-separator">
+
+<form method="get" action="">
+    <input type="hidden" name="page" value="<?php echo esc_attr(sanitize_text_field( $_REQUEST['page'] )); ?>">
+    <input type="hidden" name="refresh" value="1">
+    <h3><?php esc_html_e( "Current Subscription", "turbosmtp-email-validator" ); ?></h3>
+    <div class="tsev-credits-row">
+        <strong><?php esc_html_e( "Remaining Paid Credits", "turbosmtp-email-validator" ); ?></strong> <span><?php echo esc_html($subscription['currency'] ?? ""); ?> <?php echo esc_html( $subscription['paid_credits'] ?? 0 ); ?></span>
+    </div>
+    <div class="tsev-credits-row">
+        <strong><?php esc_html_e( "Remaining Free Credits", "turbosmtp-email-validator" ); ?></strong> <span><?php echo esc_html($subscription['remaining_free_credit'] ?? 0 ); ?></span>
+    </div>
+    <div class="tsev-text-center submit">
+        <button type="submit" name="submit" id="submit" class="button button-small button-secondary">
+			<?php _e( "Refresh subscription", "turbosmtp-email-validator" ); ?>
+        </button>
+    </div>
+	<?php
+	/*
+	submit_button(
+		__( "Refresh subscription", "turbosmtp-email-validator" )
+	);
+	*/
+	?>
+</form>
