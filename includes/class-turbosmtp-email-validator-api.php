@@ -100,9 +100,6 @@ class Turbosmtp_Email_Validator_API
 		$consumer_secret = null
 	){
 		try {
-			if ( ! $this->hasApiKeys() ) {
-				return null;
-			}
 			$api_url = $this->getApiUrl();
 
 			$response = wp_remote_get( $api_url . '/user/config', array(
@@ -115,10 +112,12 @@ class Turbosmtp_Email_Validator_API
 					'consumerSecret' => ! is_null( $consumer_secret ) ? $consumer_secret : $this->consumer_secret,
 				),
 			) );
+
 			if ((!is_wp_error($response)) && (200 === wp_remote_retrieve_response_code($response))) {
 				$body = wp_remote_retrieve_body($response);
 
 				$user_info = json_decode($body, true);
+
 
 				if (json_last_error() === JSON_ERROR_NONE) {
 					return $user_info;

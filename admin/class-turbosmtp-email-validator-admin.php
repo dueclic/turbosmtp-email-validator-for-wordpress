@@ -230,6 +230,8 @@ class Turbosmtp_Email_Validator_Admin {
 		update_option( 'turbosmtp_email_validator_consumer_key', $consumer_key );
 		update_option( 'turbosmtp_email_validator_consumer_secret', $consumer_secret );
 
+        $this->get_emailvalidator_subscription(true);
+
 		wp_redirect( remove_query_arg( 'login_error', wp_get_referer() ) );
 		exit;
 
