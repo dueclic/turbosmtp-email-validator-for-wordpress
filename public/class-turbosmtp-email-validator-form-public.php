@@ -78,7 +78,7 @@ class Turbosmtp_Email_Validator_Form_Public {
 	/**
 	 * @return string
 	 */
-	public function set_error_message( ) {
+	public function set_error_message() {
 		$custom_error = get_option( 'turbosmtp_email_validator_error_message' );
 
 		$error_message = __( 'We cannot accept this email address.', 'turbosmtp-email-validator' );
@@ -112,10 +112,13 @@ class Turbosmtp_Email_Validator_Form_Public {
 				$table_name, array(
 					'email'        => $email,
 					'source'       => $this->source,
+					'ip_address'   => ( $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'] ),
 					'form_id'      => $this->formId,
-					'status'       => $validationInfo['status'],
+					'status'       => turbosmtp_email_validator_get_status($validationInfo['status'], $this->validationPass),
+					'sub_status'   => $validationInfo['sub_status'],
+					'original_status'   => $validationInfo['status'],
 					'validated_at' => current_time( 'mysql' ),
-					'raw_data'     => json_encode($validationInfo),
+					'raw_data'     => json_encode( $validationInfo ),
 				)
 			);
 		}
@@ -132,7 +135,7 @@ class Turbosmtp_Email_Validator_Form_Public {
 	 */
 	public function setup_form_validation( ?array $validationInfo, callable $callback, $args ) {
 		if ( ! is_null( $validationInfo ) ) {
-			if ( !turbosmtp_email_validator_status_ok( $validationInfo['status'], $this->validationPass ) ) {
+			if ( ! turbosmtp_email_validator_status_ok( $validationInfo['status'], $this->validationPass ) ) {
 				return call_user_func( $callback, $args );
 			}
 		}

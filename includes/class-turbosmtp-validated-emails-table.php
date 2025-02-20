@@ -25,8 +25,10 @@ class Turbosmtp_Validated_Emails_Table extends WP_List_Table {
 			return '<textarea style="width:100%; height:80px">' . $value . '</textarea>';
 		} else if ( $column_name === 'status' ) {
 
+			$original_status = $item[ 'original_status' ];
+
 			return '<p><span style="font-weight:bold;color: ' . ( $value === 'valid' ? 'green' : 'red' ) . ';">' . strtoupper( $value ) . '</span>' .
-			       ( $value !== 'valid' && turbosmtp_email_validator_status_ok( $value, $this->validationPass ) ? '<span class="tooltip dashicons dashicons-info"><span class="tooltip-text">'.__('It should be considered as Valid, due Validation Pass', 'turbosmtp-email-validator').'</span></span></p>' : '');
+			       ( $value !== $original_status ? '<span class="tooltip dashicons dashicons-info"><span class="tooltip-text">'.__('It should be considered as Valid, due Validation Pass', 'turbosmtp-email-validator').'</span></span></p>' : '');
 		} else if ( $column_name === 'source' ) {
 			switch ( $value ) {
 				case "wordpressisemail":
