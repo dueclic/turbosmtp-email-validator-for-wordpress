@@ -54,6 +54,10 @@
 .tsev-text-center p{
     text-align: center;
 }
+.tsev-text-right,
+.tsev-text-right p{
+    text-align: right;
+}
 .tsev-login-form-password-field{
     position: relative;
 }
@@ -201,6 +205,18 @@
 }
 .tsev-validator-invalid{
     color: var(--tsev-error-color);
+}
+.tsev-validation-response{
+    padding: 1em 1.5em;
+    margin: 0 0 1.5em;
+    background: #f0f0f1;
+    background: rgba(0, 0, 0, .07);
+    font-size: 13px;
+    font-family: Consolas, Monaco, monospace;
+    direction: ltr;
+    unicode-bidi: embed;
+    border: #DDD solid 1px;
+    border-radius: .25em;
 }
 
 .tooltip{

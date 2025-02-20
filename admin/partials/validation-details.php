@@ -18,21 +18,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 ?>
 
-<div class="turbosmtp-validation-details">
+<div>
 	<h2><?php esc_html_e('Email Validation Details', 'turbosmtp-email-validator'); ?></h2>
-
+<div class="tsev-validation-response">
     <?php
         foreach ($validation_details as $validation_kind => $validation_value):
+            if($validation_value){
             ?>
-            <p><strong><?php echo $validation_kind; ?></strong> <?php echo esc_html($validation_value); ?></p>
-
-        <?php
-    endforeach;
+                <div><strong><?php echo $validation_kind; ?>:</strong> <?php echo esc_html($validation_value); ?></div>
+            <?php
+            }
+        endforeach;
     ?>
-
+</div>
     <?php
         if ($is_modal):
     ?>
+        <div class="tsev-text-right">
 	<button class="turbosmtp-modal-close button"><?php esc_html_e('Close', 'turbosmtp-email-validator'); ?></button>
     <?php
     endif;
