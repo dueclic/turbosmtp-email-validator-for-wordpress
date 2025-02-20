@@ -44,8 +44,8 @@ if ( ! defined( 'ABSPATH' ) ) {
                     <h2 class="tsev-validator-valid"><?php echo esc_html__( 'Email is valid', 'turbosmtp-email-validator' ); ?></h2>
 
 				<?php } ?>
-                <hr class="tsev-hr-separator">
 
+                    <div class="tsev-validation-response-container">
 				<?php
 				$validation_details = is_wp_error( $validation_result ) ?
                     $validation_result->get_error_data() :
@@ -54,7 +54,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 				include_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . 'admin/partials/validation-details.php';
 
             ?>
-
+                </div>
+                <hr class="tsev-hr-separator">
         <?php
                 }
 		}

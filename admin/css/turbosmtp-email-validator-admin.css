@@ -206,6 +206,13 @@
 .tsev-validator-invalid{
     color: var(--tsev-error-color);
 }
+.tsev-validation-response-container{
+    display: flex;
+    justify-content: center;
+}
+.tsev-validation-response-container .tsev-validation-response{
+    text-align: left;
+}
 .tsev-validation-response{
     padding: 1em 1.5em;
     margin: 0 0 1.5em;
