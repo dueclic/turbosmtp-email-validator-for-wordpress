@@ -47,8 +47,12 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <hr class="tsev-hr-separator">
 
 				<?php
-				$details = is_wp_error( $validation_result ) ? $validation_result->get_error_data() : $validation_result;
-                var_dump($details);
+				$validation_details = is_wp_error( $validation_result ) ?
+                    $validation_result->get_error_data() :
+                    $validation_result;
+
+				include_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . 'admin/partials/validation-details.php';
+
             ?>
 
         <?php
