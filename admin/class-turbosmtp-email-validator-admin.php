@@ -92,6 +92,13 @@ class Turbosmtp_Email_Validator_Admin {
 
 	public function ajax_get_email_details() {
 		global $wpdb;
+
+		if ( ! wp_verify_nonce( sanitize_text_field( $_GET['_wpnonce'] ), 'turbosmtp-email-validator_get_email_details' ) ) {
+			wp_send_json_error( [
+				'message' => __( 'Invalid request', 'turbosmtp-email-validator' )
+			] );
+		}
+
 		$table_name = $wpdb->prefix . 'validated_emails';
 
 		$email_id = isset( $_POST['email_id'] ) ? intval( $_POST['email_id'] ) : 0;
@@ -159,6 +166,14 @@ class Turbosmtp_Email_Validator_Admin {
 					admin_url( 'admin-ajax.php' )
 				),
 				'turbosmtp-email-validator-disconnect'
+			),
+			'ajax_get_email_details_url'                => wp_nonce_url(
+				add_query_arg( [
+					'action' => 'turbosmtp-email-validator_get_email_details'
+				],
+					admin_url( 'admin-ajax.php' )
+				),
+				'turbosmtp-email-validator_get_email_details'
 			)
 		] );
 

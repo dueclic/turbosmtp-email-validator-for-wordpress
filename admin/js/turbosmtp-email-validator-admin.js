@@ -64,10 +64,9 @@
         button.prop('disabled', true).text('Loading...');
 
         $.ajax({
-            url: ajaxurl,
+            url: turbosmtpEmailValidator.ajax_get_email_details_url,
             type: 'POST',
             data: {
-                action: 'turbosmtp-email-validator_get_email_details',
                 email_id: emailId,
             },
             success: function (response) {
