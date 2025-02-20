@@ -175,6 +175,27 @@
     max-width: 100% !important;
     margin-right: 1.5em;
 }
+.tsev-form-validator{
+    padding: 2.5rem 1rem;
+}
+.tsev-validator-input{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+}
+.tsev-validator-email{
+    min-width: 300px;
+    width: 50%;
+    font-size: 1.2em;
+}
+.tsev-validator-input .submit{
+    margin: 0;
+    padding: 0;
+}
+.tsev-validator-input .submit input{
+    font-size: 1.2em;
+}
 
 
 .tooltip{

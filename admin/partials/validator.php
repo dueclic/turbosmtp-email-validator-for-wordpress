@@ -1,14 +1,18 @@
 <div id="tsev-validator">
-	<h2><?php esc_html_e("Test Validator", "turbosmtp-email-validator"); ?></h2>
+	<h1><?php esc_html_e("Test Validator", "turbosmtp-email-validator"); ?></h1>
 	<p>Description</p>
-	<form method="post" action="">
-		<input type="email" name="test_email" value="" required>
-		<?php
-		submit_button(
-			__( "Verify now", "turbosmtp-email-validator" )
-		);
-		?>
-	</form>
+    <div class="tsev-form tsev-form-validator card accordion-container tsev-text-center">
+        <form method="post" action="">
+            <p>Insert the email you want to validate:</p>
+            <div class="tsev-validator-input">
+                <input type="email" name="test_email" class="tsev-validator-email" value="" required>
+                <?php
+                submit_button(
+                    __( "Verify now", "turbosmtp-email-validator" )
+                );
+                ?>
+            </div>
+	    </form>
 	<?php
 	if ( isset( $_POST['test_email'] ) ) {
 		$test_email        = sanitize_email( $_POST['test_email'] );
@@ -23,4 +27,5 @@
 		}
 	}
 	?>
+    </div>
 </div>

@@ -1,7 +1,7 @@
 <div id="tsev-log">
-	<h2><?php esc_html_e("Validated Emails", "turbosmtp-email-validator"); ?></h2>
+	<h1><?php esc_html_e("Validated Emails", "turbosmtp-email-validator"); ?></h1>
+    <p>Description</p>
 	<?php
-
 	$validated_emails_table->views();
 	?>
 	<form method="post">
