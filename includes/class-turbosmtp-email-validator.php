@@ -151,6 +151,8 @@ class Turbosmtp_Email_Validator {
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'settings_init' );
 		$this->loader->add_action( 'admin_post_turbosmtp-email-validator-login', $plugin_admin, 'login_handler' );
 		$this->loader->add_action( 'wp_ajax_turbosmtp-email-validator-disconnect', $plugin_admin, 'ajax_disconnect' );
+		$this->loader->add_action('wp_ajax_turbosmtp-email-validator_get_email_details', $plugin_admin, 'ajax_get_email_details');
+
 	}
 
 	/**

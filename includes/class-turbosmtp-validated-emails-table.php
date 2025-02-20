@@ -22,7 +22,7 @@ class Turbosmtp_Validated_Emails_Table extends WP_List_Table {
 	function column_default( $item, $column_name ) {
 		$value = $item[ $column_name ];
 		if ( $column_name === 'raw_data' ) {
-			return '<textarea style="width:100%; height:80px">' . $value . '</textarea>';
+			return '<button data-id="'.$item['id'].'" class="button turbosmtp-show-details">'.esc_html__("Show details", "turbosmtp-email-validator").'</button>';
 		} else if ( $column_name === 'status' ) {
 
 			$original_status = $item[ 'original_status' ];
@@ -146,7 +146,7 @@ class Turbosmtp_Validated_Emails_Table extends WP_List_Table {
 		}
 
 		$total_items = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(id) FROM $table_name WHERE email LIKE %s" . $whereStatus, '%' . $search . '%' ) );
-		$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name WHERE email LIKE %s " . $whereStatus . " ORDER BY $orderby $order LIMIT %d OFFSET %d", '%' . $search . '%', $per_page, $paged ), ARRAY_A );
+		$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT id, email, source, status, validated_at FROM $table_name WHERE email LIKE %s " . $whereStatus . " ORDER BY $orderby $order LIMIT %d OFFSET %d", '%' . $search . '%', $per_page, $paged ), ARRAY_A );
 
 		$this->set_pagination_args( array(
 			'total_items' => $total_items, // total items defined above

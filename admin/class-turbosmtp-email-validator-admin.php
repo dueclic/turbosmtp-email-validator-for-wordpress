@@ -90,6 +90,29 @@ class Turbosmtp_Email_Validator_Admin {
 
 	}
 
+	public function ajax_get_email_details() {
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'validated_emails';
+
+		$email_id = isset( $_POST['email_id'] ) ? intval( $_POST['email_id'] ) : 0;
+		if ( ! $email_id ) {
+			wp_send_json_error( [ 'message' => __( 'Invalid email ID.', 'turbosmtp-email-validator' ) ] );
+		}
+
+		$validation_details = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE id = %d", $email_id ), ARRAY_A );
+		if ( ! $validation_details ) {
+			wp_send_json_error( [ 'message' => __( 'Email not found.', 'turbosmtp-email-validator' ) ] );
+		}
+
+        $validation_details = json_decode($validation_details['raw_data']);
+
+		ob_start();
+		include plugin_dir_path( __FILE__ ) . 'partials/validation-details.php';
+		$html = ob_get_clean();
+
+		wp_send_json_success( [ 'html' => $html ] );
+	}
+
 	public function ajax_disconnect() {
 
 		if ( ! wp_verify_nonce( sanitize_text_field( $_GET['_wpnonce'] ), 'turbosmtp-email-validator-disconnect' ) ) {
@@ -126,17 +149,17 @@ class Turbosmtp_Email_Validator_Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/turbosmtp-email-validator-admin.js', array( 'jquery' ), $this->version, false );
-		wp_localize_script($this->plugin_name, 'turbosmtpEmailValidator', [
-			'disconnect_account_confirm_message' => esc_html__("Are you sure you want to disconnect account?", "turbosmtp-email-validator"),
-            'ajax_disconnect_url' => wp_nonce_url(
-	            add_query_arg( [
-		            'action' => 'turbosmtp-email-validator-disconnect'
-	            ],
-		            admin_url( 'admin-ajax.php' )
-	            ),
-	            'turbosmtp-email-validator-disconnect'
-            )
-		]);
+		wp_localize_script( $this->plugin_name, 'turbosmtpEmailValidator', [
+			'disconnect_account_confirm_message' => esc_html__( "Are you sure you want to disconnect account?", "turbosmtp-email-validator" ),
+			'ajax_disconnect_url'                => wp_nonce_url(
+				add_query_arg( [
+					'action' => 'turbosmtp-email-validator-disconnect'
+				],
+					admin_url( 'admin-ajax.php' )
+				),
+				'turbosmtp-email-validator-disconnect'
+			)
+		] );
 
 	}
 
@@ -168,7 +191,7 @@ class Turbosmtp_Email_Validator_Admin {
 			$has_api_keys = $this->api->hasApiKeys() && get_option( 'turbosmtp_email_validator_enabled' ) === 'yes';
 			$subscription = $this->get_emailvalidator_subscription( isset( $_REQUEST['refresh'] ) );
 
-            $subpage = sanitize_text_field( $_GET['subpage'] );
+			$subpage = sanitize_text_field( $_GET['subpage'] );
 
 
 			include_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . 'admin/partials/turbosmtp-email-validator-admin-display.php';
@@ -178,12 +201,12 @@ class Turbosmtp_Email_Validator_Admin {
 
 
 	public function turbosmtp_email_validator_general_settings_section_callback() {
-		esc_html_e('General Settings info', 'turbosmtp-email-validator');
+		esc_html_e( 'General Settings info', 'turbosmtp-email-validator' );
 	}
 
-    public function turbosmtp_email_validator_validation_settings_section_callback(){
-        esc_html_e("Define on which forms would you like to apply email validation, and email statuses that should pass validation.");
-    }
+	public function turbosmtp_email_validator_validation_settings_section_callback() {
+		esc_html_e( "Define on which forms would you like to apply email validation, and email statuses that should pass validation." );
+	}
 
 	public function turbosmtp_email_validator_enabled_callback() {
 		$enabled = get_option( 'turbosmtp_email_validator_enabled', 'no' );
@@ -222,19 +245,18 @@ class Turbosmtp_Email_Validator_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function settings_link($links, $file)
-	{
-		if (is_network_admin()) {
-			$settings_url = network_admin_url('admin.php?page=turbosmtp-email-validator');
+	public function settings_link( $links, $file ) {
+		if ( is_network_admin() ) {
+			$settings_url = network_admin_url( 'admin.php?page=turbosmtp-email-validator' );
 		} else {
-			$settings_url = admin_url('admin.php?page=turbosmtp-email-validator');
+			$settings_url = admin_url( 'admin.php?page=turbosmtp-email-validator' );
 		}
 
-		$settings_link = '<a href="' . esc_url($settings_url) . '">' . __('Settings', 'turbosmtp-email-validator') . '</a>';
-		array_unshift($links, $settings_link);
+		$settings_link = '<a href="' . esc_url( $settings_url ) . '">' . __( 'Settings', 'turbosmtp-email-validator' ) . '</a>';
+		array_unshift( $links, $settings_link );
 
-		$credits_link = '<a style="font-weight: bold;" href="https://serversmtp.com/email-validation-tool/" target="_blank">' . __('Buy Credits', 'turbosmtp-email-validator') . '</a>';
-		array_unshift($links, $credits_link);
+		$credits_link = '<a style="font-weight: bold;" href="https://serversmtp.com/email-validation-tool/" target="_blank">' . __( 'Buy Credits', 'turbosmtp-email-validator' ) . '</a>';
+		array_unshift( $links, $credits_link );
 
 		return $links;
 	}
@@ -260,7 +282,7 @@ class Turbosmtp_Email_Validator_Admin {
 
 		activate_turbosmtp_email_validator();
 
-		wp_redirect( add_query_arg('refresh', 1, remove_query_arg( 'login_error', wp_get_referer() ) ));
+		wp_redirect( add_query_arg( 'refresh', 1, remove_query_arg( 'login_error', wp_get_referer() ) ) );
 
 		exit;
 
@@ -288,7 +310,7 @@ class Turbosmtp_Email_Validator_Admin {
 			);
 		}
 
-        echo $arguments['prepend'];
+		echo $arguments['prepend'];
 
 		printf( '<fieldset>%s</fieldset>', $options_markup );
 	}
@@ -396,11 +418,11 @@ class Turbosmtp_Email_Validator_Admin {
 				'id'      => 'turbosmtp_email_validator_validation_pass',
 				'options' => turbosmtp_email_validator_validation_statuses(),
 				'value'   => get_option( 'turbosmtp_email_validator_validation_pass' ),
-                'prepend' => '<p style="margin-bottom: 1rem;">'.
-                             esc_html__( "Define which email statuses should be considered valid.", "turbosmtp-email-validator" ).
-                             ' <a href="https://serversmtp.com/email-validation-tool/" target="_blank">'.
-                             esc_html__( "More info about statuses here", "turbosmtp-email-validator").
-                            '</a></p>'
+				'prepend' => '<p style="margin-bottom: 1rem;">' .
+				             esc_html__( "Define which email statuses should be considered valid.", "turbosmtp-email-validator" ) .
+				             ' <a href="https://serversmtp.com/email-validation-tool/" target="_blank">' .
+				             esc_html__( "More info about statuses here", "turbosmtp-email-validator" ) .
+				             '</a></p>'
 			]
 		);
 

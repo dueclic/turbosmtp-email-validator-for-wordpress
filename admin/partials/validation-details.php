@@ -16,7 +16,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } // Exit if accessed directly
 
-var_dump($validation_details);
-
 ?>
 
+<div class="turbosmtp-validation-details">
+	<h2><?php esc_html_e('Email Validation Details', 'turbosmtp-email-validator'); ?></h2>
+
+    <?php
+        foreach ($validation_details as $validation_kind => $validation_value):
+            ?>
+            <p><strong><?php echo $validation_kind; ?></strong> <?php echo esc_html($validation_value); ?></p>
+
+        <?php
+    endforeach;
+    ?>
+
+	<button class="turbosmtp-modal-close button"><?php esc_html_e('Close', 'turbosmtp-email-validator'); ?></button>
+</div>

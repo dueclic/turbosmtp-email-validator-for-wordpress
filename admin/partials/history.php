@@ -34,3 +34,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php $validated_emails_table->display(); ?>
 	</form>
 </div>
+<div id="turbosmtp-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:10000;">
+    <div class="turbosmtp-modal-content" style="background:#fff; padding:20px; max-width:600px; margin:50px auto; border-radius:5px;">
+        <button class="turbosmtp-modal-close" style="float:right;">&times;</button>
+        <div class="turbosmtp-modal-body"></div>
+    </div>
+</div>
