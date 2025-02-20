@@ -196,7 +196,12 @@
 .tsev-validator-input .submit input{
     font-size: 1.2em;
 }
-
+.tsev-validator-valid{
+    color: var(--tsev-success-color);
+}
+.tsev-validator-invalid{
+    color: var(--tsev-error-color);
+}
 
 .tooltip{
     position: relative;
