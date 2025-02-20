@@ -30,5 +30,11 @@ if ( ! defined( 'ABSPATH' ) ) {
     endforeach;
     ?>
 
+    <?php
+        if ($is_modal):
+    ?>
 	<button class="turbosmtp-modal-close button"><?php esc_html_e('Close', 'turbosmtp-email-validator'); ?></button>
+    <?php
+    endif;
+    ?>
 </div>

@@ -105,6 +105,7 @@ class Turbosmtp_Email_Validator_Admin {
 		}
 
         $validation_details = json_decode($validation_details['raw_data']);
+        $is_modal = true;
 
 		ob_start();
 		include plugin_dir_path( __FILE__ ) . 'partials/validation-details.php';
