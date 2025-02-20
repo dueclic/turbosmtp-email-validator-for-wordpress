@@ -1,3 +1,22 @@
+<?php
+
+/**
+ * Provide a admin area view for the plugin
+ *
+ * This file is used to markup the admin-facing aspects of the plugin.
+ *
+ * @link       https://www.dueclic.com
+ * @since      1.0.0
+ *
+ * @package    Turbosmtp_Email_Validator
+ * @subpackage Turbosmtp_Email_Validator/admin/partials
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+} // Exit if accessed directly
+
+?>
 <div class="tsev-forms-logo">
     <img src="<?php echo plugins_url( '/admin/img/ts-logo.svg', TURBOSMTP_EMAIL_VALIDATOR_PATH ); ?>" alt="">
     <div class="tsev-account-status">

@@ -105,24 +105,37 @@ class Turbosmtp_Email_Validator_Public {
 
 	}
 
+	/**
+	 * @param $result
+	 * @param $email
+	 *
+	 * @return array|WP_Error|null
+	 */
 
-	function validate_email_on_check( $result, $email ): ?WP_Error {
+	function validate_email_on_check( $result, $email ) {
 		$checkEmailForm = new Turbosmtp_Email_Validator_Form_Public( 'testemail', '' );
 		$validationInfo = $checkEmailForm->prep_validation_info( $email );
 
 		$message = $checkEmailForm->set_error_message();
 
-		return $checkEmailForm->setup_form_validation(
+		$validation = $checkEmailForm->setup_form_validation(
 			$validationInfo,
 			function () {
 				$args = func_get_args();
 
 				return new WP_Error(
 					'turbosmtp_email_validator_error',
-					$args[0]['message']
+					$args[0]['message'],
+					$args[0]['validationInfo']
 				);
-			}, [ "message" => $message ]
+			}, [ "message" => $message, "validationInfo" => $validationInfo ]
 		);
+
+		if (is_wp_error($validation)){
+			return $validation;
+		}
+
+		return $validationInfo;
 
 	}
 

@@ -14,7 +14,7 @@ function turbosmtp_email_validator_get_status(
 	if (turbosmtp_email_validator_status_ok($status, $validationPass)) {
 		return 'valid';
 	}
-	return 'status';
+	return $status;
 }
 
 function turbosmtp_email_validator_validation_forms(

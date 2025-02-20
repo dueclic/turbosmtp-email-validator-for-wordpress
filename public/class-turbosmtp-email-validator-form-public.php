@@ -65,7 +65,7 @@ class Turbosmtp_Email_Validator_Form_Public {
 			$expire_interval = 6 * 30 * 24 * 60 * 60;
 
 			if ( ( $current_time - $validated_at ) < apply_filters( 'turbosmtp_email_validator_expire_interval', $expire_interval ) ) {
-				return $result;
+				return json_decode($result['raw_data'], true);
 			} else {
 				$wpdb->delete( $table_name, array( 'email' => $email ) );
 			}
