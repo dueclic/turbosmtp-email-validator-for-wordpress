@@ -52,8 +52,6 @@ A: The email validation is performed during user registration and checkout. If a
 
 ## Screenshots
 
-== Screenshots ==
-
 1. Email Validator Settings - General Settings
 2. Email Validator Settings - Forms Configuration
 3. Test Validator
