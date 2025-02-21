@@ -71,6 +71,8 @@ class Turbosmtp_Validated_Emails_Table extends WP_List_Table {
 					$value = __( "Unknown", "turbosmtp-email-validator" );
 					break;
 			}
+		} else if ($column_name === 'email'){
+			return '<span class="tsev-nowrap">'.$value.'</span>';
 		}
 
 		return $value;
