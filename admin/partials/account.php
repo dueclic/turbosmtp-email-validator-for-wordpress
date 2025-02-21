@@ -37,7 +37,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                 </span>
 </div>
 <!--hr class="tsev-hr-separator"-->
-<form method="get" action="" class="card">
+<form method="get" action="" class="card <?php echo !$subscription['remaining_free_credit'] && !$subscription['paid_credits'] ? "tsev-account-no-credits" : "" ?>">
     <input type="hidden" name="page" value="<?php echo esc_attr(sanitize_text_field( $_REQUEST['page'] )); ?>">
     <input type="hidden" name="refresh" value="1">
     <!--h3 class="tsev-text-center"><?php esc_html_e( "Current Subscription", "turbosmtp-email-validator" ); ?></h3-->

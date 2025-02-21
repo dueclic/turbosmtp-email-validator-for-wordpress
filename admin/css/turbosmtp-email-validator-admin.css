@@ -158,6 +158,14 @@
     height: 14px;
     width: 14px;
 }
+.tsev-account-no-credits{
+    border-color: var(--tsev-error-color);
+    background-color: rgba(215, 54, 56, 0.05);
+}
+.tsev-account-no-credits span{
+    color: var(--tsev-error-color);
+    font-weight: bold;
+}
 
 .tsev-check-login-result {
     margin-top: 1em;
