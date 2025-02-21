@@ -37,7 +37,10 @@ if ( ! defined( 'ABSPATH' ) ) {
                 </span>
 </div>
 <!--hr class="tsev-hr-separator"-->
-<form method="get" action="" class="card <?php echo !$subscription['remaining_free_credit'] && !$subscription['paid_credits'] ? "tsev-account-no-credits" : "" ?>">
+<?php
+$has_credits = $subscription['remaining_free_credit'] || $subscription['paid_credits'];
+?>
+<form method="get" action="" class="card <?php echo $has_credits ?: "tsev-account-no-credits"; ?>">
     <input type="hidden" name="page" value="<?php echo esc_attr(sanitize_text_field( $_REQUEST['page'] )); ?>">
     <input type="hidden" name="refresh" value="1">
     <!--h3 class="tsev-text-center"><?php esc_html_e( "Current Subscription", "turbosmtp-email-validator" ); ?></h3-->
@@ -47,6 +50,9 @@ if ( ! defined( 'ABSPATH' ) ) {
     <div class="tsev-credits-row">
         <strong><?php esc_html_e( "Free Credits", "turbosmtp-email-validator" ); ?></strong> <span><?php echo esc_html($subscription['remaining_free_credit'] ?? 0 ); ?></span>
     </div>
+    <?php if (!$has_credits) { ?>
+    <p class="tsev-validator-invalid tsev-text-center"><?php esc_html_e( "Validation is bypassed; all emails accepted due to zero credit balance.", "turbosmtp-email-validator" ); ?></p>
+    <?php } ?>
     <div class="tsev-text-center submit">
         <button type="submit"  id="submit" class="button button-small button-secondary">
 			<?php _e( "Refresh", "turbosmtp-email-validator" ); ?>

@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <div id="tsev-log">
 	<h1><?php esc_html_e("Validated Emails", "turbosmtp-email-validator"); ?></h1>
-    <p>Description</p>
+    <p><?php esc_html_e("Welcome to your validation history overview. Below, you'll find a detailed record of all email validations performed, displaying outcomes, timestamps, status and API response details to help you track and manage your email verification processes effectively.", "turbosmtp-email-validator"); ?></p>
 	<?php
 	$validated_emails_table->views();
 	?>

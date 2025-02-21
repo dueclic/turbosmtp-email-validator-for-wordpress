@@ -30,8 +30,8 @@ class Turbosmtp_Validated_Emails_Table extends WP_List_Table {
 
 			$allowed_statuses = turbosmtp_email_validator_validation_statuses();
 
-			return '<p><span style="font-weight:bold;color: ' . ( $value === 'valid' ? 'green' : 'red' ) . ';">' . strtoupper( $allowed_statuses[ $value ] ?? $value ) . ' </span>' .
-			       ( ( $value !== $original_status && ! is_null( $original_status ) ) ? '<span class="tooltip dashicons dashicons-info"><span class="tooltip-text">' . __( 'It should be considered as Valid, due Validation Pass', 'turbosmtp-email-validator' ) . '</span></span></p>' : '' );
+			return '<p><strong class="' . ( $value === 'valid' ? 'tsev-validator-valid' : 'tsev-validator-invalid' ) . '">' . strtoupper( $allowed_statuses[ $value ] ?? $value ) . ' </strong>' .
+			       ( ( $value !== $original_status && ! is_null( $original_status ) ) ? '<span class="tooltip dashicons dashicons-info"><span class="tooltip-text">' . __( 'This email has been marked as valid based on Validation Pass criteria in "Settings" page, despite API indications that suggest it may be unreliable.', 'turbosmtp-email-validator' ) . '</span></span></p>' : '' );
 		} else if ( $column_name === 'source' ) {
 			switch ( $value ) {
 				case "wordpressisemail":
