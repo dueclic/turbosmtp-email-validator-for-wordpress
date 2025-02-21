@@ -111,8 +111,8 @@ class Turbosmtp_Email_Validator_Admin {
 			wp_send_json_error( [ 'message' => __( 'Email not found.', 'turbosmtp-email-validator' ) ] );
 		}
 
-        $validation_details = json_decode($validation_details['raw_data']);
-        $is_modal = true;
+		$validation_details = json_decode( $validation_details['raw_data'] );
+		$is_modal           = true;
 
 		ob_start();
 		include plugin_dir_path( __FILE__ ) . 'partials/validation-details.php';
@@ -167,7 +167,7 @@ class Turbosmtp_Email_Validator_Admin {
 				),
 				'turbosmtp-email-validator-disconnect'
 			),
-			'ajax_get_email_details_url'                => wp_nonce_url(
+			'ajax_get_email_details_url'         => wp_nonce_url(
 				add_query_arg( [
 					'action' => 'turbosmtp-email-validator_get_email_details'
 				],
