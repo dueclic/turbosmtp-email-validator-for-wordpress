@@ -463,12 +463,15 @@ class Turbosmtp_Email_Validator_Admin {
 
 	public function settings_menu() {
 
-		add_options_page(
-			__( 'Email Validation Settings', 'turbosmtp-email-validator' ),
-			'Email Validation',
+		add_menu_page(
+			__( 'turboSMTP Email Validator', 'turbosmtp-email-validator' ),
+			__('turboSMTP Email Validator', 'turbosmtp-email-validator' ),
 			'manage_options',
 			'turbosmtp-email-validator',
-			[ $this, 'settings_page' ]
+			[ $this, 'settings_page' ],
+            plugins_url('admin/img/ts_icon.png',TURBOSMTP_EMAIL_VALIDATOR_PATH ),
+            80
+
 		);
 
 	}
