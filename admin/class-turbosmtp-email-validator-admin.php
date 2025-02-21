@@ -225,7 +225,7 @@ class Turbosmtp_Email_Validator_Admin {
 	}
 
 	public function turbosmtp_email_validator_validation_settings_section_callback() {
-		esc_html_e( "DefineTailor your email verification process by selecting applicable forms, defining acceptable API response statuses, and creating a custom error message for invalid emails." );
+		esc_html_e( "Tailor your email verification process by selecting applicable forms, defining acceptable API response statuses, and creating a custom error message for invalid emails." );
 	}
 
 	public function turbosmtp_email_validator_enabled_callback() {
