@@ -214,9 +214,9 @@ class Turbosmtp_Email_Validator {
 		$enabled          = get_option( 'turbosmtp_email_validator_enabled', 'no' );
 		$validation_forms = get_option( 'turbosmtp_email_validator_validation_forms' );
 
-		if ( $enabled === 'yes' ) {
+		$this->loader->add_filter( 'turbosmtp_email_validator_checkemail', $plugin_public, 'validate_email_on_check', 10, 2 );
 
-			$this->loader->add_filter( 'turbosmtp_email_validator_checkemail', $plugin_public, 'validate_email_on_check', 10, 2 );
+		if ( $enabled === 'yes' ) {
 
 			// WordPress Registrations
 
