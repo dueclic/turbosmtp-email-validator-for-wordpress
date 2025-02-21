@@ -52,10 +52,12 @@ A: If the email validation fails, an error message will be displayed, and the us
 
 == Screenshots ==
 
-1. Email Validator Configuration
-2. Set turboSMTP API Keys
+1. Email Validator General Settings
+2. Validation Settings
 3. Test Validator
 4. History Table
+5. History Table Validation Details
+6. Login using API Keys
 
 == Changelog ==
 
