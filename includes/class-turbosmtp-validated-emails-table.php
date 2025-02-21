@@ -111,7 +111,7 @@ class Turbosmtp_Validated_Emails_Table extends WP_List_Table {
 
 		foreach ( $statuses as $status ) {
 			$is_status_selected                = ( isset( $_REQUEST['status'] ) && $_REQUEST['status'] === $status['status'] );
-			$status_links[ $status['status'] ] = sprintf( '<a style="' . ( $is_status_selected ? 'font-weight:bold' : '' ) . '" href="%s">%s (%d)</a>', admin_url( 'options-general.php?page=turbosmtp-email-validator&subpage=history&status=' . $status['status'] ), $allowed_statuses[ $status['status'] ] ?? $status['status'], $status['total'] );
+			$status_links[ $status['status'] ] = sprintf( '<a style="' . ( $is_status_selected ? 'font-weight:bold' : '' ) . '" href="%s">%s (%d)</a>', admin_url( 'options-general.php?page=turbosmtp-email-validator&subpage=history&status=' . $status['status'] ), $allowed_statuses[ $status['status'] ] ?? ucfirst($status['status']), $status['total'] );
 		}
 
 		return $status_links;
