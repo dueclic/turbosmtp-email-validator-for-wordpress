@@ -72,7 +72,7 @@ class Turbosmtp_Validated_Emails_Table extends WP_List_Table {
 					break;
 			}
 		} else if ($column_name === 'email'){
-			return '<span class="tsev-nowrap">'.$value.'</span>';
+			return '<span class="tsev-email-nowrap">'.$value.'</span>';
 		}
 
 		return $value;

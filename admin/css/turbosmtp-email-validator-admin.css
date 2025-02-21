@@ -106,7 +106,7 @@
 }
 .tsev-main-account{
     flex-grow: 0;
-    min-width: 260px;
+    width: 260px;
 }
 .tsev-main-forms{
     flex-grow: 1;
@@ -236,6 +236,13 @@
     unicode-bidi: embed;
     border: #DDD solid 1px;
     border-radius: .25em;
+}
+.tsev-email-nowrap{
+    /*
+    white-space: nowrap;
+    display: inline-block;
+    padding-right: 1.5em;
+    */
 }
 
 .tooltip{
