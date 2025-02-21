@@ -1,6 +1,6 @@
 <div align="center">
 
-[![turboSMTP](https://raw.githubusercontent.com/debba/turbosmtp-email-validator-for-woocommerce/master/.wordpress-org/assets/banner.png)
+[![turboSMTP](https://raw.githubusercontent.com/debba/turbosmtp-email-validator-for-woocommerce/master/.wordpress-org/assets/banner-772x250.png)
 ](https://www.serversmtp.com)
 
 </div>
