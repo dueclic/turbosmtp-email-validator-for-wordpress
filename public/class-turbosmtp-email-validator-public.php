@@ -132,6 +132,9 @@ class Turbosmtp_Email_Validator_Public {
 		);
 
 		if (is_wp_error($validation)){
+			if ($validation->get_error_code() !== 'turbosmtp_email_validator_error'){
+				return $validation->get_error_data();
+			}
 			return $validation;
 		}
 

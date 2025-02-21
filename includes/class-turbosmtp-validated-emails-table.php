@@ -99,6 +99,8 @@ class Turbosmtp_Validated_Emails_Table extends WP_List_Table {
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'validated_emails';
 
+		$allowed_statuses = turbosmtp_email_validator_validation_statuses();
+
 		$statuses =
 			array_merge(
 				[ [ 'status' => 'all', 'total' => $wpdb->get_var( "SELECT COUNT(id) FROM $table_name" ) ] ],
@@ -109,7 +111,7 @@ class Turbosmtp_Validated_Emails_Table extends WP_List_Table {
 
 		foreach ( $statuses as $status ) {
 			$is_status_selected                = ( isset( $_REQUEST['status'] ) && $_REQUEST['status'] === $status['status'] );
-			$status_links[ $status['status'] ] = sprintf( '<a style="' . ( $is_status_selected ? 'font-weight:bold' : '' ) . '" href="%s">%s (%d)</a>', admin_url( 'options-general.php?page=turbosmtp-email-validator&subpage=history&status=' . $status['status'] ), ucfirst( $status['status'] ), $status['total'] );
+			$status_links[ $status['status'] ] = sprintf( '<a style="' . ( $is_status_selected ? 'font-weight:bold' : '' ) . '" href="%s">%s (%d)</a>', admin_url( 'options-general.php?page=turbosmtp-email-validator&subpage=history&status=' . $status['status'] ), $allowed_statuses[ $status['status'] ] ?? $status['status'], $status['total'] );
 		}
 
 		return $status_links;
@@ -148,7 +150,7 @@ class Turbosmtp_Validated_Emails_Table extends WP_List_Table {
 		}
 
 		$total_items = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(id) FROM $table_name WHERE email LIKE %s" . $whereStatus, '%' . $search . '%' ) );
-		$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT id, email, source, status, ip_address, validated_at FROM $table_name WHERE email LIKE %s " . $whereStatus . " ORDER BY $orderby $order LIMIT %d OFFSET %d", '%' . $search . '%', $per_page, $paged ), ARRAY_A );
+		$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT id, email, source, status, original_status, ip_address, validated_at FROM $table_name WHERE email LIKE %s " . $whereStatus . " ORDER BY $orderby $order LIMIT %d OFFSET %d", '%' . $search . '%', $per_page, $paged ), ARRAY_A );
 
 		$this->set_pagination_args( array(
 			'total_items' => $total_items, // total items defined above

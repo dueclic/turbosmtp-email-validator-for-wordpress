@@ -87,7 +87,10 @@ class Turbosmtp_Email_Validator_API
 		}
 
 		if (!$this->hasApiKeys()) {
-			return null;
+			return new WP_Error(
+				'api_keys_missing',
+				__('API Keys are missing', 'turbosmtp-email-validator')
+			);
 		}
 
 		$api_url = $this->getApiUrl();
@@ -104,16 +107,27 @@ class Turbosmtp_Email_Validator_API
 			'body'    => json_encode( array( 'email' => $email ) ),
 		) );
 
-		if ((!is_wp_error($response)) && (200 === wp_remote_retrieve_response_code($response))) {
+		if (!is_wp_error($response)){
 			$body = wp_remote_retrieve_body($response);
-
 			$validationResult = json_decode($body, true);
 
-			if (json_last_error() === JSON_ERROR_NONE) {
+			if (200 === wp_remote_retrieve_response_code($response)){
 				return $validationResult;
+			} else if (400 === wp_remote_retrieve_response_code($response)){
+				return new WP_Error(
+					'api_bad_request',
+					__('API Bad Request', 'turbosmtp-email-validator'),
+					$validationResult
+				);
 			}
+			return new WP_Error(
+				'api_request_wrong',
+				__('API Request Wrong', 'turbosmtp-email-validator'),
+				$validationResult ?? []
+			);
 		}
-		return null;
+
+		return $response;
 	}
 
 	public function getUserInfo(
