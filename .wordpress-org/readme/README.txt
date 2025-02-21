@@ -50,7 +50,12 @@ Q: What happens if the email validation fails during registration or checkout?
 
 A: If the email validation fails, an error message will be displayed, and the user will be prompted to enter a valid email address.
 
+== Screenshots ==
 
+1. Email Validator Configuration
+2. Set turboSMTP API Keys
+3. Test Validator
+4. History Table
 
 == Changelog ==
 
