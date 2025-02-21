@@ -8,9 +8,10 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 class Turbosmtp_Validated_Emails_Table extends WP_List_Table {
 
 	private $validationPass;
+
 	function __construct() {
 
-		$this->validationPass =  get_option( 'turbosmtp_email_validator_validation_pass' );
+		$this->validationPass = get_option( 'turbosmtp_email_validator_validation_pass' );
 
 		parent::__construct( array(
 			'singular' => 'validated_email',
@@ -22,15 +23,15 @@ class Turbosmtp_Validated_Emails_Table extends WP_List_Table {
 	function column_default( $item, $column_name ) {
 		$value = $item[ $column_name ];
 		if ( $column_name === 'raw_data' ) {
-			return '<button data-id="'.$item['id'].'" class="button turbosmtp-show-details">'.esc_html__("Show details", "turbosmtp-email-validator").'</button>';
+			return '<button data-id="' . $item['id'] . '" class="button turbosmtp-show-details">' . esc_html__( "Show details", "turbosmtp-email-validator" ) . '</button>';
 		} else if ( $column_name === 'status' ) {
 
-			$original_status = $item[ 'original_status' ];
+			$original_status = $item['original_status'];
 
-			$allowed_statuses = turbosmtp_email_validator_validation_statuses( );
+			$allowed_statuses = turbosmtp_email_validator_validation_statuses();
 
-			return '<p><span style="font-weight:bold;color: ' . ( $value === 'valid' ? 'green' : 'red' ) . ';">' . strtoupper($allowed_statuses[$value] ?? $value) . ' </span>' .
-			       ( ($value !== $original_status && !is_null($original_status)) ? '<span class="tooltip dashicons dashicons-info"><span class="tooltip-text">'.__('It should be considered as Valid, due Validation Pass', 'turbosmtp-email-validator').'</span></span></p>' : '');
+			return '<p><span style="font-weight:bold;color: ' . ( $value === 'valid' ? 'green' : 'red' ) . ';">' . strtoupper( $allowed_statuses[ $value ] ?? $value ) . ' </span>' .
+			       ( ( $value !== $original_status && ! is_null( $original_status ) ) ? '<span class="tooltip dashicons dashicons-info"><span class="tooltip-text">' . __( 'It should be considered as Valid, due Validation Pass', 'turbosmtp-email-validator' ) . '</span></span></p>' : '' );
 		} else if ( $column_name === 'source' ) {
 			switch ( $value ) {
 				case "wordpressisemail":
@@ -80,6 +81,7 @@ class Turbosmtp_Validated_Emails_Table extends WP_List_Table {
 			'email'        => __( 'Email', 'turbosmtp-email-validator' ),
 			'source'       => __( 'Source', 'turbosmtp-email-validator' ),
 			'status'       => __( 'Status', 'turbosmtp-email-validator' ),
+			'ip_address'   => __( 'IP Address', 'turbosmtp-email-validator' ),
 			'validated_at' => __( 'Validated At', 'turbosmtp-email-validator' ),
 			'raw_data'     => __( 'Raw Data', 'turbosmtp-email-validator' ),
 		);
@@ -146,7 +148,7 @@ class Turbosmtp_Validated_Emails_Table extends WP_List_Table {
 		}
 
 		$total_items = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(id) FROM $table_name WHERE email LIKE %s" . $whereStatus, '%' . $search . '%' ) );
-		$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT id, email, source, status, validated_at FROM $table_name WHERE email LIKE %s " . $whereStatus . " ORDER BY $orderby $order LIMIT %d OFFSET %d", '%' . $search . '%', $per_page, $paged ), ARRAY_A );
+		$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT id, email, source, status, ip_address, validated_at FROM $table_name WHERE email LIKE %s " . $whereStatus . " ORDER BY $orderby $order LIMIT %d OFFSET %d", '%' . $search . '%', $per_page, $paged ), ARRAY_A );
 
 		$this->set_pagination_args( array(
 			'total_items' => $total_items, // total items defined above

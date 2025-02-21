@@ -38,8 +38,7 @@ class Turbosmtp_Email_Validator_Activator {
         ip_address varchar(50) NOT NULL,
         validated_at datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
         raw_data text NOT NULL,
-        PRIMARY KEY  (id),
-        UNIQUE KEY email (email)
+        PRIMARY KEY  (id)
     ) $charset_collate;";
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );

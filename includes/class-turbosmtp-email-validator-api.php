@@ -65,6 +65,27 @@ class Turbosmtp_Email_Validator_API
 		$email
 	){
 
+		global $wpdb;
+		$email      = sanitize_email( $email );
+
+		if (apply_filters('turbosmtp_email_validator_has_cache', false)) {
+			$table_name = $wpdb->prefix . 'validated_emails';
+
+			$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE email = %s", $email ), ARRAY_A );
+
+			if ( $result ) {
+				$validated_at    = strtotime( $result['validated_at'] );
+				$current_time    = time();
+				$expire_interval = 3 * 30 * 24 * 60 * 60;
+
+				if ( ( $current_time - $validated_at ) < apply_filters( 'turbosmtp_email_validator_expire_interval', $expire_interval ) ) {
+					return json_decode( $result['raw_data'], true );
+				} else {
+					$wpdb->delete( $table_name, array( 'email' => $email ) );
+				}
+			}
+		}
+
 		if (!$this->hasApiKeys()) {
 			return null;
 		}

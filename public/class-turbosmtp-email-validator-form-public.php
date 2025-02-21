@@ -50,32 +50,6 @@ class Turbosmtp_Email_Validator_Form_Public {
 	}
 
 	/**
-	 * @param string $raw_email
-	 */
-	private function validate( string $raw_email ) {
-		global $wpdb;
-		$email      = sanitize_email( $raw_email );
-		$table_name = $wpdb->prefix . 'validated_emails';
-
-		$result = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE email = %s", $email ), ARRAY_A );
-
-		if ( $result ) {
-			$validated_at    = strtotime( $result['validated_at'] );
-			$current_time    = time();
-			$expire_interval = 6 * 30 * 24 * 60 * 60;
-
-			if ( ( $current_time - $validated_at ) < apply_filters( 'turbosmtp_email_validator_expire_interval', $expire_interval ) ) {
-				return json_decode($result['raw_data'], true);
-			} else {
-				$wpdb->delete( $table_name, array( 'email' => $email ) );
-			}
-		}
-
-		return $this->api->validateEmail( $email );
-
-	}
-
-	/**
 	 * @return string
 	 */
 	public function set_error_message() {
@@ -103,24 +77,30 @@ class Turbosmtp_Email_Validator_Form_Public {
 			return null;
 		}
 
-		$validationInfo = $this->validate( $email );
+		$validationInfo = $this->api->validateEmail( $email );
 
 		if ( $validationInfo != null ) {
 			$table_name = $wpdb->prefix . 'validated_emails';
 
-			$wpdb->insert(
-				$table_name, array(
-					'email'        => $email,
-					'source'       => $this->source,
-					'ip_address'   => ( $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'] ),
-					'form_id'      => $this->formId,
-					'status'       => turbosmtp_email_validator_get_status($validationInfo['status'], $this->validationPass),
-					'sub_status'   => $validationInfo['sub_status'],
-					'original_status'   => $validationInfo['status'],
-					'validated_at' => current_time( 'mysql' ),
-					'raw_data'     => json_encode( $validationInfo ),
-				)
+			$validation_data = array(
+				'email'        => $email,
+				'source'       => $this->source,
+				'ip_address'   => ( $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'] ),
+				'form_id'      => $this->formId,
+				'status'       => turbosmtp_email_validator_get_status($validationInfo['status'], $this->validationPass),
+				'sub_status'   => $validationInfo['sub_status'],
+				'original_status'   => $validationInfo['status'],
+				'validated_at' => current_time( 'mysql' ),
+				'raw_data'     => json_encode( $validationInfo ),
 			);
+
+			$wpdb->insert(
+				$table_name,
+				$validation_data
+			);
+
+			do_action('turbosmtp_email_validator_validated_email', $email, $validation_data);
+
 		}
 
 		return $validationInfo;

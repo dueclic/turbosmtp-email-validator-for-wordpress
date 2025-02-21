@@ -141,6 +141,8 @@ class Turbosmtp_Email_Validator {
 			), $this->get_plugin_name(), $this->get_version()
 		);
 
+		$enabled          = get_option( 'turbosmtp_email_validator_enabled', 'no' );
+
 
 		$prefix = is_network_admin() ? 'network_admin_' : '';
 		$this->loader->add_filter("{$prefix}plugin_action_links_" . TURBOSMTP_EMAIL_VALIDATOR_BASENAME, $plugin_admin, 'settings_link', 10, 2);
@@ -152,6 +154,10 @@ class Turbosmtp_Email_Validator {
 		$this->loader->add_action( 'admin_post_turbosmtp-email-validator-login', $plugin_admin, 'login_handler' );
 		$this->loader->add_action( 'wp_ajax_turbosmtp-email-validator-disconnect', $plugin_admin, 'ajax_disconnect' );
 		$this->loader->add_action('wp_ajax_turbosmtp-email-validator_get_email_details', $plugin_admin, 'ajax_get_email_details');
+
+		if ( $enabled === 'yes' ) {
+			$this->loader->add_action( 'turbosmtp_email_validator_validated_email', $plugin_admin, 'validated_email', 10, 2 );
+		}
 
 	}
 

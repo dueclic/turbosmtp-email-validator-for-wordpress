@@ -90,6 +90,10 @@ class Turbosmtp_Email_Validator_Admin {
 
 	}
 
+    public function validated_email($email, $validated_data){
+        $this->get_emailvalidator_subscription(true);
+    }
+
 	public function ajax_get_email_details() {
 		global $wpdb;
 
