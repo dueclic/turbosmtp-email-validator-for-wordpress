@@ -52,8 +52,12 @@ A: The email validation is performed during user registration and checkout. If a
 
 ## Screenshots
 
-[![Admin Page](https://raw.githubusercontent.com/debba/turbosmtp-email-validator-for-woocommerce/master/.wordpress-org/assets/screenshot-1.png)
-](https://raw.githubusercontent.com/debba/turbosmtp-email-validator-for-woocommerce/master/.wordpress-org/assets/screenshot-1.png)
+1. Email Validator Settings - General Settings
+2. Email Validator Settings - Forms Configuration
+3. Test Validator
+4. History Table
+5. Email validation details
+
 
 ## License
 
