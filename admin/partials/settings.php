@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <div id="tsev-settings">
     <h1><?php _e( 'Email Validation Settings', "turbosmtp-email-validator" ); ?></h1>
-    <p>Description</p>
+    <p><?php _e( 'Welcome. This plugin is designed to verify email addresses. It uses the turboSMTP API to ensure that any email entered by users is valid and currently in use. This helps to prevent false registrations and maintain reliable user data. Begin the process to enhance the integrity of your email communication.', 'turbosmtp-email-validator'); ?></p>
     <form method="post" action="<?php echo admin_url( "options.php" ); ?>">
 		<?php
 		settings_fields( 'turbosmtp_email_validator_general_settings' );

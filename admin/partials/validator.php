@@ -19,7 +19,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <div id="tsev-validator">
     <h1><?php esc_html_e( "Test Validator", "turbosmtp-email-validator" ); ?></h1>
-    <p>Description</p>
+    <p><?php esc_html_e( "Instantly verify any email address with our manual validation feature. Simply type an email into the input field to check its authenticity on the spot.", "turbosmtp-email-validator" ); ?></p>
+    <p><i><?php esc_html_e( "Keep in mind that the final validation result is determined not only by the API response but also by your configured settings. These settings can influence the interpretation of the validation outcome.", "turbosmtp-email-validator" ); ?></i></p>
     <div class="tsev-form tsev-form-validator card accordion-container tsev-text-center">
 
 		<?php
@@ -71,6 +72,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				);
 				?>
             </div>
+            <p class="tsev-text-left"><i><?php esc_html_e( "Keep in mind that the final validation result is determined not only by the API response but also by your configured settings. These settings can influence the interpretation of the validation outcome.", "turbosmtp-email-validator" ); ?></i></p>
         </form>
     </div>
 </div>

@@ -58,6 +58,10 @@
 .tsev-text-right p{
     text-align: right;
 }
+.tsev-text-left,
+.tsev-text-left p{
+    text-align: left;
+}
 .tsev-login-form-password-field{
     position: relative;
 }
@@ -169,7 +173,7 @@
 }
 .tsev-credits-row{
     margin: .5rem 0;
-    padding: .5rem .2rem .2rem;
+    padding: .5rem 0 .2rem;
     border-bottom: 1px solid #dcdcde;
     display: flex;
     align-items: start;

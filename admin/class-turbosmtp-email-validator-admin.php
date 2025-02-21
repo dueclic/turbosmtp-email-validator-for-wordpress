@@ -221,11 +221,11 @@ class Turbosmtp_Email_Validator_Admin {
 
 
 	public function turbosmtp_email_validator_general_settings_section_callback() {
-		esc_html_e( 'General Settings info', 'turbosmtp-email-validator' );
+		esc_html_e( 'Adjust your initial email verification settings below:', 'turbosmtp-email-validator' );
 	}
 
 	public function turbosmtp_email_validator_validation_settings_section_callback() {
-		esc_html_e( "Define on which forms would you like to apply email validation, and email statuses that should pass validation." );
+		esc_html_e( "DefineTailor your email verification process by selecting applicable forms, defining acceptable API response statuses, and creating a custom error message for invalid emails." );
 	}
 
 	public function turbosmtp_email_validator_enabled_callback() {
@@ -245,12 +245,12 @@ class Turbosmtp_Email_Validator_Admin {
 	public function turbosmtp_email_validator_api_timeout_callback() {
 		$api_timeout = get_option( 'turbosmtp_email_validator_api_timeout', 5 );
 		?>
-        <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: .5rem">
             <input type="number" style="max-width: 100px" min="1" name="turbosmtp_email_validator_api_timeout"
                    id="turbosmtp_email_validator_api_timeout" value="<?php echo esc_attr( $api_timeout ) ?>">
-			<?php esc_html_e( "seconds", "turbosmtp-email-validator" ); ?>
+			<?php esc_html_e( "Seconds", "turbosmtp-email-validator" ); ?>
         </div>
-        <p>Description</p>
+        <div><small><?php esc_html_e( "Set the duration for the API to respond. If no response is received within this timeframe, the email will be treated as valid by default. (For optimal performance, we suggest setting the API Timeout to 5 seconds)", "turbosmtp-email-validator" ); ?></small></div>
 		<?php
 	}
 
