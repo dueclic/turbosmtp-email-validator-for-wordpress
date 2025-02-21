@@ -70,7 +70,11 @@ class Turbosmtp_Email_Validator_Public {
 	 * WordPress Comment Filter - add hook
 	 * @return void
 	 */
-	public function apply_is_email_validator() {
+	public function apply_is_email_validator(
+		$post_id
+	) {
+		global $turbosmtp_email_validator_post_id;
+		$turbosmtp_email_validator_post_id = $post_id;
 		add_filter( 'is_email', [ $this, 'wordpress_is_email_validator' ], 10, 3 );
 	}
 
@@ -79,7 +83,7 @@ class Turbosmtp_Email_Validator_Public {
 	 * @return void
 	 */
 	public function remove_is_email_validator() {
-		remove_filter( 'is_email', [ $this, 'wordpress_is_email_validator' ], 10, 3 );
+		remove_filter( 'is_email', [ $this, 'wordpress_is_email_validator' ] );
 	}
 
 	/**
@@ -96,7 +100,9 @@ class Turbosmtp_Email_Validator_Public {
 			return false;
 		}
 
-		$wpForm         = new Turbosmtp_Email_Validator_Form_Public( 'wordpressisemail', get_the_ID() );
+		global $turbosmtp_email_validator_post_id;
+
+		$wpForm         = new Turbosmtp_Email_Validator_Form_Public( 'wordpressisemail', $turbosmtp_email_validator_post_id );
 		$validationInfo = $wpForm->prep_validation_info( $email );
 
 		return $wpForm->setup_form_validation( $validationInfo, function () {
@@ -274,7 +280,7 @@ class Turbosmtp_Email_Validator_Public {
 	public function contact_form_7_validator( $result, $tag ) {
 		$tag = new WPCF7_FormTag( $tag );
 		if ( 'email' == $tag->type || 'email*' == $tag->type ) {
-			$wpcf7Form      = new Turbosmtp_Email_Validator_Form_Public( 'cf7forms', '' );
+			$wpcf7Form      = new Turbosmtp_Email_Validator_Form_Public( 'cf7forms', $_POST['_wpcf7_container_post'] ?? '' );
 			$validationInfo = $wpcf7Form->prep_validation_info(
 				sanitize_email( $_POST[ $tag->name ] )
 			);
