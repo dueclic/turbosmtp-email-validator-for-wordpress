@@ -266,3 +266,40 @@
 .tooltip:hover .tooltip-text {
     visibility: visible;
 }
+
+@media screen and (max-width: 599px) {
+    .tsev-main-container {
+        display: flex;
+        flex-direction: column;
+    }
+    .tsev-main-container > div:first-child {
+        border-right: none;
+        border-bottom: 1px solid #dddddd;
+        padding-right: 0;
+        padding-bottom: 1em;
+    }
+    .tsev-main-account {
+        flex-grow: 0;
+        width: 100%;
+    }
+    .tsev-account-status {
+        margin-bottom: .5em;
+    }
+    .tsev-main-container > div:last-child {
+        padding-left: 0;
+    }
+    .tsev-validator-input{
+        flex-direction: column;
+    }
+    .tsev-validator-email {
+        min-width: unset;
+        width: 100%;
+        font-size: 1em;
+    }
+    .tsev-form-validator {
+        padding: 1.5rem 1rem;
+    }
+    .tsev-form {
+        margin-right: 0;
+    }
+}
