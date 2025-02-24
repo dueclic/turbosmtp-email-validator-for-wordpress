@@ -64,6 +64,8 @@ A: If the email validation fails, an error message will be displayed, and the us
 = 1.2.0 =
 
 - Added threshold for avoid multiple validations
+- Test validator loading improvements
+- Responsive CSS improvements in admin area
 
 = 1.1.0 =
 
