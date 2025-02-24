@@ -67,13 +67,13 @@ class Turbosmtp_Email_Validator_Form_Public {
 	 *
 	 * @param $email
 	 *
-	 * @return bool
+	 * @return array
 	 */
-	private function can_proceed_with_email_validation( $email ) {
+	private function get_threshold_email_validation_info( $email ) {
 		global $wpdb;
 
 		if ( ! apply_filters( 'turbosmtp_email_validator_has_threshold', true ) ) {
-			return true;
+			return null;
 		}
 
 		$table_name = $wpdb->prefix . 'validated_emails';
@@ -83,13 +83,17 @@ class Turbosmtp_Email_Validator_Form_Public {
 		);
 
 		if ( ! $result ) {
-			return true;
+			return null;
 		}
 
 		$validated_at    = strtotime( $result['validated_at'] );
 		$expire_interval = turbosmtp_email_validator_get_threshold();
 
-		return ( time() - $validated_at ) >= $expire_interval;
+		if (( time() - $validated_at ) >= $expire_interval){
+			return null;
+		}
+
+		return json_decode($result['raw_data'], true);
 	}
 
 
@@ -109,8 +113,10 @@ class Turbosmtp_Email_Validator_Form_Public {
 			return null;
 		}
 
-		if (!$this->can_proceed_with_email_validation($email)){
-			return null;
+		$threshold_validation_info = $this->get_threshold_email_validation_info($email);
+
+		if (!is_null($threshold_validation_info)){
+			return $threshold_validation_info;
 		}
 
 		$validationInfo = $this->api->validateEmail( $email );

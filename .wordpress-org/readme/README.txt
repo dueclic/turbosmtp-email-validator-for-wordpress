@@ -61,6 +61,9 @@ A: If the email validation fails, an error message will be displayed, and the us
 
 == Changelog ==
 
+= 1.3.0 =
+- Fix in threshold
+
 = 1.2.0 =
 
 - Added threshold for avoid multiple validations
