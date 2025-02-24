@@ -31,7 +31,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 			$validation_result = apply_filters( 'turbosmtp_email_validator_checkemail', null, $test_email );
 
 			if ( is_null( $validation_result ) ) {
-				echo '<p>' . esc_html__( "Something was wrong.", "turbosmtp-email-validator" ) . '</p>';
+				echo '<p class="tsev-validator-invalid">' . esc_html__( "Something was wrong.", "turbosmtp-email-validator" ) . '</p>';
+                echo '<p>'.sprintf(__("In case you already validated this email, please wait %d seconds."), turbosmtp_email_validator_get_threshold()).'</p>';
 			} else {
 				if ( is_wp_error( $validation_result ) ) {
 					?>

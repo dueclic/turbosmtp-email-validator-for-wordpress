@@ -66,6 +66,15 @@ class Turbosmtp_Email_Validator_API
 	){
 
 		global $wpdb;
+
+
+		if (!$this->hasApiKeys()) {
+			return new WP_Error(
+				'api_keys_missing',
+				__('API Keys are missing', 'turbosmtp-email-validator')
+			);
+		}
+
 		$email      = sanitize_email( $email );
 
 		if (apply_filters('turbosmtp_email_validator_has_cache', false)) {
@@ -84,13 +93,6 @@ class Turbosmtp_Email_Validator_API
 					$wpdb->delete( $table_name, array( 'email' => $email ) );
 				}
 			}
-		}
-
-		if (!$this->hasApiKeys()) {
-			return new WP_Error(
-				'api_keys_missing',
-				__('API Keys are missing', 'turbosmtp-email-validator')
-			);
 		}
 
 		$api_url = $this->getApiUrl();

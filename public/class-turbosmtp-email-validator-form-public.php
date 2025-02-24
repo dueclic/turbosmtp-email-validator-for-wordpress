@@ -64,6 +64,36 @@ class Turbosmtp_Email_Validator_Form_Public {
 	}
 
 	/**
+	 *
+	 * @param $email
+	 *
+	 * @return bool
+	 */
+	private function can_proceed_with_email_validation( $email ) {
+		global $wpdb;
+
+		if ( ! apply_filters( 'turbosmtp_email_validator_has_threshold', true ) ) {
+			return true;
+		}
+
+		$table_name = $wpdb->prefix . 'validated_emails';
+		$result = $wpdb->get_row(
+			$wpdb->prepare( "SELECT * FROM $table_name WHERE email = %s AND source = %s", $email, $this->source ),
+			ARRAY_A
+		);
+
+		if ( ! $result ) {
+			return true;
+		}
+
+		$validated_at    = strtotime( $result['validated_at'] );
+		$expire_interval = turbosmtp_email_validator_get_threshold();
+
+		return ( time() - $validated_at ) >= $expire_interval;
+	}
+
+
+	/**
 	 * @param $email
 	 *
 	 * @return array|null
@@ -71,9 +101,15 @@ class Turbosmtp_Email_Validator_Form_Public {
 	public function prep_validation_info( $email ): ?array {
 		global $wpdb;
 
+		do_action('turbosmtp_email_validator_before_email_validation', $email);
+
 		$skip_validation = apply_filters( 'turbosmtp_email_validator_skip_validation', false, $email );
 
 		if ( $skip_validation ) {
+			return null;
+		}
+
+		if (!$this->can_proceed_with_email_validation($email)){
 			return null;
 		}
 

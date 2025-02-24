@@ -79,3 +79,10 @@ function turbosmtp_email_validator_sanitize_array( $values, $array_data ){
 
 	return $sanitized_input;
 }
+
+/**
+ * @return mixed|null
+ */
+function turbosmtp_email_validator_get_threshold(){
+	return apply_filters( 'turbosmtp_email_validator_threshold', 3 * 60 );
+}
