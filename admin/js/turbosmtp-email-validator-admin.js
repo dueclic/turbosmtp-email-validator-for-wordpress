@@ -90,5 +90,9 @@
         $('#turbosmtp-modal').fadeOut();
     });
 
+    $(document).on('submit', '.tsev-form-validator form', function(){
+        $('.tsev-form-validator #submit').prop("disabled", true);
+    });
+
 
 })(jQuery);
