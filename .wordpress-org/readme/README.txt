@@ -5,7 +5,7 @@ Tags: email tester, email validator, email validation
 Requires at least: 6.0
 Requires PHP: 7.0
 Tested up to: 6.7
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
