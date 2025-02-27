@@ -86,3 +86,15 @@ function turbosmtp_email_validator_sanitize_array( $values, $array_data ){
 function turbosmtp_email_validator_get_threshold(){
 	return apply_filters( 'turbosmtp_email_validator_threshold', 3 * 60 );
 }
+
+function turbosmtp_email_validator_get_error_message(){
+	$error_message = get_option( 'turbosmtp_email_validator_error_message');
+
+	if ( function_exists( 'pll__' ) ) {
+		$error_message = pll__( $error_message );
+	} elseif ( function_exists( 'apply_filters' ) ) {
+		$error_message = apply_filters( 'wpml_translate_single_string', $error_message, 'turbosmtp-email-validator', 'Email Validation Error Message' );
+	}
+
+	return $error_message;
+}

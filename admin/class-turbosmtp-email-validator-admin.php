@@ -67,6 +67,12 @@ class Turbosmtp_Email_Validator_Admin {
 
 	}
 
+	public function update_option_turbosmtp_email_validator_error_message( $old_value, $new_value ) {
+		if ( function_exists( 'do_action' ) ) {
+			do_action( 'wpml_register_single_string', 'turbosmtp-email-validator', 'Email Validation Error Message', $new_value );
+		}
+	}
+
 	/**
 	 * Register the stylesheets for the admin area.
 	 *
@@ -454,7 +460,7 @@ class Turbosmtp_Email_Validator_Admin {
 			'turbosmtp_email_validator_validation_settings_section',
 			[
 				'id'    => 'turbosmtp_email_validator_error_message',
-				'value' => get_option( 'turbosmtp_email_validator_error_message' )
+				'value' => turbosmtp_email_validator_get_error_message()
 			]
 		);
 

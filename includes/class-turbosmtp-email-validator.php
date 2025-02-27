@@ -155,6 +155,8 @@ class Turbosmtp_Email_Validator {
 		$this->loader->add_action( 'wp_ajax_turbosmtp-email-validator-disconnect', $plugin_admin, 'ajax_disconnect' );
 		$this->loader->add_action('wp_ajax_turbosmtp-email-validator_get_email_details', $plugin_admin, 'ajax_get_email_details');
 
+		$this->loader->add_action( 'update_option_turbosmtp_email_validator_error_message', $plugin_admin, 'update_option_turbosmtp_email_validator_error_message', 10, 2);
+
 		if ( $enabled === 'yes' ) {
 			$this->loader->add_action( 'turbosmtp_email_validator_validated_email', $plugin_admin, 'validated_email', 10, 2 );
 		}
