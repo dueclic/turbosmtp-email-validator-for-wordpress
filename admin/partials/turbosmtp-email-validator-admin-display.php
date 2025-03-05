@@ -36,9 +36,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<?php esc_html_e( "Settings", "turbosmtp-email-validator" ); ?>
                 </a>
                 <a href="<?php echo admin_url( 'options-general.php?page=turbosmtp-email-validator&subpage=validator' ); ?>"
-                   class="nav-tab <?php echo( $subpage === 'validator' ? 'nav-tab-active' : '' ); ?>">Validator</a>
+                   class="nav-tab <?php echo( $subpage === 'validator' ? 'nav-tab-active' : '' ); ?>"><?php esc_html_e("Validator", "turbosmtp-email-validator"); ?></a>
                 <a href="<?php echo admin_url( 'options-general.php?page=turbosmtp-email-validator&subpage=history' ); ?>"
-                   class="nav-tab <?php echo( $subpage === 'history' ? 'nav-tab-active' : '' ); ?>">History</a>
+                   class="nav-tab <?php echo( $subpage === 'history' ? 'nav-tab-active' : '' ); ?>"><?php esc_html_e("History", "turbosmtp-email-validator"); ?></a>
             </nav>
 
             <div id="tsev-tabs">

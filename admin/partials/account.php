@@ -57,7 +57,9 @@ $has_credits = $subscription['remaining_free_credit'] || $subscription['paid_cre
         <button type="submit"  id="submit" class="button button-small button-secondary">
 			<?php _e( "Refresh", "turbosmtp-email-validator" ); ?>
         </button>
-        <a class="button button-small button-primary" href="https://dashboard.serversmtp.com/addons/emailvalidator" target="_blank">Buy credits</a>
+        <a class="button button-small button-primary" href="https://dashboard.serversmtp.com/addons/emailvalidator" target="_blank">
+	        <?php esc_html_e("Buy credits", "turbosmtp-email-validator"); ?>
+        </a>
     </div>
 	<?php
 	/*

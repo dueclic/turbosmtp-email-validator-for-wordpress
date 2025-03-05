@@ -64,7 +64,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		?>
 
         <form method="post" action="">
-            <p>Insert the email you want to validate:</p>
+            <p><?php esc_html_e("Insert the email you want to validate:", "turbosmtp-email-validator"); ?></p>
             <div class="tsev-validator-input">
                 <input type="email" name="test_email" class="tsev-validator-email" value="" required>
 				<?php
