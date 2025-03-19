@@ -16,7 +16,7 @@
  * Plugin Name:       turboSMTP Email Validator
  * Plugin URI:        https://www.serversmtp.com
  * Description:       Email validation tool in WordPress forms registrations using turboSMTP API
- * Version:           1.5.0
+ * Version:           1.6.0
  * Author:            dueclic
  * Author URI:        https://www.dueclic.com/
  * License:           GPL-2.0+
@@ -36,7 +36,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 define( 'TURBOSMTP_EMAIL_VALIDATOR_BASENAME', plugin_basename(__FILE__));
-define( 'TURBOSMTP_EMAIL_VALIDATOR_VERSION', '1.5.0' );
+define( 'TURBOSMTP_EMAIL_VALIDATOR_VERSION', '1.6.0' );
 define( 'TURBOSMTP_EMAIL_VALIDATOR_PATH', __FILE__);
 
 if ( function_exists( 'pll_register_string' ) ) {

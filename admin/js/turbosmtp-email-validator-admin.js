@@ -61,7 +61,7 @@
         let button = $(this);
         let emailId = button.data('id');
 
-        button.prop('disabled', true).text('Loading...');
+        button.prop('disabled', true).text(turbosmtpEmailValidator.loading_suspense_message);
 
         $.ajax({
             url: turbosmtpEmailValidator.ajax_get_email_details_url,
@@ -74,14 +74,14 @@
                     $('#turbosmtp-modal .turbosmtp-modal-content').html(response.data.html);
                     $('#turbosmtp-modal').fadeIn();
                 } else {
-                    alert(response.data.message || 'Error loading details.');
+                    alert(response.data.message || turbosmtpEmailValidator.error_loading_details_message);
                 }
             },
             error: function () {
                 alert('AJAX request failed.');
             },
             complete: function () {
-                button.prop('disabled', false).text('Show details');
+                button.prop('disabled', false).text(turbosmtpEmailValidator.show_details_message);
             }
         });
     });

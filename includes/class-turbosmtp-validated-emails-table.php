@@ -21,7 +21,7 @@ class Turbosmtp_Validated_Emails_Table extends WP_List_Table {
 	}
 
 	function column_default( $item, $column_name ) {
-		$value = $item[ $column_name ];
+		$value = $item[ $column_name ] ?? '';
 		if ( $column_name === 'raw_data' ) {
 			return '<button data-id="' . $item['id'] . '" class="button turbosmtp-show-details">' . esc_html__( "Show details", "turbosmtp-email-validator" ) . '</button>';
 		} else if ( $column_name === 'status' ) {

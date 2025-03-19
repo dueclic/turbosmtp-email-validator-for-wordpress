@@ -5,7 +5,7 @@ Tags: email tester, email validator, email validation
 Requires at least: 6.0
 Requires PHP: 7.0
 Tested up to: 6.7
-Stable tag: 1.5.0
+Stable tag: 1.6.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,6 +60,9 @@ A: If the email validation fails, an error message will be displayed, and the us
 6. Login using API Keys
 
 == Changelog ==
+
+= 1.6.0 =
+- i18n fixes
 
 = 1.5.0 =
 - Added missing translations

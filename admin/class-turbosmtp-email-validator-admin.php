@@ -96,9 +96,9 @@ class Turbosmtp_Email_Validator_Admin {
 
 	}
 
-    public function validated_email($email, $validated_data){
-        $this->get_emailvalidator_subscription(true);
-    }
+	public function validated_email( $email, $validated_data ) {
+		$this->get_emailvalidator_subscription( true );
+	}
 
 	public function ajax_get_email_details() {
 		global $wpdb;
@@ -168,6 +168,9 @@ class Turbosmtp_Email_Validator_Admin {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/turbosmtp-email-validator-admin.js', array( 'jquery' ), $this->version, false );
 		wp_localize_script( $this->plugin_name, 'turbosmtpEmailValidator', [
+			'show_details_message'               => esc_html__( 'Show details', 'turbosmtp-email-validator' ),
+			'error_loading_details_message'      => esc_html__( 'Error loading details.', 'turbosmtp-email-validator' ),
+			'loading_suspense_message'           => esc_html__( 'Loading...', 'turbosmtp-email-validator' ),
 			'disconnect_account_confirm_message' => esc_html__( "Are you sure you want to disconnect account?", "turbosmtp-email-validator" ),
 			'ajax_disconnect_url'                => wp_nonce_url(
 				add_query_arg( [
@@ -217,7 +220,7 @@ class Turbosmtp_Email_Validator_Admin {
 			$has_api_keys = $this->api->hasApiKeys() && get_option( 'turbosmtp_email_validator_enabled' ) === 'yes';
 			$subscription = $this->get_emailvalidator_subscription( isset( $_REQUEST['refresh'] ) );
 
-			$subpage = sanitize_text_field( $_GET['subpage'] );
+			$subpage = isset($_GET['subpage']) ? sanitize_text_field( $_GET['subpage'] ) : null;
 
 
 			include_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . 'admin/partials/turbosmtp-email-validator-admin-display.php';
@@ -256,7 +259,9 @@ class Turbosmtp_Email_Validator_Admin {
                    id="turbosmtp_email_validator_api_timeout" value="<?php echo esc_attr( $api_timeout ) ?>">
 			<?php esc_html_e( "Seconds", "turbosmtp-email-validator" ); ?>
         </div>
-        <div><small><?php esc_html_e( "Set the duration for the API to respond. If no response is received within this timeframe, the email will be treated as valid by default. (For optimal performance, we suggest setting the API Timeout to 5 seconds)", "turbosmtp-email-validator" ); ?></small></div>
+        <div>
+            <small><?php esc_html_e( "Set the duration for the API to respond. If no response is received within this timeframe, the email will be treated as valid by default. (For optimal performance, we suggest setting the API Timeout to 5 seconds)", "turbosmtp-email-validator" ); ?></small>
+        </div>
 		<?php
 	}
 
@@ -336,7 +341,7 @@ class Turbosmtp_Email_Validator_Admin {
 			);
 		}
 
-		echo $arguments['prepend'];
+		echo ( $arguments['prepend'] ?? '' );
 
 		printf( '<fieldset>%s</fieldset>', $options_markup );
 	}
@@ -471,12 +476,12 @@ class Turbosmtp_Email_Validator_Admin {
 
 		add_menu_page(
 			__( 'turboSMTP Email Validator', 'turbosmtp-email-validator' ),
-			__('turboSMTP Email Validator', 'turbosmtp-email-validator' ),
+			__( 'turboSMTP Email Validator', 'turbosmtp-email-validator' ),
 			'manage_options',
 			'turbosmtp-email-validator',
 			[ $this, 'settings_page' ],
-            plugins_url('admin/img/ts_icon.png',TURBOSMTP_EMAIL_VALIDATOR_PATH ),
-            80
+			plugins_url( 'admin/img/ts_icon.png', TURBOSMTP_EMAIL_VALIDATOR_PATH ),
+			80
 
 		);
 
