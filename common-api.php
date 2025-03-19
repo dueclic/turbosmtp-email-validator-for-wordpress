@@ -98,3 +98,27 @@ function turbosmtp_email_validator_get_error_message(){
 
 	return $error_message;
 }
+
+function turbosmtp_email_validator_email_in_whitelist($email) {
+
+	$skip_validation = apply_filters( 'turbosmtp_email_validator_skip_validation', false, $email );
+
+	if ( $skip_validation ) {
+		return true;
+	}
+
+	$whitelist = get_option('turbosmtp_email_validator_whitelist', "");
+	$whitelist = explode("\n", $whitelist);
+
+	if (in_array($email, $whitelist, true)) {
+		return true;
+	}
+
+	$domain = '@' . substr(strrchr($email, "@"), 1);
+
+	if (in_array($domain, $whitelist, true)) {
+		return true;
+	}
+
+	return false;
+}

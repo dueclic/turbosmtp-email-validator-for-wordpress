@@ -20,7 +20,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div id="tsev-validator">
     <h1><?php esc_html_e( "Test Validator", "turbosmtp-email-validator" ); ?></h1>
     <p><?php esc_html_e( "Instantly verify any email address with our manual validation feature. Simply type an email into the input field to check its authenticity on the spot.", "turbosmtp-email-validator" ); ?></p>
-    <p><i><?php esc_html_e( "Keep in mind that the final validation result is determined not only by the API response but also by your configured settings. These settings can influence the interpretation of the validation outcome.", "turbosmtp-email-validator" ); ?></i></p>
+    <p>
+        <i><?php esc_html_e( "Keep in mind that the final validation result is determined not only by the API response but also by your configured settings. These settings can influence the interpretation of the validation outcome.", "turbosmtp-email-validator" ); ?></i>
+    </p>
     <div class="tsev-form tsev-form-validator card accordion-container tsev-text-center">
 
 		<?php
@@ -31,8 +33,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 			$validation_result = apply_filters( 'turbosmtp_email_validator_checkemail', null, $test_email );
 
 			if ( is_null( $validation_result ) ) {
-				echo '<p class="tsev-validator-invalid">' . esc_html__( "Something was wrong.", "turbosmtp-email-validator" ) . '</p>';
-                echo '<p>'.sprintf(__("In case you already validated this email, please wait %d seconds."), turbosmtp_email_validator_get_threshold()).'</p>';
+				if ( turbosmtp_email_validator_email_in_whitelist( $test_email ) ) {
+					echo '<p class="tsev-validator-valid">' . esc_html__( "This email address is in whitelist.", "turbosmtp-email-validator" ) . '</p>';
+				} else {
+					echo '<p class="tsev-validator-invalid">' . esc_html__( "Something was wrong.", "turbosmtp-email-validator" ) . '</p>';
+					echo '<p>' . sprintf( __( "In case you already validated this email, please wait %d seconds.", "turbosmtp-email-validator" ), turbosmtp_email_validator_get_threshold() ) . '</p>';
+				}
 			} else {
 				if ( is_wp_error( $validation_result ) ) {
 					?>
@@ -47,24 +53,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 				<?php } ?>
 
-                    <div class="tsev-validation-response-container">
-				<?php
-				$validation_details = is_wp_error( $validation_result ) ?
-                    $validation_result->get_error_data() :
-                    $validation_result;
+                <div class="tsev-validation-response-container">
+					<?php
+					$validation_details = is_wp_error( $validation_result ) ?
+						$validation_result->get_error_data() :
+						$validation_result;
 
-				include_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . 'admin/partials/validation-details.php';
+					include_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . 'admin/partials/validation-details.php';
 
-            ?>
+					?>
                 </div>
                 <hr class="tsev-hr-separator">
-        <?php
-                }
+				<?php
+			}
 		}
 		?>
 
         <form method="post" action="">
-            <p><?php esc_html_e("Insert the email you want to validate:", "turbosmtp-email-validator"); ?></p>
+            <p><?php esc_html_e( "Insert the email you want to validate:", "turbosmtp-email-validator" ); ?></p>
             <div class="tsev-validator-input">
                 <input type="email" name="test_email" class="tsev-validator-email" value="" required>
 				<?php
@@ -73,7 +79,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 				);
 				?>
             </div>
-            <p class="tsev-text-left"><i><?php esc_html_e( "Keep in mind that the final validation result is determined not only by the API response but also by your configured settings. These settings can influence the interpretation of the validation outcome.", "turbosmtp-email-validator" ); ?></i></p>
+            <p class="tsev-text-left">
+                <i><?php esc_html_e( "Keep in mind that the final validation result is determined not only by the API response but also by your configured settings. These settings can influence the interpretation of the validation outcome.", "turbosmtp-email-validator" ); ?></i>
+            </p>
         </form>
     </div>
 </div>

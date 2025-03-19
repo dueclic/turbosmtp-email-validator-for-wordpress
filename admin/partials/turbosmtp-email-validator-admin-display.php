@@ -10,6 +10,8 @@
  *
  * @package    Turbosmtp_Email_Validator
  * @subpackage Turbosmtp_Email_Validator/admin/partials
+ *
+ * @var $subpage
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -32,11 +34,13 @@ if ( ! defined( 'ABSPATH' ) ) {
         <div class="tsev-main-forms">
             <nav class="nav-tab-wrapper">
                 <a href="<?php echo admin_url( 'options-general.php?page=turbosmtp-email-validator&subpage=settings' ); ?>"
-                   class="nav-tab <?php echo( $subpage !== 'validator' && $subpage !== 'history' ? 'nav-tab-active' : '' ); ?>">
+                   class="nav-tab <?php echo( !in_array($subpage, ['validator', 'history', 'whitelist']) ? 'nav-tab-active' : '' ); ?>">
 					<?php esc_html_e( "Settings", "turbosmtp-email-validator" ); ?>
                 </a>
                 <a href="<?php echo admin_url( 'options-general.php?page=turbosmtp-email-validator&subpage=validator' ); ?>"
                    class="nav-tab <?php echo( $subpage === 'validator' ? 'nav-tab-active' : '' ); ?>"><?php esc_html_e("Validator", "turbosmtp-email-validator"); ?></a>
+                <a href="<?php echo admin_url( 'options-general.php?page=turbosmtp-email-validator&subpage=whitelist' ); ?>"
+                   class="nav-tab <?php echo( $subpage === 'whitelist' ? 'nav-tab-active' : '' ); ?>"><?php esc_html_e("Whitelist", "turbosmtp-email-validator"); ?></a>
                 <a href="<?php echo admin_url( 'options-general.php?page=turbosmtp-email-validator&subpage=history' ); ?>"
                    class="nav-tab <?php echo( $subpage === 'history' ? 'nav-tab-active' : '' ); ?>"><?php esc_html_e("History", "turbosmtp-email-validator"); ?></a>
             </nav>
@@ -52,6 +56,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 						include_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . "includes/class-turbosmtp-validated-emails-table.php";
 						$validated_emails_table = new Turbosmtp_Validated_Emails_Table();
 						include_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . 'admin/partials/history.php';
+						break;
+					case "whitelist":
+						include_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . 'admin/partials/whitelist.php';
 						break;
 					default:
 						include_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . 'admin/partials/settings.php';

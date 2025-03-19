@@ -107,9 +107,7 @@ class Turbosmtp_Email_Validator_Form_Public {
 
 		do_action('turbosmtp_email_validator_before_email_validation', $email);
 
-		$skip_validation = apply_filters( 'turbosmtp_email_validator_skip_validation', false, $email );
-
-		if ( $skip_validation ) {
+		if (turbosmtp_email_validator_email_in_whitelist($email)){
 			return null;
 		}
 

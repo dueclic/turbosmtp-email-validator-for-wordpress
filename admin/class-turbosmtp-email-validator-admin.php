@@ -220,7 +220,7 @@ class Turbosmtp_Email_Validator_Admin {
 			$has_api_keys = $this->api->hasApiKeys() && get_option( 'turbosmtp_email_validator_enabled' ) === 'yes';
 			$subscription = $this->get_emailvalidator_subscription( isset( $_REQUEST['refresh'] ) );
 
-			$subpage = isset($_GET['subpage']) ? sanitize_text_field( $_GET['subpage'] ) : null;
+			$subpage = isset( $_GET['subpage'] ) ? sanitize_text_field( $_GET['subpage'] ) : null;
 
 
 			include_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . 'admin/partials/turbosmtp-email-validator-admin-display.php';
@@ -235,6 +235,10 @@ class Turbosmtp_Email_Validator_Admin {
 
 	public function turbosmtp_email_validator_validation_settings_section_callback() {
 		esc_html_e( "Tailor your email verification process by selecting applicable forms, defining acceptable API response statuses, and creating a custom error message for invalid emails.", "turbosmtp-email-validator" );
+	}
+
+	public function turbosmtp_email_validator_whitelist_settings_section_callback() {
+		esc_html_e( "Add email addresses in a whitelist.", "turbosmtp-email-validator" );
 	}
 
 	public function turbosmtp_email_validator_enabled_callback() {
@@ -341,7 +345,7 @@ class Turbosmtp_Email_Validator_Admin {
 			);
 		}
 
-		echo ( $arguments['prepend'] ?? '' );
+		echo( $arguments['prepend'] ?? '' );
 
 		printf( '<fieldset>%s</fieldset>', $options_markup );
 	}
@@ -356,6 +360,24 @@ class Turbosmtp_Email_Validator_Admin {
 		return $int_value;
 	}
 
+	public function sanitize_whitelist( $input ) {
+		$values = explode( "\n", $input );
+        $emails = [];
+		foreach ( $values as $value ) {
+            $maybe_email = trim($value);
+
+			if ( is_email($maybe_email) !== false ) {
+				$emails[] = $maybe_email;
+				continue;
+			}
+
+			if ( preg_match('/^@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $maybe_email) ) {
+				$emails[] = $maybe_email;
+			}
+		}
+        return implode("\n", $emails);
+	}
+
 
 	function sanitize_validation_forms( $input ) {
 		$allowed_validation_forms = turbosmtp_email_validator_validation_forms( true );
@@ -367,6 +389,15 @@ class Turbosmtp_Email_Validator_Admin {
 		$allowed_statuses = turbosmtp_email_validator_validation_statuses( true );
 
 		return turbosmtp_email_validator_sanitize_array( $input, $allowed_statuses );
+	}
+
+	function turbosmtp_email_validator_whitelist_callback(
+		$arguments
+	) {
+		?>
+        <textarea name="turbosmtp_email_validator_whitelist"
+                  class="regular-text"><?php echo esc_attr( $arguments['value'] ) ?? ''; ?></textarea>
+		<?php
 	}
 
 	function settings_init() {
@@ -425,6 +456,33 @@ class Turbosmtp_Email_Validator_Admin {
 			[ $this, 'turbosmtp_email_validator_validation_settings_section_callback' ],
 			'email-validation-settings'
 		);
+
+
+		register_setting( 'turbosmtp_email_validator_whitelist_settings', 'turbosmtp_email_validator_whitelist', [
+			'type'              => 'string',
+			'sanitize_callback' => [ $this, 'sanitize_whitelist' ],
+		] );
+
+		add_settings_section(
+			'turbosmtp_email_validator_whitelist_settings_section',
+			__( 'Whitelist Settings', "turbosmtp-email-validator" ),
+			[ $this, 'turbosmtp_email_validator_whitelist_settings_section_callback' ],
+			'email-validation-whitelist'
+		);
+
+
+		add_settings_field(
+			'turbosmtp_email_validator_whitelist',
+			__( 'Whitelist', 'turbosmtp-email-validator' ),
+			[ $this, 'turbosmtp_email_validator_whitelist_callback' ],
+			'email-validation-whitelist',
+			'turbosmtp_email_validator_whitelist_settings_section',
+			[
+				'id'    => 'turbosmtp_email_validator_whitelist',
+				'value' => get_option( 'turbosmtp_email_validator_whitelist' )
+			]
+		);
+
 
 		add_settings_field(
 			'turbosmtp_email_validator_validation_forms',
