@@ -238,7 +238,7 @@ class Turbosmtp_Email_Validator_Admin {
 	}
 
 	public function turbosmtp_email_validator_whitelist_settings_section_callback() {
-		esc_html_e( "Add email addresses in a whitelist.", "turbosmtp-email-validator" );
+		_e( "Whitelist emails or domains by adding them below, one per line. Entries here will skip email validation. Use <code>email@example.com</code> for emails or <code>@example.com</code> for domains.", "turbosmtp-email-validator" );
 	}
 
 	public function turbosmtp_email_validator_enabled_callback() {
@@ -395,8 +395,8 @@ class Turbosmtp_Email_Validator_Admin {
 		$arguments
 	) {
 		?>
-        <textarea name="turbosmtp_email_validator_whitelist"
-                  class="regular-text"><?php echo esc_attr( $arguments['value'] ) ?? ''; ?></textarea>
+        <textarea name="turbosmtp_email_validator_whitelist" rows="6"
+                  class="regular-text tsev-whitelist-textarea"><?php echo esc_attr( $arguments['value'] ) ?? ''; ?></textarea>
 		<?php
 	}
 
@@ -473,7 +473,7 @@ class Turbosmtp_Email_Validator_Admin {
 
 		add_settings_field(
 			'turbosmtp_email_validator_whitelist',
-			__( 'Whitelist', 'turbosmtp-email-validator' ),
+			__( 'Whitelisted emails', 'turbosmtp-email-validator' ),
 			[ $this, 'turbosmtp_email_validator_whitelist_callback' ],
 			'email-validation-whitelist',
 			'turbosmtp_email_validator_whitelist_settings_section',
