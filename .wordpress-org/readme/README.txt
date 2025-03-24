@@ -31,6 +31,7 @@ The turboSMTP Email Validator for WordPress plugin ensures that email addresses 
 - Stores validated email addresses in a custom database table.
 - Provides an admin settings page to configure API keys and enable/disable the service.
 - Displays a list of validated email addresses in the admin area.
+- Bypass validation for individual email addresses or entire domains using the whitelist functionality.
 
 == Installation ==
 
