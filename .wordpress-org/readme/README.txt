@@ -1,6 +1,6 @@
 === turboSMTP Email Validator ===
 
-Contributors: dueclic
+Contributors: turbosmtp,dueclic
 Tags: email tester, email validator, email validation
 Requires at least: 6.0
 Requires PHP: 7.0

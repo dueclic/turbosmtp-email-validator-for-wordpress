@@ -17,8 +17,8 @@
  * Plugin URI:        https://www.serversmtp.com
  * Description:       Email validation tool in WordPress forms registrations using turboSMTP API
  * Version:           1.7.0
- * Author:            dueclic
- * Author URI:        https://www.dueclic.com/
+ * Author:            turbosmtp
+ * Author URI:        https://www.serversmtp.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       turbosmtp-email-validator
