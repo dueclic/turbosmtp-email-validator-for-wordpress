@@ -41,15 +41,32 @@ The turboSMTP Email Validator for WordPress plugin ensures that email addresses 
 - Set API Keys: Enter your turboSMTP consumerKey and consumerSecret in the provided fields.
 - View Validated Emails: Check the list of validated emails in the "Validated Emails" section on the settings page.
 
-## Frequently Asked Questions
+## Frequently Asked Questions 
 
-Q: What happens if the email validation fails during registration or checkout?
-
+Q: What happens if the email validation fails during registration or checkout? =
 A: If the email validation fails, an error message will be displayed, and the user will be prompted to enter a valid email address.
 
-Q: How often is the email validation performed?
+Q: Can I filter by status and sub_status? =
+A: Yes, you can do it. You to use the <code>turbosmtp_email_validator_status_ok</code> filter hook. Below you can see a useful code snippet as example of use (you must to put this in a custom plugin or the <code>functions.php</code> file of your active theme):
 
-A: The email validation is performed during user registration and checkout. If an email has been validated within the last six months, it will not be validated again.
+<code>
+// Filter by status and sub_status
+function turbosmtp_custom_email_validator_status_ok(
+	$value,
+	$status,
+	$sub_status
+){
+	if (
+		$status === 'do_not_mail' &&
+		$sub_status === 'role_based_catch_all'
+	){
+		return true;
+	}
+	return $value;
+}
+
+add_filter('turbosmtp_email_validator_status_ok', 'turbosmtp_custom_email_validator_status_ok',10, 3);
+</code>
 
 ## Screenshots
 
