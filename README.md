@@ -49,7 +49,7 @@ A: If the email validation fails, an error message will be displayed, and the us
 Q: Can I filter by status and sub_status? =
 A: Yes, you can do it. You to use the <code>turbosmtp_email_validator_status_ok</code> filter hook. Below you can see a useful code snippet as example of use (you must to put this in a custom plugin or the <code>functions.php</code> file of your active theme):
 
-<code>
+```php
 // Filter by status and sub_status
 function turbosmtp_custom_email_validator_status_ok(
 	$value,
@@ -66,7 +66,8 @@ function turbosmtp_custom_email_validator_status_ok(
 }
 
 add_filter('turbosmtp_email_validator_status_ok', 'turbosmtp_custom_email_validator_status_ok',10, 3);
-</code>
+
+```
 
 ## Screenshots
 
