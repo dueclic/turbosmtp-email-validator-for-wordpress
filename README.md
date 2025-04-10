@@ -44,9 +44,11 @@ The turboSMTP Email Validator for WordPress plugin ensures that email addresses 
 ## Frequently Asked Questions 
 
 Q: What happens if the email validation fails during registration or checkout?
+
 A: If the email validation fails, an error message will be displayed, and the user will be prompted to enter a valid email address.
 
 Q: Can I filter by status and sub_status?
+
 A: Yes, you can do it. You to use the <code>turbosmtp_email_validator_status_ok</code> filter hook. Below you can see a useful code snippet as example of use (you must to put this in a custom plugin or the <code>functions.php</code> file of your active theme):
 
 ```php
