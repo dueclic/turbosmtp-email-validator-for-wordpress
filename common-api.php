@@ -1,17 +1,18 @@
 <?php
-function turbosmtp_email_validator_status_ok($status, $validationPass) {
+function turbosmtp_email_validator_status_ok($status, $sub_status, $validationPass) {
 	if (in_array($status, $validationPass)) {
 		return true;
 	}
 
-	return apply_filters('turbosmtp_email_validator_status_ok', false, $status);
+	return apply_filters('turbosmtp_email_validator_status_ok', false, $status, $sub_status);
 }
 
 function turbosmtp_email_validator_get_status(
 	$status,
+	$sub_status,
 	$validationPass
 ){
-	if (turbosmtp_email_validator_status_ok($status, $validationPass)) {
+	if (turbosmtp_email_validator_status_ok($status, $sub_status, $validationPass)) {
 		return 'valid';
 	}
 	return $status;

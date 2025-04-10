@@ -127,7 +127,7 @@ class Turbosmtp_Email_Validator_Form_Public {
 			'source'       => $this->source,
 			'ip_address'   => ( $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'] ),
 			'form_id'      => $this->formId,
-			'status'       => $isValidationInfoError ? 'valid' : turbosmtp_email_validator_get_status($validationInfo['status'], $this->validationPass),
+			'status'       => $isValidationInfoError ? 'valid' : turbosmtp_email_validator_get_status($validationInfo['status'], $validationInfo['sub_status'], $this->validationPass),
 			'sub_status'   => $isValidationInfoError ? 'api_error' : $validationInfo['sub_status'],
 			'original_status'   => $isValidationInfoError ? 'valid' : $validationInfo['status'],
 			'validated_at' => current_time( 'mysql' ),
@@ -154,7 +154,7 @@ class Turbosmtp_Email_Validator_Form_Public {
 	 */
 	public function setup_form_validation( ?array $validationInfo, callable $callback, $args ) {
 		if ( ! is_null( $validationInfo ) ) {
-			if ( ! turbosmtp_email_validator_status_ok( $validationInfo['status'], $this->validationPass ) ) {
+			if ( ! turbosmtp_email_validator_status_ok( $validationInfo['status'], $validationInfo['sub_status'], $this->validationPass ) ) {
 				return call_user_func( $callback, $args );
 			}
 		}

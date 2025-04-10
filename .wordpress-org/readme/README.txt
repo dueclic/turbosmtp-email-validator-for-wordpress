@@ -5,7 +5,7 @@ Tags: email tester, email validator, email validation
 Requires at least: 6.0
 Requires PHP: 7.0
 Tested up to: 6.7
-Stable tag: 1.7.0
+Stable tag: 1.8.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,9 +47,30 @@ The turboSMTP Email Validator for WordPress plugin ensures that email addresses 
 
 == Frequently Asked Questions ==
 
-Q: What happens if the email validation fails during registration or checkout?
+= What happens if the email validation fails during registration or checkout? =
+If the email validation fails, an error message will be displayed, and the user will be prompted to enter a valid email address.
 
-A: If the email validation fails, an error message will be displayed, and the user will be prompted to enter a valid email address.
+= Can I filter by status and sub_status? =
+Yes, you can do it. You to use the <code>turbosmtp_email_validator_status_ok</code> filter hook. Below you can see a useful code snippet as example of use (you must to put this in a custom plugin or the <code>functions.php</code> file of your active theme):
+
+<code>
+// Filter by status and sub_status
+function turbosmtp_custom_email_validator_status_ok(
+	$value,
+	$status,
+	$sub_status
+){
+	if (
+		$status === 'do_not_mail' &&
+		$sub_status === 'role_based_catch_all'
+	){
+		return true;
+	}
+	return $value;
+}
+
+add_filter('turbosmtp_email_validator_status_ok', 'turbosmtp_custom_email_validator_status_ok',10, 3);
+</code>
 
 == Screenshots ==
 
@@ -61,6 +82,9 @@ A: If the email validation fails, an error message will be displayed, and the us
 6. Login using API Keys
 
 == Changelog ==
+
+= 1.8.0 =
+- changed filter turbosmtp_email_validator_status_ok (now accepts sub_status as well)
 
 = 1.7.0 =
 - added whitelist
