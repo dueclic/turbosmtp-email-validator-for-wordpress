@@ -59,6 +59,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 						$validation_result->get_error_data() :
 						$validation_result;
 
+                    $is_modal = false;
+
 					include_once plugin_dir_path( TURBOSMTP_EMAIL_VALIDATOR_PATH ) . 'admin/partials/validation-details.php';
 
 					?>

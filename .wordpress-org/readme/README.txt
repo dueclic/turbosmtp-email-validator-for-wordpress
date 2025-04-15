@@ -5,7 +5,7 @@ Tags: email tester, email validator, email validation
 Requires at least: 6.0
 Requires PHP: 7.0
 Tested up to: 6.7
-Stable tag: 1.8.0
+Stable tag: 1.9.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,6 +82,9 @@ add_filter('turbosmtp_email_validator_status_ok', 'turbosmtp_custom_email_valida
 6. Login using API Keys
 
 == Changelog ==
+
+= 1.9.0 =
+- better error handling in case of API failures
 
 = 1.8.0 =
 - changed filter turbosmtp_email_validator_status_ok (now accepts sub_status as well)

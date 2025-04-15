@@ -118,7 +118,10 @@ class Turbosmtp_Email_Validator_Form_Public {
 		}
 
 		$validationInfo = $this->api->validateEmail( $email );
-		$isValidationInfoError = is_wp_error($validationInfo);
+
+		if (is_wp_error($validationInfo)){
+			$validationInfo = $validationInfo->get_error_data();
+		}
 
 		$table_name = $wpdb->prefix . 'validated_emails';
 
@@ -127,11 +130,11 @@ class Turbosmtp_Email_Validator_Form_Public {
 			'source'       => $this->source,
 			'ip_address'   => ( $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'] ),
 			'form_id'      => $this->formId,
-			'status'       => $isValidationInfoError ? 'valid' : turbosmtp_email_validator_get_status($validationInfo['status'], $validationInfo['sub_status'], $this->validationPass),
-			'sub_status'   => $isValidationInfoError ? 'api_error' : $validationInfo['sub_status'],
-			'original_status'   => $isValidationInfoError ? 'valid' : $validationInfo['status'],
+			'status'       => turbosmtp_email_validator_get_status($validationInfo['status'], $validationInfo['sub_status'], $this->validationPass),
+			'sub_status'   => $validationInfo['sub_status'],
+			'original_status'   => $validationInfo['original_status'] ?? $validationInfo['status'],
 			'validated_at' => current_time( 'mysql' ),
-			'raw_data'     => $isValidationInfoError ? json_encode($validationInfo->get_error_data()) : json_encode( $validationInfo ),
+			'raw_data'     => json_encode( $validationInfo ),
 		);
 
 		$wpdb->insert(
@@ -142,7 +145,7 @@ class Turbosmtp_Email_Validator_Form_Public {
 		do_action('turbosmtp_email_validator_validated_email', $email, $validation_data);
 
 
-		return !$isValidationInfoError ? $validationInfo : $validationInfo->get_error_data();
+		return $validationInfo;
 	}
 
 	/**
