@@ -63,11 +63,21 @@ Filters: `turbosmtp_email_validator_validation_forms`, `_validation_statuses`, `
 
 User-facing strings go through `__()`/`_e()` with the `turbosmtp-email-validator` text domain. Unlike most plugins on translate.wordpress.org, the catalog and the Italian translation are committed in `languages/` (`turbosmtp-email-validator.pot`, `turbosmtp-email-validator-it_IT.po`/`.mo`).
 
-## Release / deployment
+## Release / versioning
 
-Versions must stay in sync across three locations: the `Version:` plugin header and the `TURBOSMTP_EMAIL_VALIDATOR_VERSION` constant in `turbosmtp-email-validator.php`, and `Stable tag:` in `.wordpress-org/readme/README.txt`. Git tags are plain versions with no `v` prefix (e.g. `1.9.1`).
+Releases are driven by **conventional commits** (`feat:`, `fix:`, …) via `commit-and-tag-version`:
 
-Deployment to the WordPress.org SVN repo happens automatically via GitHub Actions (`.github/workflows/deploy.yml`) when a git tag is pushed. `.distignore` controls what is excluded from the deployed zip.
+```bash
+pnpm run release:dry   # preview: next version + changelog
+pnpm run release       # bump versions, update CHANGELOG.md, commit, create tag
+git push --follow-tags origin master   # push manually — this triggers the WP.org deploy
+```
+
+`pnpm run release` computes the next semver from commits since the last tag and updates every version location in one commit: `turbosmtp-email-validator.php` (header `Version:` + `TURBOSMTP_EMAIL_VALIDATOR_VERSION` constant), `Stable tag:` in `.wordpress-org/readme/README.txt`, `package.json`, and `CHANGELOG.md`. Config is in `.versionrc.js`; the custom updaters live in `scripts/version-updaters/`. Tags are plain versions with no `v` prefix (e.g. `1.9.1`). Never bump versions by hand.
+
+The user-facing changelog inside `.wordpress-org/readme/README.txt` (`== Changelog ==` section) is NOT generated — curate it manually when the release is worth announcing to WP.org users.
+
+Deployment to the WordPress.org SVN repo happens automatically via GitHub Actions (`.github/workflows/deploy.yml`) when a git tag is pushed. `.distignore` controls what is excluded from the deployed zip (dev files like `CLAUDE.md`, `CHANGELOG.md`, `.versionrc.js`, `scripts/` are excluded).
 
 ## Conventions
 
