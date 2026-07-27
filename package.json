@@ -1,6 +1,6 @@
 {
   "name": "turbosmtp-email-validator-wordpress-plugin",
-  "version": "1.9.1",
+  "version": "1.9.2",
   "description": "Email validation tool in WordPress forms registrations using turboSMTP API",
   "private": true,
   "scripts": {
