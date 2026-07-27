@@ -36,7 +36,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 define( 'TURBOSMTP_EMAIL_VALIDATOR_BASENAME', plugin_basename(__FILE__));
-define( 'TURBOSMTP_EMAIL_VALIDATOR_VERSION', '1.9.0' );
+define( 'TURBOSMTP_EMAIL_VALIDATOR_VERSION', '1.9.1' );
 define( 'TURBOSMTP_EMAIL_VALIDATOR_PATH', __FILE__);
 
 if ( function_exists( 'pll_register_string' ) ) {
