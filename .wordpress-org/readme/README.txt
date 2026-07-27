@@ -83,6 +83,13 @@ add_filter('turbosmtp_email_validator_status_ok', 'turbosmtp_custom_email_valida
 
 == Changelog ==
 
+= 1.9.2 =
+- WordPress 7.0 compatibility
+- fixed internal plugin version constant left at 1.9.0
+
+= 1.9.1 =
+- WordPress 6.9 compatibility
+
 = 1.9.0 =
 - better error handling in case of API failures
 
