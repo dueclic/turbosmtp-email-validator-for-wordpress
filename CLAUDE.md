@@ -10,6 +10,20 @@ Official turboSMTP Email Validator WordPress plugin (slug: `turbosmtp-email-vali
 
 There is no build step: PHP is loaded directly by WordPress and the CSS/JS under `admin/` and `public/` are plain files enqueued as-is. No tests and no linting are configured.
 
+Toolchain: Node 20 (`.nvmrc`) + pnpm 9 (pinned via `packageManager`, use through corepack: `corepack enable` once, then plain `pnpm` works). It exists only for dev tooling — nothing in the shipped plugin is generated from it.
+
+## Local dev environment (wp-env)
+
+`@wordpress/env` (needs Docker) spins up WordPress with the plugin mounted and activated; config in `.wp-env.json` (PHP 8.2, `WP_DEBUG` on). Ports are 8890/8891 so it can run alongside the turbosmtp-for-wordpress plugin's wp-env (8888/8889).
+
+```bash
+pnpm install
+pnpm run env:start    # http://localhost:8890 — admin: admin/password
+pnpm run env:stop
+pnpm run env:destroy  # remove containers + volumes
+pnpm run env:cli ...  # WP-CLI inside the container, e.g. pnpm run env:cli option get turbosmtp_email_validator_enabled
+```
+
 ## Architecture
 
 ### Validation flow

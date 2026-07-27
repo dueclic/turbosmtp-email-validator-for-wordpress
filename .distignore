@@ -7,3 +7,8 @@
 .gitignore
 README.md
 CLAUDE.md
+.nvmrc
+.wp-env.json
+.wp-env.override.json
+package.json
+pnpm-lock.yaml
