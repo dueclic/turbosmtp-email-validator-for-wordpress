@@ -1,0 +1,21 @@
+{
+  "name": "turbosmtp-email-validator-wordpress-plugin",
+  "version": "1.9.1",
+  "description": "Email validation tool in WordPress forms registrations using turboSMTP API",
+  "private": true,
+  "scripts": {
+    "env:start": "wp-env start",
+    "env:stop": "wp-env stop",
+    "env:destroy": "wp-env destroy",
+    "env:cli": "wp-env run cli wp"
+  },
+  "author": "dueclic",
+  "license": "GPL-2.0",
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@wordpress/env": "^10.0.0"
+  }
+}
