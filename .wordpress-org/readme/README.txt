@@ -4,7 +4,7 @@ Contributors: turbosmtp,dueclic
 Tags: email tester, email validator, email validation
 Requires at least: 6.0
 Requires PHP: 7.0
-Tested up to: 7.0
+Tested up to: 7.1
 Stable tag: 1.9.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -82,6 +82,9 @@ add_filter('turbosmtp_email_validator_status_ok', 'turbosmtp_custom_email_valida
 6. Login using API Keys
 
 == Changelog ==
+
+= 1.9.3 =
+- WordPress 7.1 compatibility
 
 = 1.9.2 =
 - WordPress 7.0 compatibility
